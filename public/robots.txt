@@ -1,0 +1,21 @@
+# robots.txt — tells search engines what they can and can't crawl
+# Place this at: public/robots.txt
+# Vercel serves it automatically at https://yourdomain.com/robots.txt
+
+User-agent: *
+Allow: /
+
+# Block the internal app pages from Google (they require login, pointless to index)
+Disallow: /dashboard
+Disallow: /jobs
+Disallow: /clients
+Disallow: /invoices
+Disallow: /booking
+Disallow: /settings
+
+# Allow the public pages Google should index
+Allow: /
+Allow: /b/          # public booking pages e.g. /b/jakemorrison
+
+# Your sitemap location
+Sitemap: https://yourdomain.com/sitemap.xml

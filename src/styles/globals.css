@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; }
+body {
+  font-family: 'DM Sans', -apple-system, sans-serif;
+  background: #F7F6F3;
+  color: #131211;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+@keyframes spin    { to { transform: rotate(360deg); } }
+@keyframes fadeIn  { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+input, select, textarea, button { font-family: inherit; }
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: #E8500A !important;
+  box-shadow: 0 0 0 3px rgba(232,80,10,0.12);
+}
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 4px; }
+tbody tr:hover td { background: rgba(0,0,0,0.018); }
+.page-enter { animation: fadeIn 0.18s ease-out both; }
