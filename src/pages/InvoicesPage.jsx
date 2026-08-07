@@ -112,11 +112,6 @@ export default function InvoicesPage({ profile }) {
   }
 
   // ── Send email via Resend ──
-  // NOTE: kept the debug (console.log + try/catch) version below — the
-  // earlier duplicate declaration of this exact function was dead code
-  // (a later function declaration with the same name silently overwrites
-  // an earlier one in JS), so it's been removed rather than left sitting
-  // there unused.
   async function handleSendEmail(inv) {
     console.log("SEND EMAIL CLICK", inv);
 
@@ -145,8 +140,6 @@ export default function InvoicesPage({ profile }) {
   }
 
   // ── Create Stripe payment link ──
-  // Same note as handleSendEmail above — this is the one surviving
-  // (debug) version, the earlier duplicate declaration was dead code.
   async function handleStripeLink(inv) {
     console.log("STRIPE CLICK", inv);
 
@@ -177,7 +170,7 @@ export default function InvoicesPage({ profile }) {
     setBusy(false);
   }
 
-  // ── Copy bank details (manual bank transfer, no Stripe fee) ──
+  // ── Copy bank details ──
   async function handleCopyBankDetails(inv) {
     const lines = [
       profile.bank_name && `${t("invoices.bankLabel")} ${profile.bank_name}`,
@@ -257,14 +250,14 @@ export default function InvoicesPage({ profile }) {
           <div style={{display:"flex",gap:8,marginBottom:20,flexWrap:"wrap"}}>
             {previewInv.status==="unpaid" && <>
               <Btn size="sm" onClick={() => handleSendEmail(previewInv)} disabled={busy}>
-                📧 {busy?t("invoices.sending"):t("invoices.sendEmail")}
+                 {busy?t("invoices.sending"):t("invoices.sendEmail")}
               </Btn>
               {!previewInv.stripe_payment_link_url
                 ? <Btn size="sm" variant="ghost" onClick={() => handleStripeLink(previewInv)} disabled={busy}>
-                    💳 {busy?t("invoices.creating"):t("invoices.createPaymentLink")}
+                     {busy?t("invoices.creating"):t("invoices.createPaymentLink")}
                   </Btn>
                 : <a href={previewInv.stripe_payment_link_url} target="_blank" rel="noopener noreferrer">
-                    <Btn size="sm" variant="success">💳 {t("invoices.openPaymentLink")} ↗</Btn>
+                    <Btn size="sm" variant="success"> {t("invoices.openPaymentLink")} ↗</Btn>
                   </a>
               }
               <Btn size="sm" variant="success" onClick={() => handleMarkPaid(previewInv.id)}>
@@ -272,7 +265,7 @@ export default function InvoicesPage({ profile }) {
               </Btn>
               {(profile.bank_name || profile.account_number) && (
                 <Btn size="sm" variant="ghost" onClick={() => handleCopyBankDetails(previewInv)}>
-                  📋 {t("invoices.copyBankDetails")}
+                   {t("invoices.copyBankDetails")}
                 </Btn>
               )}
             </>}
@@ -322,7 +315,7 @@ export default function InvoicesPage({ profile }) {
 
             {previewInv.stripe_payment_link_url && (
               <div style={{marginTop:14,padding:"10px 14px",background:T.blueBg,borderRadius:T.r.md,fontSize:13,color:T.blue}}>
-                💳 {t("invoices.payOnline")}{" "}
+                 {t("invoices.payOnline")}{" "}
                 <a href={previewInv.stripe_payment_link_url} target="_blank" rel="noopener noreferrer" style={{color:T.blue,fontWeight:600}}>
                   {previewInv.stripe_payment_link_url}
                 </a>
@@ -331,7 +324,7 @@ export default function InvoicesPage({ profile }) {
 
             {(profile.bank_name || profile.account_number) && (
               <div style={{marginTop:14,padding:"12px 14px",background:T.greenBg,borderRadius:T.r.md,fontSize:13,color:T.green}}>
-                <div style={{fontWeight:700,marginBottom:4}}>🏦 {t("invoices.bankTransferTitle")}</div>
+                <div style={{fontWeight:700,marginBottom:4}}> {t("invoices.bankTransferTitle")}</div>
                 {profile.bank_name && <div>{t("invoices.bankLabel")} {profile.bank_name}</div>}
                 {profile.sort_code && <div>{t("invoices.sortCodeLabel")} {profile.sort_code}</div>}
                 {profile.account_number && <div>{t("invoices.accountLabel")} {profile.account_number}</div>}
@@ -368,7 +361,7 @@ export default function InvoicesPage({ profile }) {
         {loading ? (
           <div style={{textAlign:"center",padding:48,color:T.muted}}>{t("invoices.loading")}</div>
         ) : filtered.length === 0 ? (
-          <Empty icon="🧾" message={t("invoices.noneYet")}
+          <Empty message={t("invoices.noneYet")}
             action={<Btn size="sm" onClick={openAdd}>+ {t("invoices.createFirst")}</Btn>}/>
         ) : (
           <Table headers={[t("invoices.colInvoice"),t("invoices.colClient"),t("invoices.colIssued"),t("invoices.colDue"),t("invoices.colAmount"),t("invoices.colStatus"),""]}>

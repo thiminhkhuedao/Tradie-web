@@ -1,7 +1,5 @@
 // src/i18n/en.js
 // English translations — the default language.
-// Keys are organized by feature area, then by screen/component.
-// Vertical-specific terms override these via the professions system.
 
 export default {
   // ── Common ──────────────────────────────────────────
@@ -32,7 +30,7 @@ export default {
     currency:   "£",
     free:       "Free",
     pro:        "Pro",
-    new:        "+ New",
+    new:        "New",
     send:       "Send",
     optional:   "optional",
     required:   "required",
@@ -46,7 +44,7 @@ export default {
     welcomeBack:       "Welcome back",
     createAccount:     "Create account",
     signInSub:         "Sign in to your Tradie account",
-    signUpSub:         "Start for free — no card needed",
+    signUpSub:         "Start for free, no card needed",
     email:             "Email address",
     password:          "Password",
     passwordMin:       "Min. 8 characters",
@@ -103,10 +101,10 @@ export default {
     thisMonth:        "This month",
     unpaid:           "{{count}} unpaid",
     total:            "Total",
-    bookingLive:      "Your booking page is live ✨",
+    bookingLive:      "Your booking page is live",
     noUpcoming:       "No upcoming {{jobs}}",
     noActivity:       "No completed work yet",
-  greeting: "Good morning, {{name}} 👋",
+  greeting: "Good morning, {{name}}",
   thereFallback: "there",
   newJob: "New job",
   earnedThisMonth: "Earned this month",
@@ -127,22 +125,22 @@ export default {
   recentActivity: "Recent activity",
   noCompletedJobs: "No completed jobs yet",
   noInvoice: "no invoice",
-  bookingPageLive: "Your booking page is live ✨",
+  bookingPageLive: "Your booking page is live",
   copyLink: "Copy link",
   linkCopied: "Link copied!",
-  copyFailedManual: "Couldn't copy automatically — please select and copy the link above manually.",
+  copyFailedManual: "Couldn't copy automatically. Please select and copy the link above manually.",
   viewPage: "View page",
   },
 
   jobs: {
     title:        "Jobs",
-    new:          "+ New job",
+    new:          "New job",
     scheduled:    "Scheduled ({{count}})",
     completed:    "Completed ({{count}})",
-    markDone:     "✓ Mark done",
+    markDone:     "Mark done",
     noUpcoming:   "No upcoming jobs",
     noCompleted:  "No completed jobs yet",
-    addFirst:     "+ Add first job",
+    addFirst:     "Add first job",
     client:       "Client",
     date:         "Date",
     time:         "Time",
@@ -166,16 +164,16 @@ export default {
     errorUpdate:      "Failed to update job",
     errorComplete:    "Failed to complete job",
     errorDelete:      "Failed to delete job",
-    successAdd:       "Job added ✓",
-    successUpdate:    "Job updated ✓",
-    successComplete:  "Marked as done ✓",
+    successAdd:       "Job added",
+    successUpdate:    "Job updated",
+    successComplete:  "Marked as done",
     successDelete:    "Job deleted",
   },
 
   // ── Quotes ───────────────────────────────────────────
   quotes: {
     title:          "Quotes",
-    new:            "+ New quote",
+    new:            "New quote",
     totalQuoted:    "Total quoted",
     accepted:       "Accepted",
     conversion:     "Conversion",
@@ -183,12 +181,12 @@ export default {
     archived:       "Archived ({{count}})",
     noQuotes:       "No quotes yet",
     create:         "Create quote",
-    sign:           "✍️ Sign",
-    convertToJob:   "→ Convert to job",
+    sign:           "Sign",
+    convertToJob:   "Convert to job",
     client:         "Client",
     title_:         "Quote title",
     validUntil:     "Valid until",
-    addLine:        "+ Add line",
+    addLine:        "Add line",
     notes:          "Notes for client",
     margin:         "Est. margin",
     subtotal:       "Subtotal",
@@ -199,7 +197,7 @@ export default {
     other:          "Other",
     signTitle:      "Client e-signature",
     signSub:        "By entering their name, the client confirms they accept this quote.",
-    signCta:        "✍️ Sign & accept quote",
+    signCta:        "Sign & accept quote",
     status: {
       draft:      "Draft",
       sent:       "Sent",
@@ -209,7 +207,7 @@ export default {
       converted:  "Converted",
     },
 
-  newQuoteBtn: "+ New quote",
+  newQuoteBtn: "New quote",
 
   modal: {
     newTitle: "New quote",
@@ -227,7 +225,7 @@ export default {
 
   lineItems: {
     label: "Line items",
-    addLine: "+ Add line",
+    addLine: "Add line",
     headers: {
       description: "Description",
       type: "Type",
@@ -239,9 +237,6 @@ export default {
     unitPricePlaceholder: "£/unit",
   },
 
-  // Canonical values are "labour" / "material" / "other" — used for logic
-  // (e.g. margin calc filters on type==="material"). Only the display text
-  // below is translated.
   lineTypes: {
     labour: "labour",
     material: "material",
@@ -262,12 +257,12 @@ export default {
 
   toast: {
     titleClientRequired: "Title and client required",
-    quoteCreated: "Quote created ✓",
-    quoteUpdated: "Quote updated ✓",
+    quoteCreated: "Quote created",
+    quoteUpdated: "Quote updated",
     markedAsSent: "Quote marked as sent",
     enterClientName: "Please enter client name",
-    quoteSignedBy: "Quote signed by {{name}} ✓",
-    convertedToJob: "Quote converted to job ✓",
+    quoteSignedBy: "Quote signed by {{name}}",
+    convertedToJob: "Quote converted to job",
     quoteDeleted: "Quote deleted",
   },
 
@@ -317,7 +312,7 @@ export default {
   },
 
   empty: "No quotes yet",
-  createFirst: "+ Create first quote",
+  createFirst: "Create first quote",
 
   table: {
     headers: {
@@ -340,15 +335,15 @@ export default {
   // ── Invoices ─────────────────────────────────────────
   invoices: {
     title:        "Invoices",
-    new:          "+ New",
+    new:          "New",
     paid:         "Paid",
     outstanding:  "Outstanding",
     all:          "All",
     unpaid:       "Unpaid",
     overdue:      "Overdue",
-    markPaid:     "✓ Mark paid",
-    email:        "📧 Email",
-    paymentLink:  "💳 Payment link",
+    markPaid:     "Mark paid",
+    email:        "Email",
+    paymentLink:  "Payment link",
     billTo:       "Bill to",
     noInvoices:   "No invoices yet",
     amount:       "Amount (£)",
@@ -399,8 +394,8 @@ export default {
   referenceLabel: "Reference:",
   bankTransferTitle: "Or pay by bank transfer",
   copyBankDetails: "Copy bank details",
-  bankDetailsCopied: "Bank details copied ✓",
-  copyFailedManual: "Couldn't copy — please copy manually",
+  bankDetailsCopied: "Bank details copied",
+  copyFailedManual: "Couldn't copy. Please copy manually",
   defaultPaymentTerms: "14 days",
   deleteConfirmTitle: "Delete invoice?",
   deleteConfirmMessage: "This cannot be undone.",
@@ -429,7 +424,7 @@ export default {
   // ── Clients ──────────────────────────────────────────
   clients: {
     title:      "Clients",
-    new:        "+ New client",
+    new:        "New client",
     noClients:  "No clients yet",
     name:       "Full name",
     email:      "Email",
@@ -447,9 +442,9 @@ export default {
   notesLabel: "Notes",
   nameRequired: "Name is required",
   addFailed: "Failed to add client",
-  addedToast: "Client added ✓",
+  addedToast: "Client added",
   updateFailed: "Failed to update client",
-  updatedToast: "Client updated ✓",
+  updatedToast: "Client updated",
   deleteFailed: "Failed to delete client",
   deletedToast: "Client deleted",
   deleteConfirmTitle: "Delete client?",
@@ -473,10 +468,10 @@ export default {
   // ── Booking ──────────────────────────────────────────
   booking: {
     title:          "Booking",
-    sharePage:      "📤 Share page",
-    pageLive:       "Your booking page is live ✨",
+    sharePage:      "Share page",
+    pageLive:       "Your booking page is live",
     received:       "Received {{date}}",
-    openPreview:    "👁 View your live booking page",
+    openPreview:    "View your live booking page",
     opening:        "Opening…",
     previewSub:     "This opens your real, live booking page — the exact same page clients see when they tap your shared link. Nothing here is simulated.",
     slugLabel:      "Booking page URL slug",
@@ -528,7 +523,7 @@ export default {
   copyFailedManual: "Couldn't copy automatically — please select and copy the link above manually.",
   shareHint: "Share this link anywhere — put it on your Instagram bio, WhatsApp status, van signage, or website. Customers fill in a request form and you accept or decline from the Requests tab above.",
   updateFailed: "Failed to update booking",
-  acceptedToast: "Booking accepted ✓",
+  acceptedToast: "Booking accepted",
   declinedToast: "Booking declined",
   nameAndDateRequired: "Name and preferred date are required",
   submitFailed: "Failed to submit request",
@@ -552,9 +547,9 @@ export default {
     addFirst: "Add your first service",
     nameAndPriceRequired: "Name and price are required",
     addFailed: "Failed to add service",
-    addedToast: "Service added ✓",
+    addedToast: "Service added",
     updateFailed: "Failed to update service",
-    updatedToast: "Service updated ✓",
+    updatedToast: "Service updated",
     deleteFailed: "Failed to delete service",
     deletedToast: "Service removed",
     reorderFailed: "Failed to reorder services",
@@ -591,12 +586,12 @@ export default {
     tradieFee:      "Tradie Pay (2%)",
     youReceive:     "You receive",
     connected:      "✓ Tradie Pay active",
-    autoPayouts:    "🏦 Automatic payouts",
+    autoPayouts:    "Automatic payouts",
     autoPayoutsSub: "Earnings are automatically paid out every 2 business days to your connected bank account.",
     noPayouts:      "No payouts yet",
     stripeConnect:  "Stripe Connect",
     stripeConnectSub:"Receive card payments on invoices",
-    openStripe:     "Open Stripe Dashboard ↗",
+    openStripe:     "Open Stripe Dashboard",
     feeStructure:   "Fee structure",
     
   title: "Tradie Pay",
@@ -624,7 +619,7 @@ export default {
   overview: {
     notConnectedTitle: "Connect your Stripe account to accept payments",
     notConnectedDesc: "Clients can't pay invoices online until you connect Stripe.",
-    connectStripeBtn: "Connect Stripe →",
+    connectStripeBtn: "Connect Stripe",
     connectedBanner: "Tradie Pay active — clients can pay invoices online instantly",
     viewAll: "View all →",
     recentPayments: "Recent payments",
@@ -699,12 +694,11 @@ export default {
     inTransit: "In transit",
     expectedWithin2Days: "Expected within 2 days",
     totalPaidOut: "Total paid out",
-    empty: "No payouts yet — they appear here once your first payment processes",
+    empty: "No payouts yet. They appear here once your first payment processes",
   },
 
   payoutSchedule: {
     title: "Automatic payouts",
-    // Rendered as: "{description} <strong>{bank_last4}</strong>."
     description: "Tradie Pay pays out your earnings automatically every 2 business days to your connected bank account. Payments processed before 5pm arrive 2 working days later. Bank account ending in",
   },
 
@@ -714,10 +708,10 @@ export default {
     connectedDesc: "Connected — payments can be received",
     notConnectedDesc: "Not connected — clients cannot pay online yet",
     connectedBody: "Your Stripe account is connected and verified. Payouts go to your linked bank account automatically.",
-    openDashboard: "Open Stripe dashboard ↗",
+    openDashboard: "Open Stripe dashboard",
     notConnectedBody: "Connect your Stripe account to start accepting card payments on your invoices. Takes 5 minutes. You'll need your bank account details and a photo ID.",
     redirectingToast: "Redirecting to Stripe Connect onboarding…",
-    connectAccountBtn: "Connect Stripe account →",
+    connectAccountBtn: "Connect Stripe account",
   },
 
   howItWorks: {
@@ -834,7 +828,7 @@ export default {
   toast: {
     listingClosed: "Listing closed",
     listingDeleted: "Listing deleted",
-    listingPosted: "Listing posted ✓",
+    listingPosted: "Listing posted",
     interestSent: "Interest sent! The poster will contact you.",
     requiredTitleDescLocation: "Title, description and location are required",
     requiredContact: "Contact name and email are required",
@@ -852,8 +846,8 @@ export default {
       recruitment: { label: "Recruitment", desc: "Hiring workers or subcontractors" },
       materials: { label: "Materials", desc: "Sell surplus or used materials/tools to a peer" },
     },
-    next: "Next →",
-    back: "← Back",
+    next: "Next",
+    back: "Back",
     step2Of3: "Step 2 of 3 — Listing details",
     step3Of3: "Step 3 of 3 — Your contact info (shown to interested parties)",
     markUrgent: "Mark as urgent",
@@ -921,7 +915,6 @@ export default {
     sendBtn: "Send interest",
   },
 
-  // Canonical values used for filtering / DB storage — label text only, key = raw value
   contractTypes: {
     Subcontracting: "Subcontracting",
     CDI: "CDI",
@@ -950,15 +943,15 @@ export default {
 
   // ── Reviews ──────────────────────────────────────────
   reviews: {
-    addManually:    "+ Add",
-    request:        "📱 Request",
+    addManually:    "Add",
+    request:        "Request",
     averageRating:  "{{rating}} average",
     verified:       "Verified",
     onGoogle:       "On Google",
     pending:        "Pending",
     noReviews:      "No reviews yet",
     requestFirst:   "Request your first review",
-    connectGoogle:  "🔍 Connect Google Business",
+    connectGoogle:  "Connect Google Business",
     connectSub:     "Let clients go straight to your Google profile",
     sendRequest:    "Send SMS request",
     requestTitle:   "Request a review",
@@ -970,7 +963,7 @@ export default {
     reviewBody:     "Review",
     whatSaid:       "What did they say?",
     addReview:      "Add review",
-    pushGoogle:     "🔍 Ask client to post to Google",
+    pushGoogle:     "Ask client to post to Google",
 
   title: "Reviews",
   addManuallyBtn: "+ Add manually",
@@ -982,7 +975,6 @@ export default {
     completedJobLabel: "Completed job",
     selectJobPlaceholder: "Select a job…",
     smsPreviewTitle: "SMS preview",
-    // {{urlPreview}} is a truncated URL (already sliced in code) followed by "…"
     smsTemplate: "\"Hi {{clientName}}, hope you're happy with the {{jobTitle}}. Could you spare 60 seconds to leave us a Google review? It really helps. Tap here: {{urlPreview}}… — {{profileName}}\"",
     cancel: "Cancel",
     sendSmsBtn: "Send SMS request",
@@ -1007,7 +999,7 @@ export default {
     sendFailed: "Failed to send — please try again",
     requestSent: "Review request SMS sent to {{name}} ✓",
     nameRatingRequired: "Name and rating required",
-    reviewAdded: "Review added ✓",
+    reviewAdded: "Review added",
     markedPushedToGoogle: "Marked as pushed to Google",
   },
 
@@ -1033,7 +1025,7 @@ export default {
   googleCta: {
     title: "Connect your Google Business Profile",
     description: "Paste your Google review link so SMS requests take clients directly to Google.",
-    openBtn: "Open Google Business ↗",
+    openBtn: "Open Google Business",
   },
 
   list: {
@@ -1051,8 +1043,8 @@ export default {
     active:       "Active — {{count}}",
     expiring:     "Expiring — {{count}}",
     expired:      "Expired — {{count}}",
-    visibleNote:  "✓ Active certs are visible on your public booking page",
-    expiryAlert:  "⚠️ {{count}} cert(s) expiring soon",
+    visibleNote:  "Active certs are visible on your public booking page",
+    expiryAlert:  "{{count}} cert(s) expiring soon",
     noExpiry:     "No expiry",
     quickAdd:     "Quick add common certs",
   add: "Add",
@@ -1097,8 +1089,8 @@ export default {
     monthsFree:   "Months free",
     totalSent:    "Total sent",
     myLink:       "Your referral link",
-    shareLink:    "📤 Share link",
-    sendInvite:   "✉️ Send invite",
+    shareLink:    "Share link",
+    sendInvite:   "Send invite",
     yourReferrals:"Your referrals ({{count}})",
     noReferrals:  "No referrals yet",
     referFirst:   "Refer your first trade",
@@ -1150,7 +1142,7 @@ export default {
   linkCard: {
     title: "Your referral link",
     description: "Share this link anywhere — WhatsApp, Facebook groups, trade forums. Anyone who signs up through it gets linked to you automatically.",
-    copied: "✓ Copied!",
+    copied: "Copied!",
     copyLink: "Copy link",
   },
 
@@ -1233,7 +1225,7 @@ export default {
     currentPlan:      "Current plan",
     upgrade:          "Upgrade to Pro →",
     downgrade:        "Downgrade",
-    currentPlanBadge: "✓ Current plan",
+    currentPlanBadge: "Current plan",
     mostPopular:      "MOST POPULAR",
     signOutConfirm:   "Sign out?",
     languageTitle:    "Language / Langue",
@@ -1276,8 +1268,6 @@ professions: {
     other:        { label: "Other services" },
   },
 
-  // Display names for each canonical profession value (profile.trade is
-  // never translated — only what's shown to the user).
   professionNames: {
     // trades
     "Electrician": "Electrician",
@@ -1355,7 +1345,6 @@ professions: {
     },
   },
 
-  // Path = professions.fields.<verticalId>.<fieldKey>[.items.<subFieldKey>]
   fields: {
     trades: {
       insurance_provider: { label: "Public liability insurer", placeholder: "e.g. Simply Business" },
@@ -1422,11 +1411,7 @@ publicBooking: {
 
   form: {
     titlePrefix: "Request",
-    // Dedicated, grammatically-correct phrase per vertical (keyed by
-    // vertical.id, not by the translated terms.booking string — comparing
-    // against a translated value would only ever match in English, and
-    // "a {{term}}" broke for terms like "Appointment" → "a appointment"
-    // instead of "an appointment").
+
     aByVertical: {
       trades:       "a booking",
       beauty:       "an appointment",
@@ -1506,7 +1491,7 @@ home: {
       desc: "Hairdressers, nail techs, spas, massage therapists — stop losing bookings in your DMs.",
       professions: ["Hairdresser", "Nail Tech", "Spa", "Massage", "Lash Tech"],
       artifact: {
-        tag: "Saturday · Booking live 🟢",
+        tag: "Saturday · Booking live",
         totalLabel: "Today's revenue",
       },
     },

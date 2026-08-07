@@ -28,15 +28,13 @@ function ExpiryBadge({ expiryDate, t }) {
   return <Badge color="green">{t("certifications.status.active")}</Badge>;
 }
 
-import { getTerms, getVerticalForProfession } from "../lib/professions.js";
+import { getTerms } from "../lib/professions.js";
 
 const iStyle = { width:"100%",padding:"10px 12px",borderRadius:T.r.md,border:`1px solid rgba(0,0,0,0.15)`,fontSize:14,background:"#fff",color:"#131211",boxSizing:"border-box",fontFamily:"inherit" };
 
 export default function CertificationsPage({ state, dispatch, profile }) {
   const { t } = useTranslation();
   const terms = getTerms(profile?.trade);
-  const vertical = getVerticalForProfession(profile?.trade);
-  const COMMON_CERTS = vertical.terms.credentialExamples ?? [];
   const [modal,  setModal]  = useState(null); // null|"add"|cert obj
   const [delId,  setDelId]  = useState(null);
   const [form,   setForm]   = useState({});
@@ -80,10 +78,7 @@ export default function CertificationsPage({ state, dispatch, profile }) {
                 <Modal title={modal==="add"?`${t("certifications.add")} ${terms.credential.toLowerCase()}`:`${t("common.edit")} ${terms.credential.toLowerCase()}`} onClose={()=>setModal(null)}>
           <form onSubmit={save}>
             <Field label={t("certifications.certName")}>
-              <input style={iStyle} value={form.name||""} onChange={fld("name")} list="cert-suggestions" placeholder={COMMON_CERTS[0]?.name ? `${t("certifications.egPrefix")} ${COMMON_CERTS[0].name}` : t("certifications.enterName")} autoFocus/>
-              <datalist id="cert-suggestions">
-                {COMMON_CERTS.map(c=><option key={c.name} value={c.name}/>)}
-              </datalist>
+              <input style={iStyle} value={form.name || ""} onChange={fld("name")} placeholder={t("certifications.enterName")}autoFocus/>
             </Field>
             <FieldRow>
               <Field label={t("certifications.issuingBody")} flex="1">
@@ -123,7 +118,7 @@ export default function CertificationsPage({ state, dispatch, profile }) {
       {expiring.length>0 && (
         <div style={{ background:T.amberBg, border:`1px solid ${T.amber}40`, borderRadius:T.r.lg, padding:"14px 20px", marginBottom:16 }}>
           <div style={{ fontWeight:700, color:T.amber, marginBottom:4 }}>
-            ⚠️ {t("certifications.expiringSoonBanner",{count:expiring.length,plural:expiring.length>1?"s":""})}
+            {t("certifications.expiringSoonBanner",{count:expiring.length,plural:expiring.length>1?"s":""})}
           </div>
           <div style={{ fontSize:13, color:T.muted }}>
             {expiring.map(c=>`${c.name} (${Math.ceil(daysUntilExpiry(c.expiry_date)/30)} ${t("certifications.monthsShort")})`).join(" · ")}
@@ -134,10 +129,10 @@ export default function CertificationsPage({ state, dispatch, profile }) {
       {/* Stats */}
       <div style={{ display:"flex", gap:12, marginBottom:20 }}>
         {[
-          { label:t("certifications.activeCerts"),   val:active.length,  icon:"✅", color:"green" },
-          { label:t("certifications.expiringSoon"),  val:expiring.length,icon:"⚠️", color:"amber" },
-          { label:t("certifications.expiredLabel"),   val:expired.length, icon:"❌", color:"red" },
-          { label:t("certifications.visibleOnProfile"), val:active.length, icon:"👁", color:"blue" },
+          { label:t("certifications.activeCerts"),   val:active.length, color:"green" },
+          { label:t("certifications.expiringSoon"),  val:expiring.length, color:"amber" },
+          { label:t("certifications.expiredLabel"),   val:expired.length, color:"red" },
+          { label:t("certifications.visibleOnProfile"), val:active.length, color:"blue" },
         ].map(m=>(
           <div key={m.label} style={{ flex:1, background:T.surface, borderRadius:T.r.lg, border:`1px solid ${T.border}`, padding:"14px 16px" }}>
             <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:6 }}>
@@ -157,7 +152,7 @@ export default function CertificationsPage({ state, dispatch, profile }) {
       {/* Certs list */}
       <Card style={{ padding:0, overflow:"hidden" }}>
         {certs.length===0 ? (
-          <Empty icon="🏅" message={t("certifications.noneYet")}
+          <Empty message={t("certifications.noneYet")}
             action={<Btn size="sm" onClick={openAdd}>+ {t("certifications.addFirst")}</Btn>}/>
         ) : (
           <>
@@ -178,22 +173,6 @@ export default function CertificationsPage({ state, dispatch, profile }) {
           </>
         )}
       </Card>
-
-      {/* Common certs to add */}
-      <Card style={{ marginTop:8 }}>
-        <SectionTitle>{t("certifications.commonFor",{credentialPlural:terms.credentialPlural.toLowerCase(),trade:profile?.trade||vertical.label.toLowerCase()})}</SectionTitle>
-        <div style={{ display:"flex", flexWrap:"wrap", gap:8 }}>
-          {COMMON_CERTS.map(c=>{
-            const already = certs.some(cert=>cert.name===c.name);
-            return (
-              <button key={c.name} onClick={()=>{ if(!already){ setForm({ name:c.name, issuing_body:c.body, cert_number:"", issued_date:"", expiry_date:"", status:"active" }); setModal("add"); } }}
-                style={{ padding:"6px 14px", borderRadius:T.r.full, border:`1px solid ${T.border}`, background:already?T.greenBg:T.surface2, color:already?T.green:T.text, fontSize:13, cursor:already?"default":"pointer", fontWeight:500 }}>
-                {already?"✓ ":""}{c.name}
-              </button>
-            );
-          })}
-        </div>
-      </Card>
     </PageShell>
   );
 }
@@ -203,7 +182,7 @@ function CertRow({ cert, t, onEdit, onDelete }) {
   return (
     <div style={{ display:"flex", alignItems:"center", gap:14, padding:"14px 24px", borderBottom:`1px solid ${T.border}` }}>
       <div style={{ width:40, height:40, borderRadius:T.r.md, background:cert.status==="expired"?T.redBg:T.greenBg, display:"flex", alignItems:"center", justifyContent:"center", fontSize:20, flexShrink:0 }}>
-        {cert.status==="expired"?"❌":"🏅"}
+        {cert.status==="expired"}
       </div>
       <div style={{ flex:1, minWidth:0 }}>
         <div style={{ fontWeight:600, fontSize:14, marginBottom:2 }}>{cert.name}</div>

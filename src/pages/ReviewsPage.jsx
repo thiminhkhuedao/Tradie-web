@@ -26,7 +26,7 @@ function Stars({ rating, size = 16 }) {
 
 export default function ReviewsPage({ state, dispatch, profile }) {
   const { t } = useTranslation();
-  const [modal,   setModal]   = useState(null); // null|"request"|"add_manual"
+  const [modal,   setModal]   = useState(null);
   const [selJob,  setSelJob]  = useState("");
   const [form,    setForm]    = useState({ client_name:"", client_email:"", client_phone:"", rating:5, title:"", body:"" });
   const fld = k => e => setForm(p=>({...p,[k]:e.target.value}));
@@ -198,9 +198,9 @@ export default function ReviewsPage({ state, dispatch, profile }) {
 
         <div style={{ display:"flex", flexDirection:"column", gap:12, flex:1 }}>
           {[
-            { label:t("reviews.metrics.verifiedReviews"), val:verified, sub:t("reviews.metrics.onYourProfile"), icon:"✅" },
-            { label:t("reviews.metrics.googleClicks"), val:googleClicks, sub:t("reviews.metrics.tappedGoogleLink"), icon:"🔍" },
-            { label:t("reviews.metrics.jobsWithNoReview"), val:jobs.length-reviews.length, sub:t("reviews.metrics.couldRequestReview"), icon:"📱" },
+            { label:t("reviews.metrics.verifiedReviews"), val:verified, sub:t("reviews.metrics.onYourProfile") },
+            { label:t("reviews.metrics.googleClicks"), val:googleClicks, sub:t("reviews.metrics.tappedGoogleLink") },
+            { label:t("reviews.metrics.jobsWithNoReview"), val:jobs.length-reviews.length, sub:t("reviews.metrics.couldRequestReview")},
           ].map(m=>(
             <div key={m.label} style={{ background:T.surface, borderRadius:T.r.lg, border:`1px solid ${T.border}`, padding:"12px 16px", display:"flex", alignItems:"center", gap:12 }}>
               <span style={{ fontSize:22 }}>{m.icon}</span>
@@ -217,7 +217,7 @@ export default function ReviewsPage({ state, dispatch, profile }) {
       {/* Google Business CTA */}
       <div style={{ background:T.blueBg, border:`1px solid ${T.blue}30`, borderRadius:T.r.lg, padding:"14px 20px", marginBottom:20, display:"flex", justifyContent:"space-between", alignItems:"center" }}>
         <div>
-          <div style={{ fontWeight:700, color:T.blue, marginBottom:2 }}>🔍 {t("reviews.googleCta.title")}</div>
+          <div style={{ fontWeight:700, color:T.blue, marginBottom:2 }}>{t("reviews.googleCta.title")}</div>
           <div style={{ fontSize:13, color:T.muted }}>{t("reviews.googleCta.description")}</div>
         </div>
         <Btn variant="ghost" size="sm" onClick={()=>window.open("https://business.google.com","_blank")}>{t("reviews.googleCta.openBtn")}</Btn>
@@ -226,7 +226,7 @@ export default function ReviewsPage({ state, dispatch, profile }) {
       {/* Reviews list */}
       <Card style={{ padding:0, overflow:"hidden" }}>
         {reviews.length===0
-          ? <Empty icon="⭐" message={t("reviews.list.empty")} action={<Btn size="sm" onClick={()=>setModal("request")}>{t("reviews.list.requestFirst")}</Btn>}/>
+          ? <Empty message={t("reviews.list.empty")} action={<Btn size="sm" onClick={()=>setModal("request")}>{t("reviews.list.requestFirst")}</Btn>}/>
           : reviews.map(r=>(
               <div key={r.id} style={{ padding:"18px 24px", borderBottom:`1px solid ${T.border}` }}>
                 <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:8 }}>
@@ -251,7 +251,7 @@ export default function ReviewsPage({ state, dispatch, profile }) {
                   <div style={{ marginTop:10 }}>
                     <Btn size="sm" variant="ghost"
                       onClick={()=>{ dispatch({type:"UPDATE_REVIEW",payload:{id:r.id,google_review_clicked:true}}); toast.success(t("reviews.toast.markedPushedToGoogle")); }}>
-                      🔍 {t("reviews.list.askClientToPostBtn")}
+                      {t("reviews.list.askClientToPostBtn")}
                     </Btn>
                   </div>
                 )}

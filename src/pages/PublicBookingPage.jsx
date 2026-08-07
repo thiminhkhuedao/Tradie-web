@@ -1,7 +1,4 @@
 // src/pages/PublicBookingPage.jsx
-// Public booking page at /b/:slug — no login required.
-// Features a Calendly-style calendar: client picks a day,
-// sees available slots, picks a time, then fills in details.
 
 import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
@@ -389,7 +386,7 @@ export default function PublicBookingPage() {
   if (done) return (
     <div style={{ minHeight:"100vh", background:C.bg, display:"flex", alignItems:"center", justifyContent:"center", padding:20 }}>
       <div style={{ maxWidth:420, width:"100%", background:C.surface, borderRadius:C.r.xl, padding:"48px 40px", boxShadow:C.shadow, textAlign:"center" }}>
-        <div style={{ fontSize:56, marginBottom:16 }}>✅</div>
+        <div style={{ fontSize:56, marginBottom:16 }}></div>
         <h2 style={{ fontSize:22, fontWeight:900, marginBottom:8 }}>Request sent!</h2>
         <p style={{ fontSize:15, color:C.muted, lineHeight:1.7, marginBottom:16 }}>
           <strong>{profile.name}</strong> will confirm your {selDate && selTime ? `${selTime} slot on ${new Date(selDate+"T00:00:00").toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"long"})}` : "request"} shortly.
@@ -444,7 +441,7 @@ export default function PublicBookingPage() {
             </div>
             <button type="button" onClick={()=>{ setCustom(true); setSelSvc(null); }}
               style={{ width:"100%", padding:"14px 18px", textAlign:"left", cursor:"pointer", borderRadius:C.r.lg, border:`1.5px dashed ${custom?C.brand:C.border}`, background:custom?C.brandLight:"transparent", fontFamily:"inherit", display:"flex", alignItems:"center", gap:12, marginBottom:20 }}>
-              <span style={{ fontSize:20 }}>✏️</span>
+              <span style={{ fontSize:20 }}></span>
               <div>
                 <div style={{ fontSize:14, fontWeight:700, color:custom?C.brand:C.text }}>Something else</div>
                 <div style={{ fontSize:12, color:C.muted }}>Describe a custom request</div>

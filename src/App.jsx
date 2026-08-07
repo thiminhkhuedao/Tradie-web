@@ -451,10 +451,6 @@ function ClerkGatedApp() {
 }
 
 /* ── Root ───────────────────────────────────────────── */
-// `useClerk` here is the boolean flag main.jsx passes based on whether
-// VITE_CLERK_PUBLISHABLE_KEY is set — NOT the Clerk hook of the same
-// name (that one is only ever called inside ClerkGatedApp, which is
-// only rendered once we know a <ClerkProvider> is actually mounted).
 export default function App({ useClerk: hasClerkKey = false }) {
   if (!hasClerkKey) {
     return <DemoAppShell />;

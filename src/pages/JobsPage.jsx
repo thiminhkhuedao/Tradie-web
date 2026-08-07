@@ -191,7 +191,7 @@ export default function JobsPage({ profile }) {
           <div style={{textAlign:"center",padding:48,color:T.muted}}>{t("common.loading")}</div>
         ) : current.length===0 ? (
           <Empty
-            icon={tab==="scheduled"?"📋":"✅"}
+            icon={tab==="scheduled"}
             message={tab==="scheduled" ? t("jobs.noUpcoming") : t("jobs.noCompleted")}
             action={tab==="scheduled" && <Btn size="sm" onClick={openAdd}>{t("jobs.addFirst")}</Btn>}/>
         ) : (

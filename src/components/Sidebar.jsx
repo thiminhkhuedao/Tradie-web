@@ -13,33 +13,33 @@ export default function Sidebar({ page, setPage, profile, onSignOut, pendingBook
     {
       label: t("nav.core"),
       items: [
-        { id:"dashboard",      label:t("nav.dashboard"),      icon:"⬛" },
-        { id:"jobs",           label:terms.bookingPlural,     icon:"📋" },
-        { id:"quotes",         label:t("nav.quotes"),         icon:"📝" },
-        { id:"clients",        label:t("nav.clients"),        icon:"👥" },
-        { id:"invoices",       label:t("nav.invoices"),       icon:"🧾" },
-        { id:"booking",        label:t("nav.booking"),        icon:"📅" },
+        { id:"dashboard",      label:t("nav.dashboard") },
+        { id:"jobs",           label:terms.bookingPlural },
+        { id:"quotes",         label:t("nav.quotes") },
+        { id:"clients",        label:t("nav.clients") },
+        { id:"invoices",       label:t("nav.invoices") },
+        { id:"booking",        label:t("nav.booking")},
       ]
     },
     {
       label: t("nav.revenue"),
       items: [
-        { id:"payments",       label:t("nav.payments"),       icon:"💳" },
-        { id:"marketplace",    label:t("nav.marketplace"),    icon:"🛒" },
+        { id:"payments",       label:t("nav.payments") },
+        { id:"marketplace",    label:t("nav.marketplace")},
       ]
     },
     {
       label: t("nav.growthSection"),
       items: [
-        { id:"reviews",        label:t("nav.reviews"),        icon:"⭐" },
-        { id:"referrals",      label:t("nav.referrals"),      icon:"🎁" },
-        { id:"certifications", label:t("nav.certifications"), icon:"🏅" },
+        { id:"reviews",        label:t("nav.reviews") },
+        { id:"referrals",      label:t("nav.referrals")},
+        { id:"certifications", label:t("nav.certifications")},
       ]
     },
     {
       label: t("nav.account"),
       items: [
-        { id:"settings",       label:t("nav.settings"),       icon:"⚙️" },
+        { id:"settings",       label:t("nav.settings")},
       ]
     },
   ];
@@ -55,7 +55,7 @@ export default function Sidebar({ page, setPage, profile, onSignOut, pendingBook
     }}>
       {/* Logo */}
       <div style={{ padding:"18px 20px 14px", borderBottom:`1px solid ${T.border}`, flexShrink:0 }}>
-        <div style={{ fontSize:20, fontWeight:900, color:T.brand, letterSpacing:-0.5 }}>⚡ Tradie</div>
+        <div style={{ fontSize:20, fontWeight:900, color:T.brand, letterSpacing:-0.5 }}> Tradie</div>
         <div style={{ fontSize:11, color:T.muted, marginTop:2 }}>
           {profile?.trade
             ? `${getVerticalForProfession(profile.trade).icon} ${profile.trade}`

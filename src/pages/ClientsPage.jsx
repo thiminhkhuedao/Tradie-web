@@ -205,10 +205,10 @@ export default function ClientsPage({ profile }) {
                   </div>
                 </div>
               </div>
-              <InfoRow icon="✉️" value={selClient.email}/>
-              <InfoRow icon="📞" value={selClient.phone}/>
-              <InfoRow icon="📍" value={selClient.address}/>
-              <InfoRow icon="📝" value={selClient.notes}/>
+              <InfoRow value={selClient.email}/>
+              <InfoRow value={selClient.phone}/>
+              <InfoRow value={selClient.address}/>
+              <InfoRow value={selClient.notes}/>
               <div style={{marginTop:14}}>
                 <Btn size="sm" variant="ghost" fullWidth onClick={()=>openEdit(selClient)}>
                   {t("clients.editClient")}

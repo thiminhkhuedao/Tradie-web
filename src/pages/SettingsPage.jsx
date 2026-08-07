@@ -218,7 +218,7 @@ export default function SettingsPage({ profile, setProfile }) {
             <div style={{fontSize:13,color:T.muted,marginBottom:14}}>
               {t("settings.stripeDesc")}
             </div>
-            <Btn variant="ghost">💳 {t("settings.connectStripe")}</Btn>
+            <Btn variant="ghost">{t("settings.connectStripe")}</Btn>
             <Divider/>
             <Btn onClick={save} disabled={saving}>
               {saving ? t("common.saving") : t("settings.savePayment")}

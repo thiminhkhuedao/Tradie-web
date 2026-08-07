@@ -80,7 +80,7 @@ export default function ReferralsPage({ state, dispatch, profile }) {
               <input type="email" style={iStyle} value={form.email} onChange={e=>setForm(p=>({...p,email:e.target.value}))} placeholder="pete@plumbing.co.uk"/>
             </Field>
             <div style={{ background:T.brandLight, borderRadius:T.r.md, padding:"12px 14px", marginBottom:16, fontSize:13, color:T.brand, lineHeight:1.6 }}>
-              🎁 {t("referrals.modal.giftNote")}
+              {t("referrals.modal.giftNote")}
             </div>
             <div style={{ display:"flex", gap:10, justifyContent:"flex-end", paddingTop:12, borderTop:`1px solid ${T.border}` }}>
               <Btn variant="ghost" onClick={()=>setModal(false)}>{t("referrals.modal.cancel")}</Btn>
@@ -92,10 +92,10 @@ export default function ReferralsPage({ state, dispatch, profile }) {
 
       {/* Stats */}
       <div style={{ display:"flex", gap:12, marginBottom:20 }}>
-        <MetricCard label={t("referrals.metrics.successfulReferrals")} value={rewarded}     sub={t("referrals.metrics.totalSent", { count: referrals.length })} icon="🎁" accent/>
-        <MetricCard label={t("referrals.metrics.monthsProEarned")}    value={monthsFree}   sub={t("referrals.metrics.appliedToAccount")} icon="⚡"/>
-        <MetricCard label={t("referrals.metrics.pending")}              value={pending}      sub={t("referrals.metrics.waitingToSignUp")} icon="⏳"/>
-        <MetricCard label={t("referrals.metrics.yourReferralCode")}   value={myCode}       sub={t("referrals.metrics.shareThisLink")} icon="🔗"/>
+        <MetricCard label={t("referrals.metrics.successfulReferrals")} value={rewarded}     sub={t("referrals.metrics.totalSent", { count: referrals.length })} accent/>
+        <MetricCard label={t("referrals.metrics.monthsProEarned")}    value={monthsFree}   sub={t("referrals.metrics.appliedToAccount")} />
+        <MetricCard label={t("referrals.metrics.pending")}              value={pending}      sub={t("referrals.metrics.waitingToSignUp")} />
+        <MetricCard label={t("referrals.metrics.yourReferralCode")}   value={myCode}       sub={t("referrals.metrics.shareThisLink")} />
       </div>
 
       {/* Share your link */}
@@ -118,9 +118,9 @@ export default function ReferralsPage({ state, dispatch, profile }) {
         {/* Share methods */}
         <div style={{ display:"flex", gap:10, flexWrap:"wrap" }}>
           {[
-            { key:"whatsapp", icon:"📱", label:t("referrals.share.whatsapp"),  onClick:()=>window.open(`https://wa.me/?text=${encodeURIComponent(t("referrals.share.whatsappMessage", { url: referralUrl }))}`) },
-            { key:"facebook", icon:"📘", label:t("referrals.share.facebook"),  onClick:()=>window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(referralUrl)}`) },
-            { key:"email",    icon:"✉️", label:t("referrals.share.email"),     onClick:()=>window.open(`mailto:?subject=${encodeURIComponent(t("referrals.share.emailSubject"))}&body=${encodeURIComponent(t("referrals.share.emailBody", { url: referralUrl }))}`) },
+            { key:"whatsapp", label:t("referrals.share.whatsapp"),  onClick:()=>window.open(`https://wa.me/?text=${encodeURIComponent(t("referrals.share.whatsappMessage", { url: referralUrl }))}`) },
+            { key:"facebook", label:t("referrals.share.facebook"),  onClick:()=>window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(referralUrl)}`) },
+            { key:"email", label:t("referrals.share.email"),     onClick:()=>window.open(`mailto:?subject=${encodeURIComponent(t("referrals.share.emailSubject"))}&body=${encodeURIComponent(t("referrals.share.emailBody", { url: referralUrl }))}`) },
           ].map(b=>(
             <Btn key={b.key} variant="ghost" size="sm" onClick={b.onClick}>{b.icon} {b.label}</Btn>
           ))}
@@ -145,7 +145,7 @@ export default function ReferralsPage({ state, dispatch, profile }) {
       <Card style={{ padding:0, overflow:"hidden" }}>
         <div style={{ padding:"16px 24px 0" }}><div style={{ fontSize:15, fontWeight:700, marginBottom:12 }}>{t("referrals.table.title")}</div></div>
         {referrals.length === 0 ? (
-          <Empty icon="🎁" message={t("referrals.table.empty")}
+          <Empty message={t("referrals.table.empty")}
             action={<Btn size="sm" onClick={()=>setModal(true)}>{t("referrals.table.referFirst")}</Btn>}/>
         ) : (
           <Table headers={[

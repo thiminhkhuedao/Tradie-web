@@ -11,11 +11,6 @@ import {
   FormActions, Tabs, Empty, SectionTitle, Divider,
 } from "../components/UI";
 
-// NOTE: `t` is already used in this file as a local variable name (the
-// calculated totals object inside the line-items preview, and the loop
-// variable for LINE_TYPES options), so the i18next translate function is
-// destructured as `tr` instead of `t` to avoid shadowing/clashes.
-
 const fmt     = n => `€${Number(n||0).toLocaleString("en-GB",{minimumFractionDigits:2,maximumFractionDigits:2})}`;
 const fmtDate = d => { try { return new Date(d).toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"}); } catch { return "—"; }};
 const iStyle  = { width:"100%",padding:"10px 12px",borderRadius:T.r.md,border:`1px solid ${T.borderMed}`,fontSize:14,background:T.surface,color:T.text,boxSizing:"border-box",fontFamily:"inherit" };
@@ -36,7 +31,7 @@ function calcTotals(lineItems, vatRate=0) {
 export default function QuotesPage({ state, dispatch, profile }) {
   const { t: tr } = useTranslation();
   const [tab,     setTab]     = useState("active");
-  const [modal,   setModal]   = useState(null); // null|"add"|"edit"|"preview"|"sign"
+  const [modal,   setModal]   = useState(null); 
   const [delId,   setDelId]   = useState(null);
   const [form,    setForm]    = useState({});
   const [lines,   setLines]   = useState([]);
@@ -214,8 +209,8 @@ export default function QuotesPage({ state, dispatch, profile }) {
           <Modal title={previewQ.quote_number} onClose={()=>setModal(null)} width={580}>
             {/* Actions */}
             <div style={{ display:"flex", gap:8, marginBottom:20, flexWrap:"wrap" }}>
-              {previewQ.status==="draft" && <Btn size="sm" onClick={()=>{ markSent(previewQ.id); setModal(null); }}>📧 {tr("quotes.preview.markAsSent")}</Btn>}
-              {["draft","sent","viewed"].includes(previewQ.status) && <Btn size="sm" variant="success" onClick={()=>{ setSignName(""); setModal("sign"); }}>✍️ {tr("quotes.preview.clientSign")}</Btn>}
+              {previewQ.status==="draft" && <Btn size="sm" onClick={()=>{ markSent(previewQ.id); setModal(null); }}> {tr("quotes.preview.markAsSent")}</Btn>}
+              {["draft","sent","viewed"].includes(previewQ.status) && <Btn size="sm" variant="success" onClick={()=>{ setSignName(""); setModal("sign"); }}> {tr("quotes.preview.clientSign")}</Btn>}
               {previewQ.status==="accepted" && !previewQ.job_id && <Btn size="sm" onClick={()=>{ convertToJob(previewQ); setModal(null); }}>{tr("quotes.preview.convertToJob")}</Btn>}
             </div>
 
@@ -226,7 +221,7 @@ export default function QuotesPage({ state, dispatch, profile }) {
                   <input style={iStyle} value={signName} onChange={e=>setSignName(e.target.value)} placeholder="Sarah Mitchell" autoFocus/>
                 </Field>
                 <p style={{ fontSize:12, color:T.muted, marginBottom:10 }}>{tr("quotes.preview.signature.confirmText")}</p>
-                <Btn onClick={handleSign}>✍️ {tr("quotes.preview.signature.signBtn")}</Btn>
+                <Btn onClick={handleSign}> {tr("quotes.preview.signature.signBtn")}</Btn>
               </div>
             )}
 
@@ -315,7 +310,7 @@ export default function QuotesPage({ state, dispatch, profile }) {
 
       <Card style={{ padding:0, overflow:"hidden" }}>
         {current.length===0
-          ? <Empty icon="📋" message={tr("quotes.empty")} action={<Btn size="sm" onClick={openAdd}>{tr("quotes.createFirst")}</Btn>}/>
+          ? <Empty message={tr("quotes.empty")} action={<Btn size="sm" onClick={openAdd}>{tr("quotes.createFirst")}</Btn>}/>
           : (
             <Table headers={[
               tr("quotes.table.headers.quoteNumber"), tr("quotes.table.headers.client"), tr("quotes.table.headers.title"),
