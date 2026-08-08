@@ -1,11 +1,5 @@
 
-import Stripe from "https://esm.sh/stripe@15.0.0?target=deno";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-
-const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") ?? "", {
-  apiVersion: "2024-04-10",
-  httpClient: Stripe.createFetchHttpClient(),
-});
 
 const supabase = createClient(
   Deno.env.get("SUPABASE_URL") ?? "",
@@ -27,17 +21,57 @@ function calculateFees(grossAmount: number) {
   return { stripeFee, platformFee, netAmount };
 }
 
+
+async function verifyStripeSignature(rawBody: string, signatureHeader: string, secret: string): Promise<boolean> {
+  const parts = Object.fromEntries(
+    signatureHeader.split(",").map(part => part.split("=") as [string, string])
+  );
+  const timestamp = parts.t;
+  const expectedSig = parts.v1;
+  if (!timestamp || !expectedSig) return false;
+
+  const age = Math.abs(Date.now() / 1000 - Number(timestamp));
+  if (age > 300) {
+    console.error("Webhook timestamp too old — possible replay attempt");
+    return false;
+  }
+
+  const signedPayload = `${timestamp}.${rawBody}`;
+
+  const key = await crypto.subtle.importKey(
+    "raw",
+    new TextEncoder().encode(secret),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"],
+  );
+  const signatureBytes = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(signedPayload));
+  const computedSig = Array.from(new Uint8Array(signatureBytes))
+    .map(b => b.toString(16).padStart(2, "0"))
+    .join("");
+
+  return computedSig === expectedSig;
+}
+
 Deno.serve(async (req) => {
   const signature = req.headers.get("stripe-signature");
-  const body      = await req.text();
+  const rawBody    = await req.text();
 
-  // Verify the webhook is actually from Stripe
-  let event: Stripe.Event;
-  try {
-    event = stripe.webhooks.constructEvent(body, signature ?? "", WEBHOOK_SECRET);
-  } catch (err) {
-    console.error("Webhook signature verification failed:", err.message);
+  if (!signature) {
+    return new Response("Missing signature", { status: 400 });
+  }
+
+  const isValid = await verifyStripeSignature(rawBody, signature, WEBHOOK_SECRET);
+  if (!isValid) {
+    console.error("Webhook signature verification failed");
     return new Response("Invalid signature", { status: 400 });
+  }
+
+  let event: any;
+  try {
+    event = JSON.parse(rawBody);
+  } catch {
+    return new Response("Invalid payload", { status: 400 });
   }
 
   console.log(`[webhook] ${event.type}`);
@@ -47,10 +81,8 @@ Deno.serve(async (req) => {
 
       // ── Client paid an invoice ──────────────────────
       case "payment_intent.succeeded": {
-        const pi = event.data.object as Stripe.PaymentIntent;
+        const pi = event.data.object;
 
-        // We store invoice_id and profile_id in the payment intent metadata
-        // when creating the payment link (see create-payment-link/index.ts)
         const invoiceId = pi.metadata?.invoice_id;
         const profileId = pi.metadata?.profile_id;
 
@@ -75,7 +107,7 @@ Deno.serve(async (req) => {
           invoice_id:               invoiceId,
           client_id:                invoice?.client_id,
           stripe_payment_intent_id: pi.id,
-          stripe_charge_id:         pi.latest_charge as string,
+          stripe_charge_id:         pi.latest_charge,
           gross_amount:             grossAmount,
           stripe_fee:               stripeFee,
           platform_fee:             platformFee,
@@ -96,7 +128,6 @@ Deno.serve(async (req) => {
         await supabase.functions.invoke("send-sms", {
           body: {
             type: "invoice_paid",
-            to: null, // Will be fetched from profile by the function
             profileId,
             data: {
               invoiceNumber: invoice?.invoice_number ?? invoiceId,
@@ -106,13 +137,13 @@ Deno.serve(async (req) => {
           },
         });
 
-        console.log(`✓ Payment recorded: €${grossAmount} (platform fee: €${platformFee})`);
+        console.log(`✓ Payment recorded: £${grossAmount} (platform fee: £${platformFee})`);
         break;
       }
 
       // ── Payment failed ──────────────────────────────
       case "payment_intent.payment_failed": {
-        const pi = event.data.object as Stripe.PaymentIntent;
+        const pi = event.data.object;
         const invoiceId = pi.metadata?.invoice_id;
         if (invoiceId) {
           await supabase.from("payment_transactions")
@@ -124,8 +155,7 @@ Deno.serve(async (req) => {
 
       // ── Payout sent to tradesperson's bank ─────────
       case "payout.paid": {
-        const payout = event.data.object as Stripe.Payout;
-        // Update payout record
+        const payout = event.data.object;
         await supabase.from("payouts")
           .update({ status: "paid", arrival_date: new Date(payout.arrival_date * 1000).toISOString().slice(0, 10) })
           .eq("stripe_payout_id", payout.id);
@@ -133,7 +163,7 @@ Deno.serve(async (req) => {
       }
 
       case "payout.failed": {
-        const payout = event.data.object as Stripe.Payout;
+        const payout = event.data.object;
         await supabase.from("payouts")
           .update({ status: "failed" })
           .eq("stripe_payout_id", payout.id);
@@ -142,7 +172,7 @@ Deno.serve(async (req) => {
 
       // ── Refund issued ───────────────────────────────
       case "charge.refunded": {
-        const charge = event.data.object as Stripe.Charge;
+        const charge = event.data.object;
         await supabase.from("payment_transactions")
           .update({ status: "refunded" })
           .eq("stripe_charge_id", charge.id);

@@ -1,4 +1,4 @@
-# Tradie
+# Vimen
 
 Web app (Vite + React) for tradespeople, beauty/wellness professionals and other service providers to manage quotes, invoices, online payments, bookings and reviews in one place.
 
@@ -7,7 +7,7 @@ Web app (Vite + React) for tradespeople, beauty/wellness professionals and other
 - Vite 5 + React 18, routed with `react-router-dom`
 - Clerk — auth
 - Supabase — database + Edge Functions
-- Stripe — payments (Tradie Pay)
+- Stripe — payments (Vimen Pay)
 - Resend (email) / Twilio (SMS), called via Supabase Edge Functions
 - Custom i18n engine (`src/i18n/index.js`) — no external library. Supports `en` and `fr`. Interpolation uses `{{variable}}` only (no pluralization support — count-based strings are phrased count-agnostically, e.g. "1 review(s)")
 
@@ -16,7 +16,7 @@ Web app (Vite + React) for tradespeople, beauty/wellness professionals and other
 `/` — marketing homepage (logged-out visitors; skipped entirely in demo mode)
 `/b/:slug` — public booking page (no auth required)
 
-Once signed in: Dashboard, Jobs, Quotes, Clients, Invoices, Booking, Tradie Pay (payments), Marketplace, Reviews, Certifications, Referrals, Settings.
+Once signed in: Dashboard, Jobs, Quotes, Clients, Invoices, Booking, Vimen Pay (payments), Marketplace, Reviews, Certifications, Referrals, Settings.
 
 > Materials and Growth (revenue-model simulator) have been removed — both were either unreachable or scheduled for removal, and are not part of the app anymore.
 
@@ -62,7 +62,7 @@ supabase secrets set STRIPE_SECRET_KEY=sk_live_...
 supabase secrets set STRIPE_WEBHOOK_SECRET=whsec_...
 supabase secrets set RESEND_API_KEY=re_...
 supabase secrets set FROM_EMAIL=you@yourdomain.com
-supabase secrets set FROM_NAME="Tradie"
+supabase secrets set FROM_NAME="Vimen"
 supabase secrets set TWILIO_ACCOUNT_SID=AC...
 supabase secrets set TWILIO_AUTH_TOKEN=...
 supabase secrets set TWILIO_FROM_NUMBER=+1...

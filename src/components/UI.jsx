@@ -295,10 +295,9 @@ export function Spinner() {
 }
 
 /* ── Empty ───────────────────────────────────────── */
-export function Empty({icon="📋", message, action}) {
+export function Empty({ message, action}) {
   return (
     <div style={{textAlign:"center", padding:"52px 24px", color:T.muted}}>
-      <div style={{fontSize:36, marginBottom:12, opacity:0.5}}>{icon}</div>
       <div style={{fontSize:14, marginBottom:action?18:0}}>{message}</div>
       {action}
     </div>

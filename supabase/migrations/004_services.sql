@@ -1,5 +1,5 @@
 -- ══════════════════════════════════════════════════════
--- TRADIE — Services + booking request image support
+-- Vimen — Services + booking request image support
 -- Paste into: Supabase Dashboard → SQL Editor → Run
 -- Depends on 001_schema.sql and 003_payments.sql already applied.
 -- ══════════════════════════════════════════════════════

@@ -293,10 +293,10 @@ export default function BookingPage({ profile }) {
  <SectionTitle>{t("booking.urlSectionTitle")}</SectionTitle>
  <div style={{display:"flex",gap:8,marginBottom:20}}>
  <div style={{...iStyle,background:T.surface2,color:T.muted,flex:1,padding:"10px 12px"}}>
- https://tradie.app/b/{profile?.booking_slug}
+ https://Vimen.app/b/{profile?.booking_slug}
  </div>
  <Btn variant="ghost" onClick={() => {
- const url = `https://tradie.app/b/${profile?.booking_slug}`;
+ const url = `https://Vimen.app/b/${profile?.booking_slug}`;
  if (navigator.clipboard) {
  navigator.clipboard.writeText(url).then(()=>toast.success(t("booking.linkCopied")));
  } else {

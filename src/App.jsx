@@ -181,7 +181,7 @@ function AuthPage({ onAuth, initialMode = "login", initialProfession = "Electric
         {/* Left brand panel */}
         <div style={{ flex:1, background:"#0F0E0D", padding:"52px 48px", display:"flex", flexDirection:"column", justifyContent:"space-between" }}>
           <div>
-            <div style={{ fontSize:22, fontWeight:900, color:T.brand, marginBottom:48, letterSpacing:-0.5 }}>⚡ Tradie</div>
+            <div style={{ fontSize:22, fontWeight:900, color:T.brand, marginBottom:48, letterSpacing:-0.5 }}>⚡ Vimen</div>
             <h2 style={{ fontSize:34, fontWeight:900, color:"#fff", letterSpacing:-1.5, lineHeight:1.15, marginBottom:16 }}>
               Booking and<br/>billing for<br/><span style={{ color:T.brand }}>every profession</span>
             </h2>
@@ -190,7 +190,7 @@ function AuthPage({ onAuth, initialMode = "login", initialProfession = "Electric
             </p>
           </div>
           <div style={{ display:"flex", flexDirection:"column", gap:14 }}>
-            {[["📅",`${vertical.terms.bookingPlural} clients book themselves`],["🧾","Invoice and get paid"],["💳","Tradie Pay"],[vertical.icon, `Built for ${vertical.label.toLowerCase()}`],["⭐","Automatic review requests"]].map(([icon,text]) => (
+            {[["📅",`${vertical.terms.bookingPlural} clients book themselves`],["🧾","Invoice and get paid"],["💳","Vimen Pay"],[vertical.icon, `Built for ${vertical.label.toLowerCase()}`],["⭐","Automatic review requests"]].map(([icon,text]) => (
               <div key={text} style={{ display:"flex", alignItems:"center", gap:12, fontSize:14, color:"rgba(255,255,255,0.55)" }}>
                 <span style={{ fontSize:18 }}>{icon}</span>{text}
               </div>
@@ -203,7 +203,7 @@ function AuthPage({ onAuth, initialMode = "login", initialProfession = "Electric
             {mode === "login" ? "Welcome back" : "Create account"}
           </h3>
           <p style={{ fontSize:14, color:T.muted, marginBottom:28 }}>
-            {mode === "login" ? "Sign in to your Tradie account" : "Start for free — no card needed"}
+            {mode === "login" ? "Sign in to your Vimen account" : "Start for free — no card needed"}
           </p>
           <form onSubmit={submit} style={{ display:"flex", flexDirection:"column", gap:14 }}>
             {mode === "signup" && (

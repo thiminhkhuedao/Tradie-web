@@ -55,7 +55,7 @@ export default function Sidebar({ page, setPage, profile, onSignOut, pendingBook
     }}>
       {/* Logo */}
       <div style={{ padding:"18px 20px 14px", borderBottom:`1px solid ${T.border}`, flexShrink:0 }}>
-        <div style={{ fontSize:20, fontWeight:900, color:T.brand, letterSpacing:-0.5 }}> Tradie</div>
+        <div style={{ fontSize:20, fontWeight:900, color:T.brand, letterSpacing:-0.5 }}> Vimen</div>
         <div style={{ fontSize:11, color:T.muted, marginTop:2 }}>
           {profile?.trade
             ? `${getVerticalForProfession(profile.trade).icon} ${profile.trade}`

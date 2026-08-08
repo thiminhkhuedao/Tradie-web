@@ -65,7 +65,7 @@ Deno.serve(async (req) => {
 <body>
 <div class="wrap">
   <div class="top">
-    <div class="logo">⚡ Tradie</div>
+    <div class="logo">⚡ Vimen</div>
   </div>
   <div class="body">
     <p style="font-size:15px;margin-bottom:24px">Hi ${clientName},</p>
@@ -119,15 +119,15 @@ Deno.serve(async (req) => {
     ${invoiceNotes ? `<p style="font-size:13px;color:#888;line-height:1.6">${invoiceNotes}</p>` : ""}
   </div>
   <div class="footer">
-    Sent via <a href="https://tradie.app">Tradie</a>
+    Sent via <a href="https://Vimen.app">Vimen</a>
   </div>
 </div>
 </body>
 </html>`;
 
     const RESEND_KEY = Deno.env.get("RESEND_API_KEY") ?? "";
-    const FROM_EMAIL = Deno.env.get("FROM_EMAIL") ?? "invoices@tradie.app";
-    const FROM_NAME  = Deno.env.get("FROM_NAME")  ?? "Tradie";
+    const FROM_EMAIL = Deno.env.get("FROM_EMAIL") ?? "invoices@Vimen.app";
+    const FROM_NAME  = Deno.env.get("FROM_NAME")  ?? "Vimen";
 
     const res = await fetch("https://api.resend.com/emails", {
       method:  "POST",

@@ -10,7 +10,7 @@ export const isSupabaseConfigured = Boolean(url && key);
 if (!isSupabaseConfigured) {
   // IMPORTANT: never throw here. 
   console.warn(
-    "[Tradie] Supabase env vars are missing (VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY).\n" +
+    "[Vimen] Supabase env vars are missing (VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY).\n" +
     "Running without a real backend: every Supabase call will resolve with an empty/error result " +
     "instead of throwing. Copy .env.example → .env.local and fill in your Supabase project keys " +
     "to enable real data, auth persistence and payments."

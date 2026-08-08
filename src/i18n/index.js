@@ -19,7 +19,7 @@ function detectLanguage() {
   try {
     // Web: check localStorage
     if (typeof localStorage !== "undefined") {
-      const stored = localStorage.getItem("tradie_language");
+      const stored = localStorage.getItem("Vimen_language");
       if (stored && SUPPORTED.includes(stored)) return stored;
     }
     // Browser locale detection
@@ -52,7 +52,7 @@ export function setLanguage(lang) {
   _current = lang;
   try {
     if (typeof localStorage !== "undefined") {
-      localStorage.setItem("tradie_language", lang);
+      localStorage.setItem("Vimen_language", lang);
     }
   } catch { /* SSR or storage blocked */ }
 }

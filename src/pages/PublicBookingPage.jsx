@@ -407,7 +407,7 @@ export default function PublicBookingPage() {
       {/* Nav */}
       <div style={{ background:C.surface, borderBottom:`1px solid ${C.border}` }}>
         <div style={{ maxWidth:720, margin:"0 auto", height:56, padding:"0 20px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
-          <a href="/" style={{ fontSize:15, fontWeight:900, color:C.brand, textDecoration:"none" }}>⚡ Tradie</a>
+          <a href="/" style={{ fontSize:15, fontWeight:900, color:C.brand, textDecoration:"none" }}>⚡ Vimen</a>
           <span style={{ fontSize:13, color:C.muted }}>{profile.name}</span>
         </div>
       </div>

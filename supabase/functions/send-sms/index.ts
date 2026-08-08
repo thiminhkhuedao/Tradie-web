@@ -75,14 +75,14 @@ Deno.serve(async (req) => {
       case "invoice_paid":
         // to = tradesperson phone
         message =
-          `💷 Tradie: Invoice ${data.invoiceNumber} for €${data.amount} ` +
+          `💷 Vimen: Invoice ${data.invoiceNumber} for €${data.amount} ` +
           `has been paid by ${data.clientName}. Nice one!`;
         break;
 
       case "new_booking":
         // to = tradesperson phone
         message =
-          `🔔 Tradie: New booking request from ${data.customerName}` +
+          `🔔 Vimen: New booking request from ${data.customerName}` +
           `${data.preferredDate ? ` for ${data.preferredDate}` : ""}. ` +
           `Log in to accept or decline.`;
         break;
@@ -90,7 +90,7 @@ Deno.serve(async (req) => {
       case "overdue_invoice":
         // to = tradesperson phone
         message =
-          `⚠️ Tradie: Invoice ${data.invoiceNumber} (€${data.amount}) ` +
+          `⚠️ Vimen: Invoice ${data.invoiceNumber} (€${data.amount}) ` +
           `for ${data.clientName} is now overdue. Consider following up.`;
         break;
 

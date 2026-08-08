@@ -1,11 +1,11 @@
 -- ══════════════════════════════════════════════════════
--- TRADIE PAY — Payments Layer Schema
+-- Vimen PAY — Payments Layer Schema
 -- Run in Supabase SQL Editor AFTER 001_schema.sql
 -- This is the revenue engine: 2% on every invoice paid
 -- ══════════════════════════════════════════════════════
 
 -- ── PAYMENT TRANSACTIONS ─────────────────────────────
--- Every payment processed through Tradie Pay
+-- Every payment processed through Vimen Pay
 create table if not exists payment_transactions (
   id                    uuid primary key default uuid_generate_v4(),
   profile_id            uuid not null references profiles(id) on delete cascade,
@@ -20,7 +20,7 @@ create table if not exists payment_transactions (
   -- Money (all in pence internally, displayed as pounds)
   gross_amount          numeric(12,2) not null,   -- what client paid, e.g. 550.00
   stripe_fee            numeric(12,2) not null,   -- Stripe's cut, e.g. 7.90 (1.4% + 20p)
-  platform_fee          numeric(12,2) not null,   -- Tradie's 2%, e.g. 11.00
+  platform_fee          numeric(12,2) not null,   -- Vimen's 2%, e.g. 11.00
   net_amount            numeric(12,2) not null,   -- what tradesperson receives
 
   -- Status
@@ -46,7 +46,7 @@ create index if not exists pt_status_idx   on payment_transactions(status);
 create index if not exists pt_paid_at_idx  on payment_transactions(paid_at);
 
 -- ── PAYOUTS ───────────────────────────────────────────
--- When Tradie sends accumulated earnings to the tradesperson's bank
+-- When Vimen sends accumulated earnings to the tradesperson's bank
 create table if not exists payouts (
   id                    uuid primary key default uuid_generate_v4(),
   profile_id            uuid not null references profiles(id) on delete cascade,
@@ -95,14 +95,14 @@ alter table payouts              enable row level security;
 create policy "pt_own"     on payment_transactions for all using (profile_id = my_profile_id());
 create policy "po_own"     on payouts              for all using (profile_id = my_profile_id());
 
--- ── HELPER: calculate Tradie Pay fees ─────────────────
+-- ── HELPER: calculate Vimen Pay fees ─────────────────
 -- gross_amount in pounds → returns {stripe_fee, platform_fee, net_amount}
 create or replace function calculate_fees(gross_amount numeric)
 returns table(stripe_fee numeric, platform_fee numeric, net_amount numeric)
 language sql immutable as $$
   select
     round(gross_amount * 0.014 + 0.20, 2)  as stripe_fee,      -- 1.4% + 20p (UK Stripe rate)
-    round(gross_amount * 0.020, 2)          as platform_fee,    -- Tradie's 2%
+    round(gross_amount * 0.020, 2)          as platform_fee,    -- Vimen's 2%
     round(gross_amount - (gross_amount * 0.014 + 0.20) - (gross_amount * 0.020), 2) as net_amount
 $$;
 
@@ -162,7 +162,7 @@ create table if not exists materials_orders (
   -- Items: [{ name, sku, quantity, unit_price, total }]
   items          jsonb not null default '[]',
   subtotal       numeric(12,2) default 0,
-  platform_margin numeric(12,2) default 0,  -- 5-12% Tradie margin
+  platform_margin numeric(12,2) default 0,  -- 5-12% Vimen margin
   total          numeric(12,2) default 0,
   status         text not null default 'pending',
   -- pending | confirmed | shipped | delivered | cancelled

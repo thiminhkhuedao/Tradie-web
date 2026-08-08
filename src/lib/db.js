@@ -325,7 +325,7 @@ export const incrementViews = (listingId) =>
   supabase.rpc("increment_listing_views", { listing_id: listingId });
 
 /* ══════════════════════════════════════════════════
-   TRADIE PAY — Payment Transactions & Payouts
+   Vimen PAY — Payment Transactions & Payouts
 ══════════════════════════════════════════════════ */
 
 export const getTransactions = (profileId, filters = {}) => {

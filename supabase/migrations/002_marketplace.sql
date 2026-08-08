@@ -1,5 +1,5 @@
 -- ══════════════════════════════════════════════════════
--- TRADIE MARKETPLACE — Schema Extension
+-- Vimen MARKETPLACE — Schema Extension
 -- Paste this into Supabase SQL Editor AFTER 001_schema.sql
 -- ══════════════════════════════════════════════════════
 

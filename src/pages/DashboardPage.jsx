@@ -115,13 +115,13 @@ export default function DashboardPage({ profile, setPage, state, dispatch, toast
  <div>
  <div style={{fontWeight:700,color:"#020202",fontSize:15}}>{t("dashboard.bookingPageLive")}</div>
  <div style={{fontSize:13,color:"rgba(0, 0, 0, 0.45)",marginTop:3}}>
- tradie.app/b/{profile?.booking_slug||profile?.bookingSlug}
+ Vimen.app/b/{profile?.booking_slug||profile?.bookingSlug}
  </div>
  </div>
  <div style={{display:"flex",gap:10}}>
  <Btn variant="ghost" size="sm" style={{color:"#000000",borderColor:"rgba(0, 0, 0, 0.2)"}}
  onClick={async ()=>{
- const ok = await copyToClipboard(`https://tradie.app/b/${profile?.booking_slug||profile?.bookingSlug}`);
+ const ok = await copyToClipboard(`https://Vimen.app/b/${profile?.booking_slug||profile?.bookingSlug}`);
  if (toast) toast(ok ? t("dashboard.linkCopied") : t("dashboard.copyFailedManual"), ok ? "success" : "error");
  }}>
  {t("dashboard.copyLink")}

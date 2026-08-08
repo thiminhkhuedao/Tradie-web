@@ -1,5 +1,5 @@
 -- ══════════════════════════════════════════════════════
--- TRADIE — Supabase Schema
+-- Vimen — Supabase Schema
 -- Paste into: Supabase Dashboard → SQL Editor → Run
 -- ══════════════════════════════════════════════════════
 

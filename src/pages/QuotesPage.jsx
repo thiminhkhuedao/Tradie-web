@@ -229,7 +229,7 @@ export default function QuotesPage({ state, dispatch, profile }) {
             <div style={{ border:`1px solid ${T.border}`, borderRadius:T.r.lg, padding:24 }}>
               <div style={{ display:"flex", justifyContent:"space-between", marginBottom:20 }}>
                 <div>
-                  <div style={{ fontSize:24, fontWeight:900, color:T.brand, letterSpacing:-1 }}>TRADIE</div>
+                  <div style={{ fontSize:24, fontWeight:900, color:T.brand, letterSpacing:-1 }}>Vimen</div>
                   <div style={{ fontSize:13, color:T.muted }}>{profile?.name} · {profile?.trade}</div>
                   <div style={{ fontSize:12, color:T.muted }}>{profile?.email}</div>
                 </div>

@@ -33,7 +33,7 @@ function NavBar({ onSignIn, onSignUp, t, lang, setLanguage, languages }) {
     <nav style={{ position:"sticky", top:0, zIndex:50, background:"rgba(255,255,255,0.92)", backdropFilter:"blur(12px)", borderBottom:`1px solid ${T.border}` }}>
       <div style={{ ...S.wrap, display:"flex", alignItems:"center", justifyContent:"space-between", height:68 }}>
         <div style={{ fontFamily:"'Archivo Black',sans-serif", fontSize:19, letterSpacing:-0.5, display:"flex", alignItems:"center", gap:8 }}>
-          <Bolt/>TRADIE
+          <Bolt/>Vimen
         </div>
         <div style={{ display:"flex", gap:16, alignItems:"center" }}>
           <LangSwitch lang={lang} setLanguage={setLanguage} languages={languages}/>
@@ -138,7 +138,7 @@ export default function HomePage({ onSignIn, onSignUp }) {
     [t("home.footer.trades"), "/?vertical=trades&signup=1"],
     [t("home.footer.beauty"), "/?vertical=beauty&signup=1"],
     [t("home.footer.professional"), "/?vertical=professional&signup=1"],
-    [t("home.footer.contact"), "mailto:hello@tradie.app"],
+    [t("home.footer.contact"), "mailto:hello@Vimen.app"],
   ];
 
   return (
@@ -293,7 +293,7 @@ export default function HomePage({ onSignIn, onSignUp }) {
       {/* FOOTER */}
       <footer style={{ borderTop:`1px solid ${T.border}`, padding:"48px 0" }}>
         <div style={{ ...S.wrap, display:"flex", justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:20 }}>
-          <div style={{ fontFamily:"'Archivo Black',sans-serif", fontSize:17, display:"flex", alignItems:"center", gap:8 }}><Bolt/>TRADIE</div>
+          <div style={{ fontFamily:"'Archivo Black',sans-serif", fontSize:17, display:"flex", alignItems:"center", gap:8 }}><Bolt/>Vimen</div>
           <div style={{ display:"flex", gap:24 }}>
             {FOOTER_LINKS.map(([label,href]) => (
               <a key={label} href={href} style={{ fontSize:13, color:T.hint, fontWeight:600, textDecoration:"none" }}>{label}</a>

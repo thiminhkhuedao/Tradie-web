@@ -43,7 +43,7 @@ export default {
   auth: {
     welcomeBack:       "Welcome back",
     createAccount:     "Create account",
-    signInSub:         "Sign in to your Tradie account",
+    signInSub:         "Sign in to your Vimen account",
     signUpSub:         "Start for free, no card needed",
     email:             "Email address",
     password:          "Password",
@@ -65,7 +65,7 @@ export default {
     heroSub:           "Trades, beauty & wellness, or professional services — quotes, appointments, invoices and payments, all in one place.",
     feature1:          "{{bookingPlural}} clients book themselves",
     feature2:          "Invoice and get paid",
-    feature3:          "Tradie Pay — 2% flat",
+    feature3:          "Vimen Pay — 2% flat",
     feature4:          "Built for {{vertical}}",
     feature5:          "Automatic review requests",
   },
@@ -78,7 +78,7 @@ export default {
     clients:        "Clients",
     invoices:       "Invoices",
     booking:        "Booking",
-    payments:       "Tradie Pay",
+    payments:       "Vimen Pay",
     marketplace:    "Marketplace",
     reviews:        "Reviews",
     referrals:      "Referrals",
@@ -583,9 +583,9 @@ export default {
     feeTitle:       "Fee breakdown — example £550 invoice",
     invoiceAmount:  "Invoice amount",
     stripeFee:      "Stripe fee (1.4%+20p)",
-    tradieFee:      "Tradie Pay (2%)",
+    VimenFee:      "Vimen Pay (2%)",
     youReceive:     "You receive",
-    connected:      "✓ Tradie Pay active",
+    connected:      "✓ Vimen Pay active",
     autoPayouts:    "Automatic payouts",
     autoPayoutsSub: "Earnings are automatically paid out every 2 business days to your connected bank account.",
     noPayouts:      "No payouts yet",
@@ -594,7 +594,7 @@ export default {
     openStripe:     "Open Stripe Dashboard",
     feeStructure:   "Fee structure",
     
-  title: "Tradie Pay",
+  title: "Vimen Pay",
 
   tabs: {
     overview: "Overview",
@@ -620,7 +620,7 @@ export default {
     notConnectedTitle: "Connect your Stripe account to accept payments",
     notConnectedDesc: "Clients can't pay invoices online until you connect Stripe.",
     connectStripeBtn: "Connect Stripe",
-    connectedBanner: "Tradie Pay active — clients can pay invoices online instantly",
+    connectedBanner: "Vimen Pay active — clients can pay invoices online instantly",
     viewAll: "View all →",
     recentPayments: "Recent payments",
     emptyPayments: "No payments yet — send invoices with payment links",
@@ -642,18 +642,18 @@ export default {
   },
 
   feeInfo: {
-    title: "How Tradie Pay fees work",
+    title: "How Vimen Pay fees work",
     intro: "When a client pays an invoice online, two fees are deducted before the money reaches your account:",
     stripeLabel: "Stripe (1.4% + 20p)",
     stripeDesc: "— the card processing fee, standard UK rate.",
-    tradieLabel: "Tradie Pay (2%)",
-    tradieDesc: "— what keeps the app running and improving.",
+    VimenLabel: "Vimen Pay (2%)",
+    VimenDesc: "— what keeps the app running and improving.",
   },
 
   feeBreakdown: {
     invoiceAmount: "Invoice amount",
     stripeFeeLine: "Stripe fee (1.4% + 20p)",
-    platformFeeLine: "Tradie Pay fee (2%)",
+    platformFeeLine: "Vimen Pay fee (2%)",
     youReceive: "You receive",
   },
 
@@ -661,13 +661,13 @@ export default {
     title: "Your earning potential",
     rowLabel: "If you process {{amount}}/yr",
     netSuffix: "net",
-    footnote: "Net after Stripe (1.4%+20p) and Tradie Pay (2%) fees.",
+    footnote: "Net after Stripe (1.4%+20p) and Vimen Pay (2%) fees.",
   },
 
   transactions: {
     grossVolume: "Gross volume",
     stripeFeesPaid: "Stripe fees paid",
-    tradiePayFees: "Tradie Pay fees",
+    VimenPayFees: "Vimen Pay fees",
     netToYou: "Net to you",
     empty: "No transactions yet",
   },
@@ -678,7 +678,7 @@ export default {
     description: "Description",
     gross: "Gross",
     stripeFee: "Stripe fee",
-    tradieFee: "Tradie fee",
+    VimenFee: "Vimen fee",
     youReceive: "You receive",
     status: "Status",
     dateInitiated: "Date initiated",
@@ -699,7 +699,7 @@ export default {
 
   payoutSchedule: {
     title: "Automatic payouts",
-    description: "Tradie Pay pays out your earnings automatically every 2 business days to your connected bank account. Payments processed before 5pm arrive 2 working days later. Bank account ending in",
+    description: "Vimen Pay pays out your earnings automatically every 2 business days to your connected bank account. Payments processed before 5pm arrive 2 working days later. Bank account ending in",
   },
 
   connect: {
@@ -715,7 +715,7 @@ export default {
   },
 
   howItWorks: {
-    title: "How Tradie Pay works",
+    title: "How Vimen Pay works",
     step1: { title: "You create an invoice", desc: "As normal — for any job you've completed." },
     step2: { title: "Add a payment link", desc: "Click 'Create payment link' on any invoice. Takes 2 seconds." },
     step3: { title: "Client pays online", desc: "They click the link, enter their card, done. Works on any device." },
@@ -726,10 +726,10 @@ export default {
     title: "Fee breakdown",
     rows: {
       stripe: { label: "Stripe processing", fee: "1.4% + 20p", note: "Standard UK card rate" },
-      tradiePay: { label: "Tradie Pay", fee: "2.0%", note: "Keeps the platform running" },
+      VimenPay: { label: "Vimen Pay", fee: "2.0%", note: "Keeps the platform running" },
       total: { label: "Total deducted", fee: "~3.4%", note: "On a £500 invoice = £17 in fees" },
     },
-    bankTransferNote: "Invoice paid by bank transfer? No fees at all — only card payments go through Tradie Pay.",
+    bankTransferNote: "Invoice paid by bank transfer? No fees at all — only card payments go through Vimen Pay.",
   },
   },
 
@@ -1100,7 +1100,7 @@ export default {
     reward:       "+{{months}}mo Pro",
     sending:      "Sending…",
     sendCta:      "Send referral invite",
-    linkSub:      "Share this with any tradesperson you know. When they complete their first job on Tradie, you both get {{months}} months Pro free.",
+    linkSub:      "Share this with any tradesperson you know. When they complete their first job on Vimen, you both get {{months}} months Pro free.",
     status: {
       pending:   "Pending",
       signed_up: "Signed up",
@@ -1113,10 +1113,10 @@ export default {
 
   modal: {
     title: "Refer a tradesperson",
-    intro: "Know another electrician, plumber, or builder who'd benefit from Tradie? When they sign up and complete their first job, you both get 2 months Pro free.",
+    intro: "Know someone who'd benefit from Vimen? Share your link. When they're active on the platform, we'll reach out to apply a reward to both accounts.",
     theirNameLabel: "Their name (optional)",
     theirEmailLabel: "Their email *",
-    giftNote: "They'll get a personal invite from you with your referral link. When they activate their account, you both get 2 months Pro free.",
+    giftNote: "They'll receive a personal invite. Once they're active on Vimen, we'll contact both accounts to apply the reward.",
     cancel: "Cancel",
     send: "Send referral",
   },
@@ -1150,17 +1150,17 @@ export default {
     whatsapp: "WhatsApp",
     facebook: "Facebook",
     email: "Email",
-    whatsappMessage: "I've been using Tradie to manage my trade business — it's brilliant for invoicing and getting paid. Sign up free here: {{url}}",
-    emailSubject: "Try Tradie — free business app for tradespeople",
-    emailBody: "Hi, I've been using Tradie to run my trade business and thought you'd find it useful. Sign up free here: {{url}}",
+    whatsappMessage: "I've been using Vimen to manage my trade business — it's brilliant for invoicing and getting paid. Sign up free here: {{url}}",
+    emailSubject: "Try Vimen — free business app for tradespeople",
+    emailBody: "Hi, I've been using Vimen to run my trade business and thought you'd find it useful. Sign up free here: {{url}}",
   },
 
   howItWorks: {
     title: "How it works",
     step1: { title: "Share your link", desc: "Send your referral link to any tradesperson you know." },
     step2: { title: "They sign up", desc: "They create a free account using your link." },
-    step3: { title: "They complete a job", desc: "After their first completed job on Tradie, the referral qualifies." },
-    step4: { title: "You both get 2 months Pro free", desc: "Applied to both accounts automatically. No limits on how many people you refer." },
+    step3: { title: "They start using Vimen", desc: "Once they're active on the platform, the referral is counted." },
+    step4: { title: "Reward for both", desc: "We reach out to apply the reward to both accounts. No limit on referrals." },
   },
 
   statusDesc: {
@@ -1375,8 +1375,8 @@ professions: {
 
 publicBooking: {
   loading: "Loading…",
-  brand: "Tradie",
-  poweredBy: "Powered by Tradie",
+  brand: "Vimen",
+  poweredBy: "Powered by Vimen",
   perHour: "/hr",
 
   notFound: {
@@ -1518,16 +1518,16 @@ home: {
     title: "Three steps, every profession.",
     step1: { num: "01 — BOOK", title: "Clients book themselves", desc: "Share one link. Clients pick a slot, leave their details, and get a confirmation — no back-and-forth, no missed calls, no DMs at midnight." },
     step2: { num: "02 — DO THE WORK", title: "Quote, manage, complete", desc: "Create quotes on site, convert them to jobs, track progress, and mark work complete — all from the same place." },
-    step3: { num: "03 — GET PAID", title: "Invoice, then get paid", desc: "Send a payment link the moment the job's done. Money lands in your account via Tradie Pay — 2% flat, no surprises." },
+    step3: { num: "03 — GET PAID", title: "Invoice, then get paid", desc: "Send a payment link the moment the job's done. Money lands in your account via Vimen Pay — 2% flat, no surprises." },
   },
   pricing: {
     titleLine1: "Free to start.",
     titleLine2: "Pay when you get paid.",
-    sub: "No subscription required to invoice and receive payments. Tradie Pay is 2% flat — only on the invoices you actually send.",
+    sub: "No subscription required to invoice and receive payments. Vimen Pay is 2% flat — only on the invoices you actually send.",
     cta: "Start free",
     perMonth: "/mo",
     plans: {
-      free: { name: "Free", sub: "+ 2% on Tradie Pay" },
+      free: { name: "Free", sub: "+ 2% on Vimen Pay" },
       pro:  { name: "Pro",  sub: "Most chosen · Free trial" },
       team: { name: "Team", sub: "Up to 5 members" },
     },
@@ -1546,7 +1546,7 @@ home: {
     beauty: "Beauty",
     professional: "Professional",
     contact: "Contact",
-    copyright: "© 2026 Tradie. Booking and billing for every profession.",
+    copyright: "© 2026 Vimen. Booking and billing for every profession.",
   },
 },
 

@@ -1,4 +1,4 @@
-# ⚡ Tradie — Fix blank screen + deploy to Google
+# ⚡ Vimen — Fix blank screen + deploy to Google
 
 ---
 
@@ -20,7 +20,7 @@ when `VITE_CLERK_PUBLISHABLE_KEY` was missing from your `.env.local`.
 ## ── STEP 1: Get it running right now ───────────────────────────────
 
 ```powershell
-# Open PowerShell in the tradie-full folder
+# Open PowerShell in the Vimen-full folder
 # (the folder that has package.json in it)
 
 npm install
@@ -34,7 +34,7 @@ Enter **any email and any password** → you're in. All data is demo data.
 
 ## ── STEP 2: Add real services one at a time ────────────────────────
 
-Create `.env.local` in the root of `tradie-full/` (same folder as `package.json`):
+Create `.env.local` in the root of `Vimen-full/` (same folder as `package.json`):
 
 ```
 # Start with this — leave the others empty for now
@@ -72,21 +72,21 @@ npm run dev
 
 ## ── STEP 3: Deploy to Vercel (free) ────────────────────────────────
 
-Vercel is the easiest host. Your app gets a URL like `https://tradie.vercel.app`.
+Vercel is the easiest host. Your app gets a URL like `https://Vimen.vercel.app`.
 This is NOT Google — it's better for web apps.
 
 ```powershell
 # Install Vercel CLI
 npm install -g vercel
 
-# Deploy (run from inside tradie-full/)
+# Deploy (run from inside Vimen-full/)
 vercel
 
 # Answer the prompts:
 #  Set up and deploy? → Y
 #  Which scope? → your account
 #  Link to existing project? → N
-#  Project name? → tradie-app
+#  Project name? → Vimen-app
 #  Directory? → ./   (just press Enter)
 #  Override build settings? → N
 ```
@@ -123,7 +123,7 @@ Vercel → your project → **Settings → Domains** → Buy domain
 2. Vercel shows you DNS records to add
 3. Go to your domain registrar (GoDaddy, Namecheap, etc.)
 4. Add the DNS records Vercel shows you
-5. Wait 10–30 minutes → your domain points to Tradie
+5. Wait 10–30 minutes → your domain points to Vimen
 
 ### Option C — Google Domains → Squarespace Domains
 Google Domains was acquired by Squarespace.
@@ -142,7 +142,7 @@ Then add the Vercel DNS records the same way.
 3. **Submit sitemap** → in Search Console → Sitemaps → enter your URL + `/sitemap.xml`
 4. Google crawls and indexes your site within a few days
 
-Note: The Tradie web app is a **dashboard** (requires login), so only the
+Note: The Vimen web app is a **dashboard** (requires login), so only the
 landing page (`index.html` from the website folder) will appear in Google results.
 The dashboard behind login won't be indexed — that's correct and expected.
 
@@ -153,7 +153,7 @@ The dashboard behind login won't be indexed — that's correct and expected.
 | Error | Fix |
 |---|---|
 | Blank white screen | Open F12 → Console → read the error. Usually a missing `.env.local` key |
-| `cd tradie-full` not found | You're already inside it. Just run `npm run dev` |
+| `cd Vimen-full` not found | You're already inside it. Just run `npm run dev` |
 | `Cannot find module '@clerk/clerk-react'` | Run `npm install` first |
 | `Missing Supabase env vars` | Add `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` to `.env.local` |
 | Vercel build fails | Check that all `VITE_` env vars are set in Vercel dashboard |
@@ -164,7 +164,7 @@ The dashboard behind login won't be indexed — that's correct and expected.
 ## ── Folder structure reminder ───────────────────────────────────────
 
 ```
-tradie-full/               ← open THIS folder in VS Code / PowerShell
+Vimen-full/               ← open THIS folder in VS Code / PowerShell
 ├── .env.local             ← CREATE THIS (copy from .env.example)
 ├── package.json
 ├── vite.config.js

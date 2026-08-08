@@ -1,4 +1,4 @@
-# ⚡ Tradie — Fix Blank Screen + Get on Google + Maps
+# ⚡ Vimen — Fix Blank Screen + Get on Google + Maps
 
 ---
 
@@ -8,7 +8,7 @@ The blank screen was caused by one missing file: `src/lib/state.jsx`.
 It has been created. Here's what to do now:
 
 ```
-tradie-full/
+Vimen-full/
   src/
     lib/
       state.jsx     ← THIS WAS MISSING, now created ✓
@@ -19,7 +19,7 @@ tradie-full/
 ```powershell
 # 1. Make sure you're in the RIGHT folder
 #    (you may already be there)
-cd C:\Projects\tradie-full
+cd C:\Projects\Vimen-full
 
 # 2. Confirm you're in the right place
 dir src    # should show: pages, components, lib, etc.
@@ -58,20 +58,20 @@ Vercel is free and takes 3 minutes.
 # Step 1 — Push code to GitHub
 git init
 git add .
-git commit -m "Initial Tradie app"
+git commit -m "Initial Vimen app"
 
 # Create a GitHub repo at https://github.com/new
 # Then connect it:
-git remote add origin https://github.com/YOURUSERNAME/tradie-full.git
+git remote add origin https://github.com/YOURUSERNAME/Vimen-full.git
 git push -u origin main
 ```
 
 Then:
 1. Go to **https://vercel.com** → sign up with your GitHub account
-2. Click **"Add New Project"** → import your `tradie-full` repo
+2. Click **"Add New Project"** → import your `Vimen-full` repo
 3. Framework: **Vite** (auto-detected)
 4. Click **Deploy** — done in ~60 seconds
-5. You get a free URL like `tradie-full.vercel.app`
+5. You get a free URL like `Vimen-full.vercel.app`
 
 ### Add environment variables in Vercel:
 Go to your project → **Settings → Environment Variables** → add:
@@ -152,7 +152,7 @@ fill in their profile completely in Settings.
 
 ## PART 4 — Get on Google Maps & navigation platforms
 
-This is for YOUR BUSINESS (Tradie the company), not your customers.
+This is for YOUR BUSINESS (Vimen the company), not your customers.
 Each tradesperson registers their own business separately.
 
 ### Google Maps — Google Business Profile
@@ -163,7 +163,7 @@ It's completely free.
 1. Go to **https://business.google.com**
 2. Click "Manage now" → "Add your business"
 3. Fill in:
-   - **Business name:** Tradie
+   - **Business name:** Vimen
    - **Category:** Software Company (or "Application developer")
    - **Website:** yourdomain.com
    - **Phone:** your contact number
@@ -173,7 +173,7 @@ It's completely free.
 
 **For tradesperson users:** Tell them to create their own Google Business Profile
 at business.google.com so their plumbing/electrical firm appears on Maps too.
-This is separate from the Tradie app.
+This is separate from the Vimen app.
 
 ### Apple Maps — Apple Business Connect
 
