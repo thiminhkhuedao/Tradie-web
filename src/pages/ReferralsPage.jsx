@@ -30,7 +30,7 @@ export default function ReferralsPage({ state, dispatch, profile }) {
 
  // Generate a stable personal referral link for sharing
  const myCode = `TRD-${(profile?.name||"USER").replace(/\s/g,"").slice(0,4).toUpperCase()}${profile?.id?.slice(0,4)?.toUpperCase()||"0000"}`;
- const referralUrl = `https://Vimen.app/signup?ref=${myCode}`;
+ const referralUrl = `https://tradie.app/signup?ref=${myCode}`;
 
  async function copyLink() {
  const ok = await copyToClipboard(referralUrl);
@@ -43,23 +43,79 @@ export default function ReferralsPage({ state, dispatch, profile }) {
  }
  }
 
- function sendReferral(e) {
- e.preventDefault();
- if (!form.email) { toast.error(t("referrals.toast.emailRequired")); return; }
- const code = `TRD-${Math.random().toString(36).slice(2,8).toUpperCase()}`;
- dispatch({ type:"ADD_REFERRAL", payload:{
- id:uid(), referrer_id:profile?.id,
- referral_code: code,
- referred_email: form.email,
- referred_name: form.name,
- status:"pending",
- reward_months:2,
- rewarded_at:null,
- created_at:new Date().toISOString(),
- }});
- toast.success(t("referrals.toast.referralSent", { email: form.email }));
- setForm({ name:"", email:"" });
- setModal(false);
+ async function sendReferral(e) {
+   e.preventDefault();
+   if (!form.email) { toast.error(t("referrals.toast.emailRequired")); return; }
+   const tid = toast.loading("Sending invite...");
+   const code = `TRD-${Math.random().toString(36).slice(2,8).toUpperCase()}`;
+   const referralUrl = `https://tradie.app/signup?ref=${code}`;
+
+   // 1. Insert into Supabase
+   const { data, error } = await supabase.from("referrals").insert({
+     referrer_id:    profile.id,
+     referral_code:  code,
+     referred_email: form.email,
+     referred_name:  form.name || null,
+     status:         "pending",
+     reward_months:  2,
+     rewarded_at:    null,
+   }).select().single();
+
+   if (error) {
+     toast.dismiss(tid);
+     toast.error("Failed to save referral — " + error.message);
+     return;
+   }
+
+   // 2. Send email via Resend
+   try {
+     const apiKey = import.meta.env.VITE_RESEND_API_KEY;
+     if (apiKey) {
+       await fetch("https://api.resend.com/emails", {
+         method: "POST",
+         headers: {
+           "Content-Type": "application/json",
+           "Authorization": `Bearer ${apiKey}`,
+         },
+         body: JSON.stringify({
+           from:    "Tradie <noreply@tradie.app>",
+           to:      [form.email],
+           subject: `${profile.name} invited you to try Tradie`,
+           html: `
+             <div style="font-family:Inter,sans-serif;max-width:520px;margin:0 auto;padding:40px 24px;">
+               <h2 style="font-size:22px;font-weight:800;margin-bottom:12px;">
+                 ${profile.name} thinks you'd like Tradie
+               </h2>
+               <p style="font-size:15px;color:#6B6460;line-height:1.7;margin-bottom:24px;">
+                 ${form.name ? `Hi ${form.name},` : "Hi,"}<br/><br/>
+                 ${profile.name} invited you to try Tradie — a free platform for managing bookings, quotes, invoices and payments for your business.
+               </p>
+               <a href="${referralUrl}" style="display:inline-block;background:#E8500A;color:#fff;padding:14px 28px;border-radius:6px;font-weight:700;font-size:15px;text-decoration:none;">
+                 Create your free account →
+               </a>
+               <p style="font-size:13px;color:#A39C8C;margin-top:24px;">
+                 Or copy this link: ${referralUrl}
+               </p>
+               <hr style="margin:32px 0;border:none;border-top:1px solid #E5E3DE;"/>
+               <p style="font-size:12px;color:#A39C8C;">
+                 Tradie · Booking and billing for every profession
+               </p>
+             </div>
+           `,
+         }),
+       });
+     }
+   } catch (emailErr) {
+     console.warn("[referral] Email send failed:", emailErr);
+     // Non-fatal — referral was saved, email just didn't go through
+   }
+
+   // 3. Update local state
+   dispatch({ type:"ADD_REFERRAL", payload: data });
+   toast.dismiss(tid);
+   toast.success(t("referrals.toast.referralSent", { email: form.email }));
+   setForm({ name:"", email:"" });
+   setModal(false);
  }
 
  async function qualify(r) {
@@ -71,7 +127,7 @@ export default function ReferralsPage({ state, dispatch, profile }) {
      dispatch({ type:"UPDATE_REFERRAL", payload:{ ...r, status:"rewarded", rewarded_at:new Date().toISOString() } });
      toast.success("2 months Pro applied to both accounts!");
    } else if (result.reason === "referred_not_found") {
-     toast.error("They haven't signed up on Vimen yet.");
+     toast.error("They haven't signed up on Tradie yet.");
    } else {
      toast.error("Failed to apply reward — try again.");
    }
@@ -135,11 +191,11 @@ export default function ReferralsPage({ state, dispatch, profile }) {
  {/* Share methods */}
  <div style={{ display:"flex", gap:10, flexWrap:"wrap" }}>
  {[
- { key:"whatsapp", label:t("referrals.share.whatsapp"), onClick:()=>window.open(`https://wa.me/?text=${encodeURIComponent(t("referrals.share.whatsappMessage", { url: referralUrl }))}`) },
- { key:"facebook", label:t("referrals.share.facebook"), onClick:()=>window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(referralUrl)}`) },
- { key:"email", label:t("referrals.share.email"), onClick:()=>window.open(`mailto:?subject=${encodeURIComponent(t("referrals.share.emailSubject"))}&body=${encodeURIComponent(t("referrals.share.emailBody", { url: referralUrl }))}`) },
+   { key:"whatsapp", label:"WhatsApp", onClick:()=>window.open(`https://wa.me/?text=${encodeURIComponent(`${profile?.name||"Someone"} thinks you'd like Tradie — free booking & invoicing. Sign up here: ${referralUrl}`)}`, "_blank") },
+   { key:"facebook", label:"Facebook", onClick:()=>window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(referralUrl)}`, "_blank") },
+   { key:"email",    label:"Email",    onClick:()=>window.open(`mailto:?subject=${encodeURIComponent(`${profile?.name||"Someone"} invited you to Tradie`)}&body=${encodeURIComponent(`Hi, check out Tradie — free booking and invoicing for your business. Sign up here: ${referralUrl}`)}`, "_blank") },
  ].map(b=>(
- <Btn key={b.key} variant="ghost" size="sm" onClick={b.onClick}>{b.icon} {b.label}</Btn>
+ <Btn key={b.key} variant="ghost" size="sm" onClick={b.onClick}>{b.label}</Btn>
  ))}
  </div>
  </Card>

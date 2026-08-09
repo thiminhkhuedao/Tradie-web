@@ -1,17 +1,17 @@
 // src/pages/ReviewsPage.jsx
-
+// Reviews are the moat. 100K verified reviews = impossible to replicate.
+// Features: request reviews after jobs, track ratings, push to Google.
 import { useState } from "react";
 import { useTranslation } from "../i18n/index.js";
 import { toast } from "react-hot-toast";
 import { T } from "../styles/tokens";
 import { uid } from "../lib/state";
-import { sendReviewRequestSMS } from "../lib/notifications";
 import {
   PageShell, Card, Btn, Badge, Empty,
   Modal, Field, FormActions, SectionTitle, Divider,
 } from "../components/UI";
 
-const fmt = n => `€${Number(n||0).toFixed(2)}`;
+const fmt = n => `£${Number(n||0).toFixed(2)}`;
 const fmtDate = d => { try { return new Date(d).toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"}); } catch { return "—"; }};
 
 function Stars({ rating, size = 16 }) {
@@ -26,7 +26,7 @@ function Stars({ rating, size = 16 }) {
 
 export default function ReviewsPage({ state, dispatch, profile }) {
   const { t } = useTranslation();
-  const [modal,   setModal]   = useState(null);
+  const [modal,   setModal]   = useState(null); // null|"request"|"add_manual"
   const [selJob,  setSelJob]  = useState("");
   const [form,    setForm]    = useState({ client_name:"", client_email:"", client_phone:"", rating:5, title:"", body:"" });
   const fld = k => e => setForm(p=>({...p,[k]:e.target.value}));
@@ -41,22 +41,53 @@ export default function ReviewsPage({ state, dispatch, profile }) {
 
   const getClient = id => clients.find(c=>c.id===id);
 
-  const [sending, setSending] = useState(false);
-
   async function sendRequest() {
     const job = jobs.find(j=>j.id===selJob);
     if (!job) { toast.error(t("reviews.toast.selectCompletedJob")); return; }
     const cl = getClient(job.client_id);
-    if (!cl?.phone) { toast.error(t("reviews.toast.clientNoPhone")); return; }
-    if (!profile?.google_review_url) { toast.error(t("reviews.toast.noGoogleUrlConfigured")); return; }
+    if (!cl?.email) { toast.error("This client has no email address on file."); return; }
 
-    setSending(true);
-    const result = await sendReviewRequestSMS(cl, job, profile);
-    setSending(false);
-
-    if (!result.success) { toast.error(t("reviews.toast.sendFailed")); return; }
-    toast.success(t("reviews.toast.requestSent", { name: cl?.name ?? t("reviews.fallback.client") }));
-    setModal(null);
+    const tid = toast.loading("Sending review request...");
+    try {
+      const apiKey = import.meta.env.VITE_RESEND_API_KEY;
+      if (apiKey) {
+        await fetch("https://api.resend.com/emails", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${apiKey}`,
+          },
+          body: JSON.stringify({
+            from:    "Tradie Reviews <noreply@tradie.app>",
+            to:      [cl.email],
+            subject: `How was your experience with ${profile?.name}?`,
+            html: `
+              <div style="font-family:Inter,sans-serif;max-width:520px;margin:0 auto;padding:40px 24px;">
+                <h2 style="font-size:22px;font-weight:800;margin-bottom:12px;">
+                  Hi ${cl.name}, hope everything went well!
+                </h2>
+                <p style="font-size:15px;color:#6B6460;line-height:1.7;margin-bottom:24px;">
+                  ${profile?.name} would really appreciate if you could leave a quick review. It only takes 60 seconds and helps a lot.
+                </p>
+                <a href="${googleUrl}" style="display:inline-block;background:#E8500A;color:#fff;padding:14px 28px;border-radius:6px;font-weight:700;font-size:15px;text-decoration:none;">
+                  Leave a Google review →
+                </a>
+                <p style="font-size:13px;color:#A39C8C;margin-top:24px;">
+                  Thank you for your trust!<br/>${profile?.name}
+                </p>
+              </div>
+            `,
+          }),
+        });
+      }
+      toast.dismiss(tid);
+      toast.success(t("reviews.toast.requestSent", { name: cl?.name ?? "" }));
+      setModal(null);
+    } catch (err) {
+      toast.dismiss(tid);
+      toast.error("Failed to send — check your Resend API key.");
+      console.error("[review request]", err);
+    }
   }
 
   function addManual(e) {
@@ -81,7 +112,9 @@ export default function ReviewsPage({ state, dispatch, profile }) {
 
   const iStyle = { width:"100%",padding:"10px 12px",borderRadius:T.r.md,border:`1px solid ${T.borderMed}`,fontSize:14,background:T.surface,color:T.text,boxSizing:"border-box",fontFamily:"inherit" };
 
-  const googleUrl = profile?.google_review_url || "";
+  const googleUrl = profile?.extra_fields?.google_place_id
+    ? `https://g.page/r/${profile.extra_fields.google_place_id}/review`
+    : `https://www.google.com/search?q=${encodeURIComponent((profile?.name||"") + " " + (profile?.trade||""))}`;
 
   return (
     <PageShell title={t("reviews.title")}
@@ -125,16 +158,9 @@ export default function ReviewsPage({ state, dispatch, profile }) {
               </div>
             );
           })()}
-          {!googleUrl && (
-            <div style={{ background:T.amberBg, color:T.amber, borderRadius:T.r.md, padding:"10px 14px", marginBottom:14, fontSize:13 }}>
-              {t("reviews.toast.noGoogleUrlConfigured")}
-            </div>
-          )}
           <div style={{ display:"flex", gap:10, justifyContent:"flex-end", paddingTop:14, borderTop:`1px solid ${T.border}` }}>
             <Btn variant="ghost" onClick={()=>setModal(null)}>{t("reviews.requestModal.cancel")}</Btn>
-            <Btn onClick={sendRequest} disabled={sending || !selJob || !googleUrl}>
-              {sending ? t("common.sending") : t("reviews.requestModal.sendSmsBtn")}
-            </Btn>
+            <Btn onClick={sendRequest}>{t("reviews.requestModal.sendSmsBtn")}</Btn>
           </div>
         </Modal>
       )}
@@ -198,9 +224,9 @@ export default function ReviewsPage({ state, dispatch, profile }) {
 
         <div style={{ display:"flex", flexDirection:"column", gap:12, flex:1 }}>
           {[
-            { label:t("reviews.metrics.verifiedReviews"), val:verified, sub:t("reviews.metrics.onYourProfile") },
-            { label:t("reviews.metrics.googleClicks"), val:googleClicks, sub:t("reviews.metrics.tappedGoogleLink") },
-            { label:t("reviews.metrics.jobsWithNoReview"), val:jobs.length-reviews.length, sub:t("reviews.metrics.couldRequestReview")},
+            { label:t("reviews.metrics.verifiedReviews"), val:verified, sub:t("reviews.metrics.onYourProfile"), icon:"✅" },
+            { label:t("reviews.metrics.googleClicks"), val:googleClicks, sub:t("reviews.metrics.tappedGoogleLink"), icon:"🔍" },
+            { label:t("reviews.metrics.jobsWithNoReview"), val:jobs.length-reviews.length, sub:t("reviews.metrics.couldRequestReview"), icon:"📱" },
           ].map(m=>(
             <div key={m.label} style={{ background:T.surface, borderRadius:T.r.lg, border:`1px solid ${T.border}`, padding:"12px 16px", display:"flex", alignItems:"center", gap:12 }}>
               <span style={{ fontSize:22 }}>{m.icon}</span>
@@ -217,7 +243,7 @@ export default function ReviewsPage({ state, dispatch, profile }) {
       {/* Google Business CTA */}
       <div style={{ background:T.blueBg, border:`1px solid ${T.blue}30`, borderRadius:T.r.lg, padding:"14px 20px", marginBottom:20, display:"flex", justifyContent:"space-between", alignItems:"center" }}>
         <div>
-          <div style={{ fontWeight:700, color:T.blue, marginBottom:2 }}>{t("reviews.googleCta.title")}</div>
+          <div style={{ fontWeight:700, color:T.blue, marginBottom:2 }}>🔍 {t("reviews.googleCta.title")}</div>
           <div style={{ fontSize:13, color:T.muted }}>{t("reviews.googleCta.description")}</div>
         </div>
         <Btn variant="ghost" size="sm" onClick={()=>window.open("https://business.google.com","_blank")}>{t("reviews.googleCta.openBtn")}</Btn>
@@ -226,7 +252,7 @@ export default function ReviewsPage({ state, dispatch, profile }) {
       {/* Reviews list */}
       <Card style={{ padding:0, overflow:"hidden" }}>
         {reviews.length===0
-          ? <Empty message={t("reviews.list.empty")} action={<Btn size="sm" onClick={()=>setModal("request")}>{t("reviews.list.requestFirst")}</Btn>}/>
+          ? <Empty icon="⭐" message={t("reviews.list.empty")} action={<Btn size="sm" onClick={()=>setModal("request")}>{t("reviews.list.requestFirst")}</Btn>}/>
           : reviews.map(r=>(
               <div key={r.id} style={{ padding:"18px 24px", borderBottom:`1px solid ${T.border}` }}>
                 <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:8 }}>
@@ -251,7 +277,7 @@ export default function ReviewsPage({ state, dispatch, profile }) {
                   <div style={{ marginTop:10 }}>
                     <Btn size="sm" variant="ghost"
                       onClick={()=>{ dispatch({type:"UPDATE_REVIEW",payload:{id:r.id,google_review_clicked:true}}); toast.success(t("reviews.toast.markedPushedToGoogle")); }}>
-                      {t("reviews.list.askClientToPostBtn")}
+                      🔍 {t("reviews.list.askClientToPostBtn")}
                     </Btn>
                   </div>
                 )}
