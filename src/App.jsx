@@ -9,6 +9,7 @@ import { setClerkTokenGetter } from "./lib/supabase";
 
 // Marketing / logged-out
 import HomePage         from "./pages/HomePage";
+import PricingPage from "./pages/PricingPage";
 
 // Core pages
 import DashboardPage    from "./pages/DashboardPage";
@@ -45,139 +46,132 @@ function useToasts() {
 /* ── Auth page ──────────────────────────────────────── */
 import { T } from "./styles/tokens";
 
-const VERTICAL_DEFAULTS = {
-  trades:       "Electrician",
-  beauty:       "Hairdresser",
-  professional: "Lawyer",
-};
+const CATEGORIES = [
+  { id:"trades",    icon:"🔧", label:"Trades & Construction", examples:"Electrician, plumber, builder…",    vertical:"trades" },
+  { id:"beauty",    icon:"💅", label:"Beauty & Wellness",      examples:"Hairdresser, nail tech, spa…",     vertical:"beauty" },
+  { id:"food",      icon:"🍞", label:"Food & Hospitality",     examples:"Baker, chef, caterer…",            vertical:"other" },
+  { id:"health",    icon:"🏥", label:"Health & Care",          examples:"Physio, nurse, psychologist…",     vertical:"professional" },
+  { id:"legal",     icon:"⚖️", label:"Legal & Finance",        examples:"Lawyer, accountant, notary…",     vertical:"professional" },
+  { id:"education", icon:"📚", label:"Education & Coaching",   examples:"Tutor, coach, trainer…",           vertical:"professional" },
+  { id:"creative",  icon:"🎨", label:"Creative & Design",      examples:"Photographer, designer…",          vertical:"other" },
+  { id:"tech",      icon:"💻", label:"Tech & IT",              examples:"Developer, IT consultant…",        vertical:"professional" },
+  { id:"events",    icon:"🎉", label:"Events & Entertainment", examples:"DJ, decorator, planner…",          vertical:"other" },
+  { id:"home",      icon:"🏡", label:"Home & Garden",          examples:"Cleaner, gardener, handyman…",     vertical:"trades" },
+];
 
-function AuthPage({ onAuth, initialMode = "login", initialProfession = "Electrician" }) {
-  const [mode,   setMode]   = useState(initialMode);
-  const [email,  setEmail]  = useState("");
-  const [pass,   setPass]   = useState("");
-  const [name,   setName]   = useState("");
+function getPasswordStrength(password) {
+  if (!password) return { score:0, label:"", color:"" };
+  let score = 0;
+  if (password.length >= 8)  score++;
+  if (password.length >= 12) score++;
+  if (/[A-Z]/.test(password)) score++;
+  if (/[0-9]/.test(password)) score++;
+  if (/[^A-Za-z0-9]/.test(password)) score++;
+  if (score <= 1) return { score, label:"Weak",   color:"#EF4444" };
+  if (score <= 2) return { score, label:"Fair",   color:"#F59E0B" };
+  if (score <= 3) return { score, label:"Good",   color:"#3B82F6" };
+  return              { score, label:"Strong", color:"#10B981" };
+}
+
+const loginAttempts = { count:0, lockedUntil:null };
+function checkRateLimit() {
+  if (loginAttempts.lockedUntil && new Date() < loginAttempts.lockedUntil) {
+    const mins = Math.ceil((loginAttempts.lockedUntil - new Date()) / 60000);
+    return `Too many failed attempts. Try again in ${mins} minute${mins>1?"s":""}.`;
+  }
+  return null;
+}
+function recordFailedAttempt() {
+  loginAttempts.count++;
+  if (loginAttempts.count >= 5) { loginAttempts.lockedUntil = new Date(Date.now() + 5*60*1000); loginAttempts.count = 0; }
+}
+function resetAttempts() { loginAttempts.count = 0; loginAttempts.lockedUntil = null; }
+
+function AuthPage({ onAuth, initialMode = "login" }) {
+  const [mode,     setMode]     = useState(initialMode);
+  const [email,    setEmail]    = useState("");
+  const [pass,     setPass]     = useState("");
+  const [showPass, setShowPass] = useState(false);
+  const [name,     setName]     = useState("");
   const [username, setUsername] = useState("");
-  const [profession, setProfession] = useState(initialProfession);
-  const [loading,setLoading]= useState(false);
-  const [step, setStep] = useState("form");
-  const [code, setCode] = useState("");
-  const [error, setError] = useState("");
+  const [category, setCategory] = useState(CATEGORIES[0]);
+  const [loading,  setLoading]  = useState(false);
+  const [step,     setStep]     = useState("form");
+  const [code,     setCode]     = useState("");
+  const [error,    setError]    = useState("");
 
   const { signIn, setActive: setActiveSignIn } = useSignIn();
   const { signUp, setActive: setActiveSignUp } = useSignUp();
 
-  const vertical = getVerticalForProfession(profession);
+  const strength = getPasswordStrength(pass);
   const inp = { width:"100%", padding:"11px 14px", borderRadius:8, border:`1px solid ${T.borderMed}`, fontSize:15, background:T.surface, color:T.text, boxSizing:"border-box", fontFamily:"inherit", marginBottom:0 };
 
   async function submit(e) {
     e.preventDefault();
     setError("");
+    const rateLimitMsg = checkRateLimit();
+    if (rateLimitMsg) { setError(rateLimitMsg); return; }
+    if (mode==="signup" && strength.score < 2) { setError("Password is too weak — use at least 8 characters with a mix of letters and numbers."); return; }
     setLoading(true);
-
     try {
       if (mode === "signup") {
-        const trimmedName = name.trim();
-        const [firstName, ...rest] = trimmedName.split(" ");
-        const lastName = rest.join(" ");
-
-        await signUp.create({
-          emailAddress: email,
-          password: pass,
-          username: username,
-          firstName: firstName || undefined,
-          lastName: lastName || undefined,
-        });
-
-        await signUp.prepareEmailAddressVerification({
-          strategy: "email_code",
-        });
-
-        setStep("verify");
-        setLoading(false);
-        return;
+        const [firstName, ...rest] = name.trim().split(" ");
+        await signUp.create({ emailAddress:email, password:pass, username, firstName:firstName||undefined, lastName:rest.join(" ")||undefined });
+        await signUp.prepareEmailAddressVerification({ strategy:"email_code" });
+        setStep("verify"); setLoading(false); return;
       } else {
-        const result = await signIn.create({
-          identifier: email,
-          password: pass,
-        });
-
-        if (result.status === "complete") {
-          await setActiveSignIn({
-            session: result.createdSessionId,
-          });
-        }
+        const result = await signIn.create({ identifier:email, password:pass });
+        if (result.status === "complete") { resetAttempts(); await setActiveSignIn({ session:result.createdSessionId }); }
       }
     } catch (err) {
-      console.error(err);
-      alert(err.errors?.[0]?.longMessage || err.message);
+      recordFailedAttempt();
+      const remaining = 5 - loginAttempts.count;
+      const msg = err.errors?.[0]?.longMessage || err.message || "Something went wrong";
+      setError(loginAttempts.count > 0 && mode==="login" ? `${msg} (${remaining} attempt${remaining!==1?"s":""} remaining before lockout)` : msg);
     }
-
     setLoading(false);
   }
 
   async function verifyCode(e) {
-    e.preventDefault();
-    setError("");
-    setLoading(true);
+    e.preventDefault(); setError(""); setLoading(true);
     try {
       const result = await signUp.attemptEmailAddressVerification({ code });
-      console.log("verify result:", result.status, result.missingFields, result.unverifiedFields);
-
-      if (result.status === "complete") {
-        await setActiveSignUp({ session: result.createdSessionId });
-        window.location.reload();
-      } else if (result.status === "missing_requirements") {
-        setError(
-          `Almost there — still missing: ${
-            result.missingFields?.join(", ") || "some required fields"
-          }. Please check your details and try again, or contact support.`
-        );
-      } else {
-        setError(`Unexpected status: ${result.status}. Please try again or contact support.`);
-      }
-    } catch (err) {
-      setError(err?.errors?.[0]?.longMessage || err?.message || "Invalid code");
-    }
+      if (result.status === "complete") { await setActiveSignUp({ session:result.createdSessionId }); window.location.reload(); }
+      else if (result.status === "missing_requirements") { setError(`Almost there — still missing: ${result.missingFields?.join(", ")||"some required fields"}.`); }
+      else { setError(`Unexpected status: ${result.status}. Please try again.`); }
+    } catch (err) { setError(err?.errors?.[0]?.longMessage || err?.message || "Invalid code"); }
     setLoading(false);
   }
 
-  // Verification step
-  if (step === "verify") {
-    return (
-      <div style={{ minHeight:"100vh", background:T.bg, display:"flex", alignItems:"center", justifyContent:"center", padding:20 }}>
-        <div style={{ width:420, maxWidth:"100%", background:T.surface, borderRadius:T.r.xl, padding:"52px 48px", boxShadow:T.shadow.xl }}>
-          <div style={{ fontSize:32, textAlign:"center", marginBottom:16 }}>📬</div>
-          <h3 style={{ fontSize:22, fontWeight:800, marginBottom:8, letterSpacing:-0.5, textAlign:"center" }}>Check your email</h3>
-          <p style={{ fontSize:14, color:T.muted, marginBottom:28, textAlign:"center", lineHeight:1.6 }}>
-            We sent a 6-digit code to <strong>{email}</strong>. Enter it below to verify your account.
-          </p>
-          <form onSubmit={verifyCode} style={{ display:"flex", flexDirection:"column", gap:14 }}>
-            <div>
-              <label style={{ fontSize:13, fontWeight:500, color:T.muted, display:"block", marginBottom:6 }}>Verification code</label>
-              <input
-                style={{ ...inp, fontSize:28, fontWeight:800, letterSpacing:8, textAlign:"center" }}
-                value={code} onChange={e=>setCode(e.target.value.replace(/\D/g,"").slice(0,6))}
-                placeholder="000000" maxLength={6} autoFocus inputMode="numeric"/>
-            </div>
-            {error && <div style={{ fontSize:13, color:"#EF4444", background:"#FEF2F2", padding:"10px 14px", borderRadius:8 }}>{error}</div>}
-            <button type="submit" disabled={loading || code.length!==6}
-              style={{ padding:"14px", borderRadius:8, background:T.brand, color:"#fff", border:"none", fontWeight:700, fontSize:15, cursor:loading||code.length!==6?"not-allowed":"pointer", opacity:loading||code.length!==6?0.6:1 }}>
-              {loading ? "Verifying…" : "Verify email →"}
-            </button>
-            <button type="button" onClick={()=>{ setStep("form"); setError(""); }}
-              style={{ background:"none", border:"none", color:T.muted, fontSize:13, cursor:"pointer", textDecoration:"underline" }}>
-              ← Back to sign up
-            </button>
-          </form>
-        </div>
+  if (step === "verify") return (
+    <div style={{ minHeight:"100vh", background:T.bg, display:"flex", alignItems:"center", justifyContent:"center", padding:20 }}>
+      <div style={{ width:420, maxWidth:"100%", background:T.surface, borderRadius:T.r.xl, padding:"52px 48px", boxShadow:T.shadow.xl }}>
+        <div style={{ fontSize:32, textAlign:"center", marginBottom:16 }}>📬</div>
+        <h3 style={{ fontSize:22, fontWeight:800, marginBottom:8, letterSpacing:-0.5, textAlign:"center" }}>Check your email</h3>
+        <p style={{ fontSize:14, color:T.muted, marginBottom:28, textAlign:"center", lineHeight:1.6 }}>
+          We sent a 6-digit code to <strong>{email}</strong>.
+        </p>
+        <form onSubmit={verifyCode} style={{ display:"flex", flexDirection:"column", gap:14 }}>
+          <input style={{ ...inp, fontSize:28, fontWeight:800, letterSpacing:8, textAlign:"center" }}
+            value={code} onChange={e=>setCode(e.target.value.replace(/\D/g,"").slice(0,6))}
+            placeholder="000000" maxLength={6} autoFocus inputMode="numeric"/>
+          {error && <div style={{ fontSize:13, color:"#EF4444", background:"#FEF2F2", padding:"10px 14px", borderRadius:8 }}>{error}</div>}
+          <button type="submit" disabled={loading||code.length!==6}
+            style={{ padding:"14px", borderRadius:8, background:T.brand, color:"#fff", border:"none", fontWeight:700, fontSize:15, cursor:loading||code.length!==6?"not-allowed":"pointer", opacity:loading||code.length!==6?0.6:1 }}>
+            {loading ? "Verifying…" : "Verify email →"}
+          </button>
+          <button type="button" onClick={()=>{ setStep("form"); setError(""); }}
+            style={{ background:"none", border:"none", color:T.muted, fontSize:13, cursor:"pointer", textDecoration:"underline" }}>
+            ← Back to sign up
+          </button>
+        </form>
       </div>
-    );
-  }
-
+    </div>
+  );
 
   return (
     <div style={{ minHeight:"100vh", background:T.bg, display:"flex", alignItems:"center", justifyContent:"center", padding:20 }}>
-      <div style={{ display:"flex", width:860, maxWidth:"100%", borderRadius:T.r.xl, overflow:"hidden", boxShadow:T.shadow.xl }}>
+      <div style={{ display:"flex", width:900, maxWidth:"100%", borderRadius:T.r.xl, overflow:"hidden", boxShadow:T.shadow.xl }}>
         {/* Left brand panel */}
         <div style={{ flex:1, background:"#0F0E0D", padding:"52px 48px", display:"flex", flexDirection:"column", justifyContent:"space-between" }}>
           <div>
@@ -190,62 +184,90 @@ function AuthPage({ onAuth, initialMode = "login", initialProfession = "Electric
             </p>
           </div>
           <div style={{ display:"flex", flexDirection:"column", gap:14 }}>
-            {[["📅",`${vertical.terms.bookingPlural} clients book themselves`],["🧾","Invoice and get paid"],["💳","Vimen Pay"],[vertical.icon, `Built for ${vertical.label.toLowerCase()}`],["⭐","Automatic review requests"]].map(([icon,text]) => (
+            {[["📅","Clients book their own appointments"],["🧾","Invoice and get paid"],["💳","Vimen Pay — 2% flat"],["⭐","Automatic review requests"],["🔒","Your data stays yours"]].map(([icon,text]) => (
               <div key={text} style={{ display:"flex", alignItems:"center", gap:12, fontSize:14, color:"rgba(255,255,255,0.55)" }}>
                 <span style={{ fontSize:18 }}>{icon}</span>{text}
               </div>
             ))}
           </div>
         </div>
+
         {/* Right form */}
-        <div style={{ width:420, background:T.surface, padding:"52px 48px", display:"flex", flexDirection:"column", justifyContent:"center" }}>
+        <div style={{ width:440, background:T.surface, padding:"48px 44px", display:"flex", flexDirection:"column", justifyContent:"center", overflowY:"auto", maxHeight:"100vh" }}>
           <h3 style={{ fontSize:22, fontWeight:800, marginBottom:6, letterSpacing:-0.5 }}>
-            {mode === "login" ? "Welcome back" : "Create account"}
+            {mode==="login" ? "Welcome back" : "Create account"}
           </h3>
-          <p style={{ fontSize:14, color:T.muted, marginBottom:28 }}>
-            {mode === "login" ? "Sign in to your Vimen account" : "Start for free — no card needed"}
+          <p style={{ fontSize:14, color:T.muted, marginBottom:24 }}>
+            {mode==="login" ? "Sign in to your Vimen account" : "Start for free — no card needed"}
           </p>
-          <form onSubmit={submit} style={{ display:"flex", flexDirection:"column", gap:14 }}>
-            {mode === "signup" && (
-              <>
-                <div><label style={{ fontSize:13, fontWeight:500, color:T.muted, display:"block", marginBottom:6 }}>Full name</label>
-                  <input style={inp} value={name} onChange={e=>setName(e.target.value)} placeholder="Jake Morrison" autoFocus/></div>
-                <div>
-                  <label style={{ fontSize:13, fontWeight:500, color:T.muted, display:"block", marginBottom:6 }}>Username</label>
-                  <input style={inp} value={username} onChange={e=>setUsername(e.target.value.replace(/\s/g,""))} placeholder="jakemorrison"/>
+
+          <form onSubmit={submit} style={{ display:"flex", flexDirection:"column", gap:12 }}>
+            {mode==="signup" && <>
+              <div>
+                <label style={{ fontSize:13, fontWeight:500, color:T.muted, display:"block", marginBottom:6 }}>Full name</label>
+                <input style={inp} value={name} onChange={e=>setName(e.target.value)} placeholder="Jake Morrison" autoFocus/>
+              </div>
+              <div>
+                <label style={{ fontSize:13, fontWeight:500, color:T.muted, display:"block", marginBottom:6 }}>Username</label>
+                <input style={inp} value={username} onChange={e=>setUsername(e.target.value.replace(/\s/g,""))} placeholder="jakemorrison"/>
+              </div>
+              <div>
+                <label style={{ fontSize:13, fontWeight:500, color:T.muted, display:"block", marginBottom:8 }}>What do you do?</label>
+                <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:6 }}>
+                  {CATEGORIES.map(cat=>(
+                    <button key={cat.id} type="button" onClick={()=>setCategory(cat)}
+                      style={{ padding:"9px 11px", borderRadius:8, border:`1.5px solid ${category.id===cat.id?T.brand:T.border}`, background:category.id===cat.id?T.brandLight:"transparent", cursor:"pointer", textAlign:"left", fontFamily:"inherit", transition:"all .15s" }}>
+                      <div style={{ fontSize:12, fontWeight:700, color:category.id===cat.id?T.brand:T.text }}>{cat.icon} {cat.label}</div>
+                      <div style={{ fontSize:10, color:T.muted, marginTop:2, lineHeight:1.3 }}>{cat.examples}</div>
+                    </button>
+                  ))}
                 </div>
-                <div>
-                  <label style={{ fontSize:13, fontWeight:500, color:T.muted, display:"block", marginBottom:6 }}>Your profession</label>
-                  <select style={inp} value={profession} onChange={e=>setProfession(e.target.value)}>
-                    {Object.values(VERTICALS).filter(v=>v.id!=="other").map(v => (
-                      <optgroup key={v.id} label={`${v.icon}  ${v.label}`}>
-                        {v.professions.map(p => <option key={p} value={p}>{p}</option>)}
-                      </optgroup>
+              </div>
+            </>}
+
+            <div>
+              <label style={{ fontSize:13, fontWeight:500, color:T.muted, display:"block", marginBottom:6 }}>Email</label>
+              <input style={inp} type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="you@example.com" autoFocus={mode==="login"}/>
+            </div>
+
+            <div>
+              <label style={{ fontSize:13, fontWeight:500, color:T.muted, display:"block", marginBottom:6 }}>
+                Password {mode==="signup" && <span style={{ fontWeight:400 }}>— min. 8 characters</span>}
+              </label>
+              <div style={{ position:"relative" }}>
+                <input style={{ ...inp, paddingRight:44 }} type={showPass?"text":"password"}
+                  value={pass} onChange={e=>setPass(e.target.value)} placeholder="••••••••"/>
+                <button type="button" onClick={()=>setShowPass(s=>!s)}
+                  style={{ position:"absolute", right:12, top:"50%", transform:"translateY(-50%)", background:"none", border:"none", cursor:"pointer", color:T.muted, fontSize:16 }}>
+                  {showPass ? "🙈" : "👁"}
+                </button>
+              </div>
+              {mode==="signup" && pass.length>0 && (
+                <div style={{ marginTop:8 }}>
+                  <div style={{ display:"flex", gap:4, marginBottom:4 }}>
+                    {[1,2,3,4].map(i=>(
+                      <div key={i} style={{ flex:1, height:3, borderRadius:2, background:i<=strength.score?strength.color:T.border, transition:"background .2s" }}/>
                     ))}
-                    <option value="Other">Other</option>
-                  </select>
-                  <div style={{ fontSize:12, color:T.muted, marginTop:6, display:"flex", alignItems:"center", gap:6 }}>
-                    <span style={{ background:vertical.color.bg, color:vertical.color.text, borderRadius:999, padding:"2px 8px", fontWeight:600 }}>
-                      {vertical.icon} {vertical.label}
-                    </span>
                   </div>
+                  <div style={{ fontSize:12, color:strength.color, fontWeight:600 }}>{strength.label}</div>
                 </div>
-              </>
-            )}
-            <div><label style={{ fontSize:13, fontWeight:500, color:T.muted, display:"block", marginBottom:6 }}>Email</label>
-              <input style={inp} type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="you@example.com" autoFocus={mode==="login"}/></div>
-            <div><label style={{ fontSize:13, fontWeight:500, color:T.muted, display:"block", marginBottom:6 }}>Password</label>
-              <input style={inp} type="password" value={pass} onChange={e=>setPass(e.target.value)} placeholder="••••••••"/></div>
-            {error && <div style={{ fontSize:13, color:"#EF4444", background:"#FEF2F2", padding:"10px 14px", borderRadius:8 }}>{error}</div>}
-            <button disabled={loading} style={{ padding:"12px", borderRadius:8, background:T.brand, color:"#fff", border:"none", fontSize:15, fontWeight:700, cursor:"pointer", marginTop:4 }}>
-              {loading ? "Please wait…" : mode === "login" ? "Sign in →" : "Create account →"}
+              )}
+            </div>
+
+            {error && <div style={{ fontSize:13, color:"#EF4444", background:"#FEF2F2", padding:"10px 14px", borderRadius:8, lineHeight:1.5 }}>{error}</div>}
+
+            <button disabled={loading}
+              style={{ padding:"12px", borderRadius:8, background:T.brand, color:"#fff", border:"none", fontSize:15, fontWeight:700, cursor:loading?"not-allowed":"pointer", opacity:loading?0.7:1, marginTop:4 }}>
+              {loading ? "Please wait…" : mode==="login" ? "Sign in →" : "Create account →"}
             </button>
           </form>
+
           <div style={{ height:1, background:T.border, margin:"20px 0" }}/>
           <div style={{ textAlign:"center", fontSize:14, color:T.muted }}>
-            {mode === "login" ? "No account? " : "Already signed up? "}
-            <span style={{ color:T.brand, cursor:"pointer", fontWeight:700 }} onClick={() => { setMode(m => m==="login"?"signup":"login"); setError(""); }}>
-              {mode === "login" ? "Sign up free" : "Sign in"}
+            {mode==="login" ? "No account? " : "Already signed up? "}
+            <span style={{ color:T.brand, cursor:"pointer", fontWeight:700 }}
+              onClick={()=>{ setMode(m=>m==="login"?"signup":"login"); setError(""); }}>
+              {mode==="login" ? "Sign up free" : "Sign in"}
             </span>
           </div>
         </div>
@@ -416,20 +438,22 @@ function ClerkGatedApp() {
 
   const [searchParams] = useSearchParams();
 
-  const verticalSlug = searchParams.get("vertical");
-  const wantsSignup = searchParams.get("signup") === "1";
+  const wantsSignup   = searchParams.get("signup") === "1";
   const hasAuthIntent = searchParams.has("signup") || searchParams.has("login");
+  const initialMode   = wantsSignup ? "signup" : "login";
 
-  const initialProfession =
-    VERTICAL_DEFAULTS[verticalSlug] ?? "Electrician";
+  if (!isLoaded) return <div style={{ minHeight:"100vh", display:"flex", alignItems:"center", justifyContent:"center" }}>Loading…</div>;
 
-  const initialMode =
-    wantsSignup ? "signup" : "login";
-
-  if (!isLoaded)
-    return <div>Loading...</div>;
-
+  // Render unauthenticated pages (HomePage or PricingPage)
   if (!isSignedIn && !hasAuthIntent) {
+    if (window.location.pathname === "/pricing") {
+      return (
+        <PricingPage
+          onSignIn={() => navigate("/?login=1", { replace: false })}
+          onSignUp={() => navigate("/?signup=1", { replace: false })}
+        />
+      );
+    }
 
     return (
       <HomePage
@@ -440,12 +464,7 @@ function ClerkGatedApp() {
   }
 
   if (!isSignedIn)
-    return (
-      <AuthPage
-        initialMode={initialMode}
-        initialProfession={initialProfession}
-      />
-    );
+    return <AuthPage initialMode={initialMode}/>;
 
   return <AppShell />;
 }
