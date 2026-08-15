@@ -10,6 +10,9 @@ import { setClerkTokenGetter, supabase } from "./lib/supabase";
 // Marketing / logged-out
 import HomePage         from "./pages/HomePage";
 import PricingPage from "./pages/PricingPage";
+import AboutPage from "./pages/AboutPage.jsx";
+import ContactPage from "./pages/ContactPage.jsx";
+import FaqPage from "./pages/FaqPage.jsx";
 
 // Core pages
 import DashboardPage    from "./pages/DashboardPage";
@@ -193,7 +196,17 @@ function AuthPage({ onAuth, initialMode = "login" }) {
         </div>
 
         {/* Right form */}
-        <div style={{ width:440, background:T.surface, padding:"48px 44px", display:"flex", flexDirection:"column", justifyContent:"center", overflowY:"auto", maxHeight:"100vh" }}>
+        <div style={{
+  width: 440,
+  background: T.surface,
+  padding: "48px 44px",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "flex-start",
+  overflowY: "auto",
+  maxHeight: "100vh",
+  boxSizing: "border-box",
+}}>
           <h3 style={{ fontSize:22, fontWeight:800, marginBottom:6, letterSpacing:-0.5 }}>
             {mode==="login" ? "Welcome back" : "Create account"}
           </h3>
@@ -445,24 +458,29 @@ const { user } = useUser();
 
   if (!isLoaded) return <div style={{ minHeight:"100vh", display:"flex", alignItems:"center", justifyContent:"center" }}>Loading…</div>;
 
-  // Render unauthenticated pages (HomePage or PricingPage)
-  if (!isSignedIn && !hasAuthIntent) {
-    if (window.location.pathname === "/pricing") {
-      return (
-        <PricingPage
-          onSignIn={() => navigate("/?login=1", { replace: false })}
-          onSignUp={() => navigate("/?signup=1", { replace: false })}
-        />
-      );
-    }
+ if (!isSignedIn && !hasAuthIntent) {
+  const publicPageProps = {
+    onSignIn: () => navigate("/?login=1", { replace: false }),
+    onSignUp: () => navigate("/?signup=1", { replace: false }),
+  };
 
-    return (
-      <HomePage
-        onSignIn={() => navigate("/?login=1", { replace: false })}
-        onSignUp={() => navigate("/?signup=1", { replace: false })}
-      />
-    );
+  switch (window.location.pathname) {
+    case "/pricing":
+      return <PricingPage {...publicPageProps} />;
+
+    case "/about":
+      return <AboutPage {...publicPageProps} />;
+
+    case "/contact":
+      return <ContactPage {...publicPageProps} />;
+
+    case "/faq":
+      return <FaqPage {...publicPageProps} />;
+
+    default:
+      return <HomePage {...publicPageProps} />;
   }
+}
 
   if (!isSignedIn)
     return <AuthPage initialMode={initialMode}/>;
@@ -476,4 +494,5 @@ export default function App({ useClerk: hasClerkKey = false }) {
     return <DemoAppShell />;
   }
   return <ClerkGatedApp />;
+
 }

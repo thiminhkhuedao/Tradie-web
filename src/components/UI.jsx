@@ -828,3 +828,38 @@ export function copyToClipboard(text) {
   document.execCommand("copy");
   document.body.removeChild(ta);
 }
+
+export function ErrorBox({ what, why, nextAction, onRetry }) {
+  return (
+    <div style={{
+      padding: "16px 20px",
+      borderRadius: 10,
+      background: "#FEF2F2",
+      border: "1px solid #FCA5A5",
+      color: "#991B1B",
+      marginBottom: 16
+    }}>
+      {what && <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 4 }}>{what}</div>}
+      {why && <div style={{ fontSize: 13, color: "#B91C1C", marginBottom: 6 }}>{why}</div>}
+      {nextAction && <div style={{ fontSize: 13, color: "#7F1D1D" }}>{nextAction}</div>}
+      {onRetry && (
+        <button
+          onClick={onRetry}
+          style={{
+            marginTop: 12,
+            padding: "6px 12px",
+            borderRadius: 6,
+            border: "1px solid #F87171",
+            background: "#FFF",
+            color: "#991B1B",
+            fontWeight: 600,
+            fontSize: 13,
+            cursor: "pointer"
+          }}
+        >
+          Retry
+        </button>
+      )}
+    </div>
+  );
+}
