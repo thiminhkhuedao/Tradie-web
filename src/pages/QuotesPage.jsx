@@ -10,8 +10,8 @@ import {
   Modal, ConfirmModal, Field, FieldRow,
   FormActions, Tabs, Empty, SectionTitle, Divider,
 } from "../components/UI";
+import { formatCurrency } from "../lib/currency.js";
 
-const fmt     = n => `€${Number(n||0).toLocaleString("en-GB",{minimumFractionDigits:2,maximumFractionDigits:2})}`;
 const fmtDate = d => { try { return new Date(d).toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"}); } catch { return "—"; }};
 const iStyle  = { width:"100%",padding:"10px 12px",borderRadius:T.r.md,border:`1px solid ${T.borderMed}`,fontSize:14,background:T.surface,color:T.text,boxSizing:"border-box",fontFamily:"inherit" };
 
@@ -30,6 +30,7 @@ function calcTotals(lineItems, vatRate=0) {
 
 export default function QuotesPage({ state, dispatch, profile }) {
   const { t: tr } = useTranslation();
+  const fmt = n => formatCurrency(n, profile?.currency);
   const [tab,     setTab]     = useState("active");
   const [modal,   setModal]   = useState(null); 
   const [delId,   setDelId]   = useState(null);

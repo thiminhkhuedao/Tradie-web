@@ -11,8 +11,8 @@ import {
   Table, TD, Modal, ConfirmModal,
   Field, FieldRow, FormActions, Tabs, Empty,
 } from "../components/UI";
+import { formatCurrency } from "../lib/currency.js";
 
-const fmt     = n => `€${Number(n||0).toLocaleString("en-GB",{minimumFractionDigits:2,maximumFractionDigits:2})}`;
 const fmtDate = d => { try { return new Date(d).toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"}); } catch { return d||"—"; }};
 const today   = () => new Date().toISOString().slice(0,10);
 
@@ -25,6 +25,7 @@ const iStyle = {
 
 export default function JobsPage({ profile }) {
   const { t } = useTranslation();
+  const fmt = n => formatCurrency(n, profile?.currency);
   const terms  = getTerms(profile?.trade);
   const [jobs,    setJobs]    = useState([]);
   const [clients, setClients] = useState([]);

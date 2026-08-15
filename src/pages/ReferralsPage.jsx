@@ -12,6 +12,7 @@ import {
  PageShell, Card, Btn, Badge, Table, TD,
  Modal, Field, SectionTitle, Empty, MetricCard, Divider,
 } from "../components/UI";
+import { formatCurrency } from "../lib/currency.js";
 
 const fmtDate = d => { try { return new Date(d).toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"}); } catch { return ""; }};
 
@@ -19,6 +20,7 @@ const STATUS_COLOR = { pending:"gray", signed_up:"blue", qualified:"amber", rewa
 
 export default function ReferralsPage({ state, dispatch, profile }) {
  const { t } = useTranslation();
+ const fmt = n => formatCurrency(n, profile?.currency);
  const [modal, setModal] = useState(false);
  const [form, setForm] = useState({ name:"", email:"" });
  const [copied, setCopied] = useState(false);

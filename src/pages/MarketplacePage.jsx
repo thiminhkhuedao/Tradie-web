@@ -14,11 +14,10 @@ import {
  FormActions, SectionTitle, Empty, Divider,
 } from "../components/UI";
 import PhotoUpload from "../components/PhotoUpload";
+import { formatCurrency } from "../lib/currency.js";
 
 /* ── constants ──────────────────────────────────────── */
-// NOTE: `id` / value fields below are canonical identifiers used for logic,
-// filtering, and DB storage. They are NOT translated. Only the *labels*
-// shown to the user are resolved through t() at render time.
+
 const TYPE_IDS = ["all", "demand", "sale", "recruitment", "materials"];
 const TYPE_TAB_ICONS = { all: "️", demand: "", sale: "", recruitment: "", materials: "" };
 
@@ -39,7 +38,6 @@ const TYPE_COLORS = {
 
 const TYPE_ICONS = { demand:"", sale:"", recruitment:"", materials:"" };
 
-const fmt = n => n ? `€${Number(n).toLocaleString("en-GB",{maximumFractionDigits:0})}` : null;
 const fmtDate = d => { try { return new Date(d).toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"}); } catch { return ""; }};
 const timeAgo = (d, t) => {
  const diff = Date.now() - new Date(d).getTime();
@@ -63,6 +61,7 @@ const iStyle = {
 ══════════════════════════════════════════════════════ */
 export default function MarketplacePage({ profile }) {
  const { t } = useTranslation();
+ const fmt = n => formatCurrency(n, profile?.currency);
  const [listings, setListings] = useState([]);
  const [myListings, setMyListings] = useState([]);
  const [loading, setLoading] = useState(true);
@@ -839,83 +838,147 @@ function PostModal({ profile, onClose, onPosted }) {
 }
 
 /* ══════════════════════════════════════════════════════
- INTEREST MODAL
+   INTEREST MODAL
 ══════════════════════════════════════════════════════ */
-function InterestModal({ listing, profile, onClose, onSent }) {
- const { t } = useTranslation();
- const [form, setForm] = useState({
- name: profile?.name ?? "",
- email: profile?.email ?? "",
- phone: profile?.phone ?? "",
- message: "",
- });
- const [busy, setBusy] = useState(false);
- const fld = k => e => setForm(p=>({...p,[k]:e.target.value}));
+export function InterestModal({ listing, profile, onClose, onSent }) {
+  const { t } = useTranslation();
+  const [busy, setBusy] = useState(false);
+  const [form, setForm] = useState({
+    name: profile?.name ?? "",
+    email: profile?.email ?? "",
+    phone: profile?.phone ?? "",
+    message: "",
+  });
 
- async function submit(e) {
- e.preventDefault();
- if (!form.name || !form.email) { toast.error(t("marketplace.toast.requiredNameEmail")); return; }
- setBusy(true);
- const { error } = await expressInterest(listing.id, {
- profile_id: profile?.id ?? null,
- name: form.name,
- email: form.email,
- phone: form.phone,
- message: form.message,
- });
- setBusy(false);
- if (error) { toast.error(t("marketplace.toast.failedInterest")); return; }
- onSent();
- }
+  const fld = (k) => (e) => setForm((p) => ({ ...p, [k]: e.target.value }));
 
- return (
- <Modal title={t("marketplace.interest.modalTitle")} onClose={onClose} width={440}>
- <div style={{background:T.surface2,borderRadius:T.r.md,padding:"12px 16px",marginBottom:18}}>
- <div style={{fontWeight:600,fontSize:14}}>{listing.title}</div>
- <div style={{fontSize:13,color:T.muted}}> {listing.location} · {getProfessionLabel(listing.trade, t)}</div>
- </div>
- <form onSubmit={submit}>
- <Field label={t("marketplace.interest.yourName")}>
- <input style={iStyle} value={form.name} onChange={fld("name")} autoFocus/>
- </Field>
- <Field label={t("marketplace.interest.email")}>
- <input type="email" style={iStyle} value={form.email} onChange={fld("email")}/>
- </Field>
- <Field label={t("marketplace.interest.phone")}>
- <input style={iStyle} value={form.phone} onChange={fld("phone")}/>
- </Field>
- <Field label={t("marketplace.interest.message")}>
- <textarea style={{...iStyle,height:80,resize:"vertical"}}
- value={form.message} onChange={fld("message")}
- placeholder={t("marketplace.interest.messagePlaceholder")}/>
- </Field>
- <FormActions onCancel={onClose} submitLabel={` ${t("marketplace.interest.sendBtn")}`} loading={busy}/>
- </form>
- </Modal>
- );
+  async function submit(e) {
+    e.preventDefault();
+    if (!form.name || !form.email || !form.message) {
+      toast.error(t("marketplace.toast.requiredInterestFields"));
+      return;
+    }
+
+    setBusy(true);
+    const payload = {
+      listing_id: listing?.id,
+      sender_profile_id: profile?.id,
+      name: form.name,
+      email: form.email,
+      phone: form.phone,
+      message: form.message,
+    };
+
+    const { error } = await expressInterest(payload);
+    setBusy(false);
+
+    if (error) {
+      toast.error(t("marketplace.toast.failedInterest"));
+      return;
+    }
+
+    onSent();
+  }
+
+  return (
+    <Modal
+      title={`${t("marketplace.interest.title")} ${listing?.title ? `— "${listing.title}"` : ""}`}
+      onClose={onClose}
+      width={520}
+    >
+      <form onSubmit={submit}>
+        <div style={{ fontSize: 13, color: T.muted, marginBottom: 16, lineHeight: 1.5 }}>
+          {t("marketplace.interest.prompt")}
+        </div>
+
+        <Field label={t("marketplace.interest.fields.name")}>
+          <input
+            style={iStyle}
+            value={form.name}
+            onChange={fld("name")}
+            placeholder={t("marketplace.interest.placeholders.name")}
+            autoFocus
+          />
+        </Field>
+
+        <FieldRow>
+          <Field label={t("marketplace.interest.fields.email")} flex="1">
+            <input
+              type="email"
+              style={iStyle}
+              value={form.email}
+              onChange={fld("email")}
+              placeholder={t("marketplace.interest.placeholders.email")}
+            />
+          </Field>
+          <Field label={t("marketplace.interest.fields.phone")} flex="1">
+            <input
+              style={iStyle}
+              value={form.phone}
+              onChange={fld("phone")}
+              placeholder={t("marketplace.interest.placeholders.phone")}
+            />
+          </Field>
+        </FieldRow>
+
+        <Field label={t("marketplace.interest.fields.message")}>
+          <textarea
+            style={{ ...iStyle, height: 110, resize: "vertical" }}
+            value={form.message}
+            onChange={fld("message")}
+            placeholder={t("marketplace.interest.placeholders.message")}
+          />
+        </Field>
+
+        <FormActions
+          onCancel={onClose}
+          submitLabel={t("marketplace.interest.sendBtn")}
+          savingLabel={t("marketplace.interest.sending")}
+          loading={busy}
+        />
+      </form>
+    </Modal>
+  );
 }
 
 /* ══════════════════════════════════════════════════════
- SMALL REUSABLE COMPONENTS
+   HELPER COMPONENTS & STYLES
 ══════════════════════════════════════════════════════ */
-function TypeBadge({ type }) {
- const { t } = useTranslation();
- const c = TYPE_COLORS[type] || TYPE_COLORS.demand;
- return (
- <span style={{
- display:"inline-flex",alignItems:"center",gap:5,
- padding:"3px 10px",borderRadius:T.r.full,
- fontSize:12,fontWeight:700,
- background:c.bg,color:c.text,border:`1px solid ${c.border}`,
- }}>
- {TYPE_ICONS[type]} {t(`marketplace.typeLabels.${type}`)}
- </span>
- );
+export function TypeBadge({ type }) {
+  const { t } = useTranslation();
+  const style = TYPE_COLORS[type] || { bg: T.surface2, text: T.muted, border: T.border };
+  const icon = TYPE_ICONS[type] || "";
+
+  return (
+    <span
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        gap: 4,
+        padding: "3px 10px",
+        borderRadius: T.r.full,
+        fontSize: 12,
+        fontWeight: 700,
+        background: style.bg,
+        color: style.text,
+        border: `1px solid ${style.border}`,
+        whiteSpace: "nowrap",
+      }}
+    >
+      {icon && <span>{icon}</span>}
+      {t(`marketplace.types.${type}`)}
+    </span>
+  );
 }
 
 const tagStyle = {
- display:"inline-flex",alignItems:"center",
- padding:"3px 10px",borderRadius:T.r.full,
- fontSize:12,fontWeight:500,
- background:T.surface2,color:T.muted,
+  display: "inline-flex",
+  alignItems: "center",
+  gap: 4,
+  padding: "3px 8px",
+  borderRadius: T.r.sm,
+  background: T.surface2,
+  color: T.muted,
+  fontSize: 12,
+  fontWeight: 500,
 };

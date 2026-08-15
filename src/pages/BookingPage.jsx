@@ -12,12 +12,13 @@ import {
  Field, FieldRow, SectionTitle, Avatar, Empty,
 } from "../components/UI";
 import ServiceEditor from "../components/ServiceEditor";
+import { formatCurrency } from "../lib/currency.js";
 
 const fmtDate = d => { try { return new Date(d).toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"}); } catch { return d||""; } };
-const fmt = n => `£${Number(n||0).toLocaleString("en-GB",{minimumFractionDigits:2})}`;
 
 export default function BookingPage({ profile }) {
  const { t } = useTranslation();
+ const fmt = n => formatCurrency(n, profile?.currency);
  const terms = getTerms(profile?.trade);
  const verticalColor = getVerticalColor(profile?.trade);
  const vertical = getVerticalForProfession(profile?.trade);
@@ -28,6 +29,7 @@ export default function BookingPage({ profile }) {
  const [previewForm, setPreviewForm] = useState({ customer_name:"", customer_email:"", customer_phone:"", preferred_date:"", notes:"" });
  const [previewDone, setPreviewDone] = useState(false);
  const pfld = k => e => setPreviewForm(p=>({...p,[k]:e.target.value}));
+
 
  const load = useCallback(async () => {
  if (!profile?.id) return;

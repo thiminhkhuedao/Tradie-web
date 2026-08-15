@@ -7,9 +7,11 @@ import {
   PageShell, Card, Btn, Badge, Avatar,
   Field, FieldRow, Divider, Toggle, Empty,
 } from "../components/UI";
+import { formatCurrency } from "../lib/currency.js";
 
 import { VERTICALS, getVerticalForProfession, getProfileFields } from "../lib/professions.js";
 import { useTranslation, LANGUAGES } from "../i18n/index.js";
+import { CURRENCY_SYMBOLS } from "../lib/currency.js";
 
 const iStyle = {
   width:"100%",padding:"10px 12px",borderRadius:8,
@@ -20,6 +22,7 @@ const iStyle = {
 
 export default function SettingsPage({ profile, setProfile }) {
   const { t, lang, setLanguage } = useTranslation();
+  const fmt = n => formatCurrency(n, profile?.currency);
   const [tab, setTab] = useState("account");
   const [form, setForm] = useState({
     name:           profile?.name           ?? "",
@@ -28,6 +31,7 @@ export default function SettingsPage({ profile, setProfile }) {
     phone:          profile?.phone          ?? "",
     bio:            profile?.bio            ?? "",
     hourly_rate:    profile?.hourly_rate    ?? "",
+    currency:       profile?.currency       ?? "GBP",
     bank_name:      profile?.bank_name      ?? "",
     sort_code:      profile?.sort_code      ?? "",
     account_number: profile?.account_number ?? "",
@@ -186,6 +190,18 @@ export default function SettingsPage({ profile, setProfile }) {
         {/* ── PAYMENT ── */}
         {tab==="payment" && (
           <Card>
+            <div style={{fontWeight:700,fontSize:15,marginBottom:16}}>{t("settings.currencyTitle")}</div>
+            <Field label={t("settings.currencyLabel")}>
+              <select style={iStyle} value={form.currency} onChange={fld("currency")}>
+                {Object.entries(CURRENCY_SYMBOLS).map(([code, symbol]) => (
+                  <option key={code} value={code}>
+                    {code} ({symbol.trim()})
+                  </option>
+                ))}
+              </select>
+            </Field>
+
+            <Divider/>
             <div style={{fontWeight:700,fontSize:15,marginBottom:16}}>{t("settings.bankDetails")}</div>
             <Field label={t("settings.bankName")}>
               <input style={iStyle} value={form.bank_name} onChange={fld("bank_name")}
@@ -243,69 +259,139 @@ export default function SettingsPage({ profile, setProfile }) {
         )}
 
         {/* ── PLAN ── */}
-        {tab==="plan" && (
-          <div>
-            <Card style={{marginBottom:16}}>
-              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-                <div>
-                  <div style={{fontWeight:700,fontSize:16,marginBottom:6}}>{t("settings.currentPlan")}</div>
-                  <Badge color={profile?.plan==="pro"?"brand":"gray"}>
-                    {profile?.plan==="pro" ? t("common.pro") : t("common.free")}
-                  </Badge>
-                  {profile?.plan==="pro" &&
-                    <span style={{fontSize:13,color:T.green,marginLeft:10}}>· {t("settings.renewsMonthly")}</span>}
-                </div>
-                {profile?.plan==="pro" && <Btn variant="ghost" size="sm">{t("settings.manageBilling")}</Btn>}
-              </div>
-            </Card>
-
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14}}>
-              {[
-                {id:"free", name:t("common.free"), price:"€0/mo",
-                  feats:[t("settings.planFeat1"),t("settings.planFeat2"),t("settings.planFeat3"),t("settings.planFeat4")]},
-                {id:"pro",  name:t("common.pro"),  price:"€29/mo", hi:true,
-                  feats:[t("settings.planFeat5"),t("settings.planFeat6"),t("settings.planFeat7"),
-                         t("settings.planFeat8"),t("settings.planFeat9"),t("settings.planFeat10"),t("settings.planFeat11")]},
-              ].map(p=>(
-                <div key={p.id} style={{
-                  background:T.surface,borderRadius:T.r.lg,
-                  border:p.hi?`2px solid ${T.brand}`:`1px solid ${T.border}`,
-                  padding:24,position:"relative",
-                  ...(profile?.plan===p.id&&{background:T.brandLight}),
-                }}>
-                  {p.hi && (
-                    <div style={{position:"absolute",top:-12,left:"50%",transform:"translateX(-50%)",
-                      background:T.brand,color:"#fff",fontSize:11,fontWeight:800,
-                      padding:"3px 14px",borderRadius:T.r.full,whiteSpace:"nowrap"}}>
-                      {t("settings.mostPopular")}
-                    </div>
-                  )}
-                  <div style={{fontSize:13,fontWeight:700,color:T.muted,
-                    textTransform:"uppercase",letterSpacing:1,marginBottom:4}}>{p.name}</div>
-                  <div style={{fontSize:28,fontWeight:900,letterSpacing:-1,marginBottom:4,
-                    color:p.hi?T.brand:T.text}}>{p.price}</div>
-                  <Divider/>
-                  <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:20}}>
-                    {p.feats.map(f=>(
-                      <div key={f} style={{display:"flex",gap:8,fontSize:13,color:T.muted}}>
-                        <span style={{color:p.hi?T.brand:T.green}}>✓</span>{f}
-                      </div>
-                    ))}
-                  </div>
-                  {profile?.plan===p.id
-                    ? <div style={{textAlign:"center",fontSize:13,fontWeight:700,color:T.brand}}>
-                        {t("settings.currentPlanBadge")}
-                      </div>
-                    : <Btn fullWidth onClick={()=>p.id==="pro"&&toast(t("settings.redirectingStripe"))}>
-                        {p.id==="pro" ? t("settings.upgrade") : t("settings.downgrade")}
-                      </Btn>
-                  }
-                </div>
-              ))}
-            </div>
+{tab === "plan" && (
+  <div>
+    <Card style={{ marginBottom: 16 }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <div>
+          <div style={{ fontWeight: 700, fontSize: 16, marginBottom: 6 }}>
+            {t("settings.currentPlan")}
           </div>
+          <Badge color={profile?.plan === "pro" ? "brand" : "gray"}>
+            {profile?.plan === "pro" ? t("common.pro") : t("common.free")}
+          </Badge>
+          {profile?.plan === "pro" && (
+            <span style={{ fontSize: 13, color: T.green, marginLeft: 10 }}>
+              · {t("settings.renewsMonthly")}
+            </span>
+          )}
+        </div>
+        {profile?.plan === "pro" && (
+          <Btn variant="ghost" size="sm">
+            {t("settings.manageBilling")}
+          </Btn>
         )}
+      </div>
+    </Card>
 
+    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+      {[
+        {
+          id: "free",
+          name: t("common.free"),
+          price: "€0/mo",
+          feats: [
+            t("settings.freeFeatServices"),     // e.g., "Basic service management"
+            t("settings.freeFeatCerts"),        // e.g., "Up to 2 certifications displayed"
+            t("settings.freeFeatBooking"),      // e.g., "Standard public booking link"
+            t("settings.freeFeatSupport"),      // e.g., "Community support"
+          ],
+        },
+        {
+          id: "pro",
+          name: t("common.pro"),
+          price: "€10/mo",
+          hi: true,
+          feats: [
+            t("settings.proFeatServices"),      // e.g., "Unlimited services & custom options"
+            t("settings.proFeatCerts"),         // e.g., "Unlimited certifications & badges"
+            t("settings.proFeatCustomDomain"),  // e.g., "Custom branding & custom slug"
+            t("settings.proFeatPrioritySlot"),  // e.g., "Advanced slot & availability controls"
+            t("settings.proFeatAnalytics"),     // e.g., "Client request & booking analytics"
+            t("settings.proFeatSupport"),       // e.g., "Priority support"
+          ],
+        },
+      ].map((p) => (
+        <div
+          key={p.id}
+          style={{
+            background: T.surface,
+            borderRadius: T.r.lg,
+            border: p.hi ? `2px solid ${T.brand}` : `1px solid ${T.border}`,
+            padding: 24,
+            position: "relative",
+            ...(profile?.plan === p.id && { background: T.brandLight }),
+          }}
+        >
+          {p.hi && (
+            <div
+              style={{
+                position: "absolute",
+                top: -12,
+                left: "50%",
+                transform: "translateX(-50%)",
+                background: T.brand,
+                color: "#fff",
+                fontSize: 11,
+                fontWeight: 800,
+                padding: "3px 14px",
+                borderRadius: T.r.full,
+                whiteSpace: "nowrap",
+              }}
+            >
+              {t("settings.mostPopular")}
+            </div>
+          )}
+          <div
+            style={{
+              fontSize: 13,
+              fontWeight: 700,
+              color: T.muted,
+              textTransform: "uppercase",
+              letterSpacing: 1,
+              marginBottom: 4,
+            }}
+          >
+            {p.name}
+          </div>
+          <div
+            style={{
+              fontSize: 28,
+              fontWeight: 900,
+              letterSpacing: -1,
+              marginBottom: 4,
+              color: p.hi ? T.brand : T.text,
+            }}
+          >
+            {p.price}
+          </div>
+          <Divider />
+          <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 20 }}>
+            {p.feats.map((f) => (
+              <div key={f} style={{ display: "flex", gap: 8, fontSize: 13, color: T.muted }}>
+                <span style={{ color: p.hi ? T.brand : T.green }}>✓</span>
+                {f}
+              </div>
+            ))}
+          </div>
+          {profile?.plan === p.id ? (
+            <div style={{ textAlign: "center", fontSize: 13, fontWeight: 700, color: T.brand }}>
+              {t("settings.currentPlanBadge")}
+            </div>
+          ) : (
+            <Btn
+              fullWidth
+              onClick={() => p.id === "pro" && toast(t("settings.redirectingStripe"))}
+            >
+              {p.id === "pro" ? t("settings.upgrade") : t("settings.downgrade")}
+            </Btn>
+          )}
+        </div>
+      ))}
+    </div>
+  </div>
+)}
+               
         {/* ── LANGUAGE ── */}
         {tab==="language" && (
           <Card>

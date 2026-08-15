@@ -9,8 +9,9 @@ import {
   Table, TD, Modal, ConfirmModal,
   Field, FieldRow, FormActions, SectionTitle, InfoRow, Empty,
 } from "../components/UI";
+import UpgradeModal from "../components/UpgradeModal"; // ✅ Import de la modale d'upgrade
+import { formatCurrency } from "../lib/currency.js";
 
-const fmt     = n => `€${Number(n||0).toLocaleString("en-GB",{minimumFractionDigits:2,maximumFractionDigits:2})}`;
 const fmtDate = d => { try { return new Date(d).toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"}); } catch { return d||"—"; }};
 
 const iStyle = {
@@ -22,19 +23,28 @@ const iStyle = {
 
 const AV_COLORS = ["#E8500A","#1A7F4B","#7C3AED","#0369A1","#B45309","#BE185D","#0F766E","#C2410C"];
 
-export default function ClientsPage({ profile }) {
+export default function ClientsPage({ profile, onUpgradeClick }) {
   const { t } = useTranslation();
-  const [clients,  setClients]  = useState([]);
-  const [jobs,     setJobs]     = useState([]);
-  const [invoices, setInvoices] = useState([]);
-  const [loading,  setLoading]  = useState(true);
-  const [selected, setSelected] = useState(null);
-  const [search,   setSearch]   = useState("");
-  const [modal,    setModal]    = useState(null); // null | "add" | "edit"
-  const [delId,    setDelId]    = useState(null);
-  const [busy,     setBusy]     = useState(false);
-  const [form,     setForm]     = useState({});
+  const fmt = n => formatCurrency(n, profile?.currency);
+
+  const [clients,   setClients]   = useState([]);
+  const [jobs,      setJobs]      = useState([]);
+  const [invoices,  setInvoices]  = useState([]);
+  const [loading,   setLoading]   = useState(true);
+  const [selected,  setSelected]  = useState(null);
+  const [search,    setSearch]    = useState("");
+  const [modal,     setModal]     = useState(null); // null | "add" | "edit"
+  const [delId,     setDelId]     = useState(null);
+  const [busy,      setBusy]      = useState(false);
+  const [form,      setForm]      = useState({});
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false); // ✅ State pour la modale upgrade
+
   const fld = k => e => setForm(p=>({...p,[k]:e.target.value}));
+
+  // ✅ Gestion des limites du plan Free
+  const isPro = profile?.plan === "pro";
+  const clientsCount = clients.length;
+  const isClientLimitReached = !isPro && clientsCount >= 5;
 
   const load = useCallback(async () => {
     if (!profile?.id) return;
@@ -52,7 +62,7 @@ export default function ClientsPage({ profile }) {
 
   useEffect(() => { load(); }, [load]);
 
-  const filtered   = clients.filter(c=>
+  const filtered = clients.filter(c=>
     c.name.toLowerCase().includes(search.toLowerCase()) ||
     (c.email||"").toLowerCase().includes(search.toLowerCase())
   );
@@ -61,7 +71,16 @@ export default function ClientsPage({ profile }) {
   const clientInvoices = selClient ? invoices.filter(i=>(i.client_id??i.client?.id)===selected) : [];
   const clientRevenue  = clientInvoices.filter(i=>i.status==="paid").reduce((s,i)=>s+Number(i.amount),0);
 
-  function openAdd()   { setForm({name:"",email:"",phone:"",address:"",notes:""}); setModal("add"); }
+  // ✅ Handler sécurisé avec Hard Block
+  function handleOpenAddClient() {
+    if (isClientLimitReached) {
+      setShowUpgradeModal(true);
+      return;
+    }
+    setForm({name:"",email:"",phone:"",address:"",notes:""});
+    setModal("add");
+  }
+
   function openEdit(c) { setForm({...c}); setModal("edit"); }
 
   async function save(e) {
@@ -96,7 +115,31 @@ export default function ClientsPage({ profile }) {
   }
 
   return (
-    <PageShell title={t("nav.clients")} action={<Btn size="sm" onClick={openAdd}>+ {t("clients.addClient")}</Btn>}>
+    <PageShell 
+      title={t("nav.clients")} 
+      action={
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          {/* ✅ Affichage de la jauge pour les utilisateurs Free */}
+          {!isPro && (
+            <span style={{ fontSize: 13, color: isClientLimitReached ? T.amber : T.muted, fontWeight: 600 }}>
+              {clientsCount}/5 clients
+            </span>
+          )}
+          <Btn size="sm" onClick={handleOpenAddClient}>+ {t("clients.addClient")}</Btn>
+        </div>
+      }
+    >
+
+      {/* ✅ Modale de limitation d'upgrade */}
+      {showUpgradeModal && (
+        <UpgradeModal 
+          onClose={() => setShowUpgradeModal(false)} 
+          onUpgrade={() => {
+            setShowUpgradeModal(false);
+            if (onUpgradeClick) onUpgradeClick();
+          }} 
+        />
+      )}
 
       {/* Add / Edit modal */}
       {(modal==="add"||modal==="edit") && (
@@ -147,7 +190,7 @@ export default function ClientsPage({ profile }) {
               <div style={{textAlign:"center",padding:48,color:T.muted}}>{t("clients.loading")}</div>
             ) : filtered.length===0 ? (
               <Empty icon="👥" message={t("clients.noneYet")}
-                action={<Btn size="sm" onClick={openAdd}>+ {t("clients.addFirst")}</Btn>}/>
+                action={<Btn size="sm" onClick={handleOpenAddClient}>+ {t("clients.addFirst")}</Btn>}/>
             ) : (
               <Table headers={[t("clients.colClient"),t("clients.colContact"),t("clients.colJobs"),t("clients.colRevenue"),""]}>
                 {filtered.map((c,idx)=>{

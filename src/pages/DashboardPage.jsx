@@ -5,12 +5,13 @@ import { T } from "../styles/tokens";
 import { useTranslation } from "../i18n/index.js";
 import { copyToClipboard } from "../lib/clipboard";
 import { PageShell, MetricCard, Card, Badge, Btn, SectionTitle, Avatar, Empty } from "../components/UI";
+import { formatCurrency } from "../lib/currency.js";
 
-const fmt = n => `€${Number(n||0).toLocaleString("en-GB",{minimumFractionDigits:2,maximumFractionDigits:2})}`;
 const fmtDate = d => { try { return new Date(d).toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"}); } catch { return ""; }};
 
 export default function DashboardPage({ profile, setPage, state, dispatch, toast }) {
  const { t } = useTranslation();
+ const fmt = n => formatCurrency(n, profile?.currency);
  const [jobs, setJobs] = useState(state?.jobs || []);
  const [invoices, setInvoices] = useState(state?.invoices || []);
  const [clients, setClients] = useState(state?.clients || []);

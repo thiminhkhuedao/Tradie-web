@@ -1,6 +1,7 @@
 // src/lib/db.js
 
-export { supabase } from "./supabase";
+import { supabase } from "./supabase";
+export { supabase };
 
 /* ── helpers ─────────────────────────────────────── */
 const handle = async (query) => {

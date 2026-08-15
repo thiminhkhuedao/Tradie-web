@@ -10,8 +10,8 @@ import {
   PageShell, Card, Btn, Badge, Empty,
   Modal, Field, FormActions, SectionTitle, Divider,
 } from "../components/UI";
+import { formatCurrency } from "../lib/currency.js";
 
-const fmt = n => `£${Number(n||0).toFixed(2)}`;
 const fmtDate = d => { try { return new Date(d).toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"}); } catch { return "—"; }};
 
 function Stars({ rating, size = 16 }) {
@@ -26,7 +26,8 @@ function Stars({ rating, size = 16 }) {
 
 export default function ReviewsPage({ state, dispatch, profile }) {
   const { t } = useTranslation();
-  const [modal,   setModal]   = useState(null); // null|"request"|"add_manual"
+  const fmt = n => formatCurrency(n, profile?.currency);
+  const [modal,   setModal]   = useState(null); 
   const [selJob,  setSelJob]  = useState("");
   const [form,    setForm]    = useState({ client_name:"", client_email:"", client_phone:"", rating:5, title:"", body:"" });
   const fld = k => e => setForm(p=>({...p,[k]:e.target.value}));

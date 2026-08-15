@@ -1,4 +1,25 @@
-
+/**
+ * Supabase Edge Function: stripe-connect
+ *
+ * Was called from db.js (getStripeConnectUrl) but never actually
+ * existed as a deployed function — every "Connect Stripe" click was
+ * a silent 404. This creates it.
+ *
+ * Deploy:
+ *   supabase functions deploy stripe-connect
+ *
+ * Set secrets (same Stripe key already used by the other functions):
+ *   supabase secrets set STRIPE_SECRET_KEY=sk_live_...
+ *
+ * Called with: { profileId, returnUrl }
+ * Returns:     { url }  — redirect the browser here to start onboarding
+ *
+ * Uses fetch() directly against Stripe's REST API instead of the
+ * `stripe` npm SDK — see the comment at the top of
+ * create-payment-link/index.ts and stripe-webhook/index.ts for why
+ * (Deno.core.runMicrotasks() is not supported in Supabase's current
+ * Edge Runtime, which breaks the SDK).
+ */
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const CORS = {
@@ -92,7 +113,8 @@ Deno.serve(async (req) => {
 
     return new Response(JSON.stringify({ url: accountLink.url }), { headers: CORS });
   } catch (err) {
-    console.error("stripe-connect error:", err.message);
-    return new Response(JSON.stringify({ error: err.message }), { status: 500, headers: CORS });
+    const message = err instanceof Error ? err.message : String(err);
+    console.error("stripe-connect error:", message);
+    return new Response(JSON.stringify({ error: message }), { status: 500, headers: CORS });
   }
 });

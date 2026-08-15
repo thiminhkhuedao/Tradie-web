@@ -1,3 +1,18 @@
+/**
+ * Supabase Edge Function: create-payment-link
+ * Deploy:   supabase functions deploy create-payment-link
+ * Secrets:  STRIPE_SECRET_KEY, APP_URL
+ *
+ * Calls Stripe's REST API directly via fetch() instead of the
+ * `stripe` npm SDK. The SDK (even loaded via esm.sh?target=deno)
+ * pulls in Node compatibility shims that call
+ * Deno.core.runMicrotasks() internally — an API Supabase's Edge
+ * Runtime has since removed, causing every invocation to fail with:
+ *   "Deno.core.runMicrotasks() is not supported in this environment"
+ * Stripe's API is plain HTTP, so calling it directly with fetch()
+ * sidesteps the whole SDK/Deno-compat problem — and is immune to
+ * future Deno runtime upgrades breaking this again.
+ */
 
 const CORS = {
   "Access-Control-Allow-Origin":  "*",
@@ -5,6 +20,11 @@ const CORS = {
   "Content-Type": "application/json",
 };
 
+// Stripe's API expects application/x-www-form-urlencoded with
+// bracket notation for nested objects/arrays (e.g.
+// `line_items[0][price_data][currency]=gbp`). This flattens a plain
+// JS object into that format so we don't have to hand-write every
+// field as a string.
 function toStripeParams(obj: unknown, prefix = ""): [string, string][] {
   const pairs: [string, string][] = [];
 
@@ -73,7 +93,7 @@ Deno.serve(async (req) => {
       after_completion: {
         type: "redirect",
         redirect: {
-          url: `${Deno.env.get("APP_URL") ?? "https://Vimen.app"}/paid?invoice=${invoiceId}`,
+          url: `${Deno.env.get("APP_URL") ?? "https://tradie.app"}/paid?invoice=${invoiceId}`,
         },
       },
       metadata: {
@@ -87,7 +107,8 @@ Deno.serve(async (req) => {
 
     return new Response(JSON.stringify({ url: link.url, id: link.id }), { headers: CORS });
   } catch (err) {
-    console.error("create-payment-link error:", err.message);
-    return new Response(JSON.stringify({ error: err.message }), { status: 500, headers: CORS });
+    const message = err instanceof Error ? err.message : String(err);
+    console.error("create-payment-link error:", message);
+    return new Response(JSON.stringify({ error: message }), { status: 500, headers: CORS });
   }
 });

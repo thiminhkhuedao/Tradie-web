@@ -4,8 +4,8 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import { Toaster, toast } from "react-hot-toast";
 import Sidebar          from "./components/Sidebar";
 import { ToastStack }   from "./components/UI";
-import {  useSignIn,  useSignUp,  useAuth, useClerk } from "@clerk/clerk-react";
-import { setClerkTokenGetter } from "./lib/supabase";
+import {  useSignIn,  useSignUp,  useAuth, useClerk, useUser } from "@clerk/clerk-react";
+import { setClerkTokenGetter, supabase } from "./lib/supabase";
 
 // Marketing / logged-out
 import HomePage         from "./pages/HomePage";
@@ -429,7 +429,8 @@ function DemoAppShell() {
 
 /* ── Clerk-gated app (real auth) ────────────────────── */
 function ClerkGatedApp() {
-  const { isLoaded, isSignedIn, getToken } = useAuth();
+  const { isLoaded, isSignedIn, getToken, userId } = useAuth();
+const { user } = useUser();
   const navigate = useNavigate();
 
   useEffect(() => {

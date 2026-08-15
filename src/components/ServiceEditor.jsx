@@ -13,12 +13,14 @@ import {
   Card, Btn, Field, FieldRow, Input, Textarea, Toggle,
   Modal, ConfirmModal, FormActions, Empty, SectionTitle,
 } from "./UI";
+import { formatCurrency } from "../lib/currency.js";
 
 const fmt = n => `€${Number(n||0).toLocaleString("en-GB",{minimumFractionDigits:2})}`;
 
 const EMPTY_FORM = { name:"", price:"", duration_min:"", description:"", image_url:null };
 
 export default function ServiceEditor({ profile }) {
+  const fmt = n => formatCurrency(n, profile?.currency);
   const { t } = useTranslation();
   const [services, setServices] = useState([]);
   const [loading,  setLoading]  = useState(true);

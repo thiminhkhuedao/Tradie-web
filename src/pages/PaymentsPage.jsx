@@ -8,12 +8,10 @@ import {
  PageShell, Card, Btn, Badge, Table, TD,
  MetricCard, SectionTitle, Divider, Empty,
 } from "../components/UI";
+import { formatCurrency } from "../lib/currency.js";
 
 /* ── helpers ─────────────────────────────────────────── */
-// NOTE: `t` is used throughout this file as the loop variable for individual
-// transaction objects (`transactions.map(t => ...)`), so the i18next
-// translate function is destructured as `tr` instead of `t` to avoid clashes.
-const fmt = n => `€${Number(n||0).toLocaleString("en-GB",{minimumFractionDigits:2,maximumFractionDigits:2})}`;
+
 const fmtDate = d => { try { return new Date(d).toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"}); } catch { return ""; }};
 const fmtTime = d => { try { return new Date(d).toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit"}); } catch { return ""; }};
 const pct = (a,b) => b>0 ? `${((a/b)*100).toFixed(1)}%` : "";
@@ -33,6 +31,7 @@ const STATUS_BADGE = {
 ══════════════════════════════════════════════════════ */
 export default function PaymentsPage({ profile, state, dispatch }) {
  const { t: tr } = useTranslation();
+ const fmt = n => formatCurrency(n, profile?.currency);
  const [tab, setTab] = useState("overview");
 
  // Pull from local demo state (swapped for real Supabase calls when connected)
