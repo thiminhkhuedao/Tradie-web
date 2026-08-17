@@ -28,15 +28,19 @@ function copyToClipboard(text) {
   if (navigator?.clipboard?.writeText) {
     return navigator.clipboard.writeText(text);
   }
-  const el = document.createElement("textarea");
-  el.value = text;
-  el.style.position = "fixed";
-  el.style.opacity = "0";
-  document.body.appendChild(el);
-  el.select();
-  document.execCommand("copy");
-  document.body.removeChild(el);
-  return Promise.resolve();
+  try {
+    const el = document.createElement("textarea");
+    el.value = text;
+    el.style.position = "fixed";
+    el.style.opacity = "0";
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand("copy");
+    document.body.removeChild(el);
+    return Promise.resolve();
+  } catch (err) {
+    return Promise.reject(err);
+  }
 }
 
 export default function BookingPage({ profile }) {
@@ -222,7 +226,7 @@ export default function BookingPage({ profile }) {
                   </div>
                   <div style={{ display: "flex", gap: 12, marginTop: 8, fontSize: 13, color: T.muted }}>
                     <span>{vertical.id === "professional" ? t("booking.registered") : vertical.id === "beauty" ? t("booking.qualifiedInsured") : t("booking.fullyQualified")}</span>
-                    <span>⭐ {profile?.reviews_count > 0 ? `${profile.reviews_count} ${t("booking.reviewsLabel")}` : ""}</span>
+                    <span> {profile?.reviews_count > 0 ? `${profile.reviews_count} ${t("booking.reviewsLabel")}` : ""}</span>
                   </div>
                 </div>
               </div>
@@ -301,7 +305,9 @@ export default function BookingPage({ profile }) {
                 </div>
                 <Btn variant="ghost" onClick={() => {
                   const url = `https://Vimen.app/b/${profile?.booking_slug}`;
-                  copyToClipboard(url).then(() => toast.success(t("booking.linkCopied")));
+                  copyToClipboard(url)
+                    .then(() => toast.success(t("booking.linkCopied")))
+                    .catch(() => toast.error(t("booking.copyError") || "Impossible de copier le lien"));
                 }}>{t("booking.copyLink")}</Btn>
               </div>
               <p style={{ fontSize: 13, color: T.muted, lineHeight: 1.6 }}>

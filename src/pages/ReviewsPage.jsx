@@ -1,5 +1,7 @@
-// Reviews are the moat. 100K verified reviews = impossible to replicate.
-// Features: request reviews after jobs, track ratings, push to Google.
+/* ══════════════════════════════════════════════════════
+  src/pages/ReviewsPage.jsx (Cleaned: No Icons/Emojis)
+══════════════════════════════════════════════════════ */
+
 import { useState } from "react";
 import { useTranslation } from "../i18n/index.js";
 import { toast } from "react-hot-toast";
@@ -68,36 +70,63 @@ export default function ReviewsPage({ state, dispatch, profile }) {
   async function sendRequest() {
     const job = jobs.find(j => j.id === selJob);
     if (!job) { 
-      toast.error(t("reviews.toast.selectCompletedJob")); 
-      return; 
-    }
-    const cl = getClient(job.client_id);
-    if (!cl?.email) { 
-      toast.error(t("reviews.toast.noClientEmail")); 
+      toast.error(t("reviews.toast.selectCompletedJob") || "Veuillez sélectionner une intervention"); 
       return; 
     }
 
-    const tid = toast.loading(t("reviews.toast.sendingRequest"));
+    const cl = getClient(job.client_id);
+    
+    const hasEmail = Boolean(cl?.email);
+    const hasPhone = Boolean(cl?.phone);
+
+    if (!hasEmail && !hasPhone) { 
+      toast.error(t("reviews.toast.noContactInfo") || "Le client n'a aucun email ni numéro de téléphone valide."); 
+      return; 
+    }
+
+    const messageBody = t("reviews.requestModal.smsTemplate", {
+      clientName: cl?.name ?? t("reviews.fallback.clientBracket"),
+      jobTitle: job?.title ?? t("reviews.fallback.work"),
+      urlPreview: googleUrl,
+      profileName: profile?.name,
+    });
+
+    const tid = toast.loading(t("reviews.toast.sendingRequest") || "Envoi de la demande...");
+    
     try {
-      // Secure backend / edge function call pattern replaces dangerous client-side API keys
       const { error } = await supabase.functions.invoke("send-review-request", {
         body: {
-          to: cl.email,
+          toEmail: cl.email || null,
+          toPhone: cl.phone || null,
           clientName: cl.name,
           profileName: profile?.name,
           googleUrl: googleUrl,
+          message: messageBody,
         },
       });
 
       if (error) throw error;
 
       toast.dismiss(tid);
-      toast.success(t("reviews.toast.requestSent", { name: cl?.name ?? "" }));
+      toast.success(t("reviews.toast.requestSent", { name: cl?.name ?? "" }) || "Demande envoyée !");
       setModal(null);
+
     } catch (err) {
       toast.dismiss(tid);
-      toast.error(t("reviews.toast.sendFailed"));
-      console.error("[review request]", err);
+      console.warn("[Review Request Edge Function failed/missing]:", err);
+
+      if (hasEmail) {
+        const mailtoUrl = `mailto:${cl.email}?subject=${encodeURIComponent("Avis sur notre intervention")}&body=${encodeURIComponent(messageBody)}`;
+        window.open(mailtoUrl, "_blank");
+        toast.success("Client Mail ouvert avec le message prêt !");
+      } else if (hasPhone) {
+        if (navigator.clipboard) {
+          await navigator.clipboard.writeText(messageBody);
+          toast.success("Texte copié ! Envoyez-le par SMS au " + cl.phone);
+        }
+      }
+      
+      setModal(null);
     }
   }
 
@@ -135,11 +164,10 @@ export default function ReviewsPage({ state, dispatch, profile }) {
       action={
         <div style={{ display: "flex", gap: 10 }}>
           <Btn variant="ghost" size="sm" onClick={() => setModal("add_manual")}>{t("reviews.addManuallyBtn")}</Btn>
-          <Btn size="sm" onClick={() => setModal("request")}>📱 {t("reviews.requestReviewBtn")}</Btn>
+          <Btn size="sm" onClick={() => setModal("request")}>{t("reviews.requestReviewBtn")}</Btn>
         </div>
       }
     >
-      {/* Request review modal */}
       {modal === "request" && (
         <Modal title={t("reviews.requestModal.title")} onClose={() => setModal(null)} width={440}>
           <div style={{ fontSize: 13, color: T.muted, marginBottom: 16, lineHeight: 1.6 }}>
@@ -157,18 +185,27 @@ export default function ReviewsPage({ state, dispatch, profile }) {
           {selJob && (() => {
             const job = jobs.find(j => j.id === selJob);
             const cl = getClient(job?.client_id);
+            const hasContact = cl?.email || cl?.phone;
             return (
-              <div style={{ background: T.surface2, borderRadius: T.r.md, padding: "12px 14px", marginBottom: 14, fontSize: 13 }}>
-                <div style={{ fontWeight: 700, marginBottom: 4 }}>{t("reviews.requestModal.smsPreviewTitle")}</div>
-                <div style={{ color: T.muted, fontStyle: "italic", lineHeight: 1.6 }}>
-                  {t("reviews.requestModal.smsTemplate", {
-                    clientName: cl?.name ?? t("reviews.fallback.clientBracket"),
-                    jobTitle: job?.title ?? t("reviews.fallback.work"),
-                    urlPreview: googleUrl.slice(0, 30),
-                    profileName: profile?.name,
-                  })}
+              <>
+                <div style={{ background: T.surface2, borderRadius: T.r.md, padding: "12px 14px", marginBottom: 14, fontSize: 13 }}>
+                  <div style={{ fontWeight: 700, marginBottom: 4 }}>{t("reviews.requestModal.smsPreviewTitle")}</div>
+                  <div style={{ color: T.muted, fontStyle: "italic", lineHeight: 1.6 }}>
+                    {t("reviews.requestModal.smsTemplate", {
+                      clientName: cl?.name ?? t("reviews.fallback.clientBracket"),
+                      jobTitle: job?.title ?? t("reviews.fallback.work"),
+                      urlPreview: googleUrl.slice(0, 30),
+                      profileName: profile?.name,
+                    })}
+                  </div>
                 </div>
-              </div>
+
+                <div style={{ fontSize: 12, marginBottom: 14, color: hasContact ? T.green : T.red }}>
+                  {cl?.email && `Email: ${cl.email} `}
+                  {cl?.phone && `Tel: ${cl.phone}`}
+                  {!hasContact && "Aucun email ni numéro de téléphone associé à ce client."}
+                </div>
+              </>
             );
           })()}
           <div style={{ display: "flex", gap: 10, justifyContent: "flex-end", paddingTop: 14, borderTop: `1px solid ${T.border}` }}>
@@ -178,7 +215,6 @@ export default function ReviewsPage({ state, dispatch, profile }) {
         </Modal>
       )}
 
-      {/* Add manual review */}
       {modal === "add_manual" && (
         <Modal title={t("reviews.manualModal.title")} onClose={() => setModal(null)}>
           <div style={{ fontSize: 13, color: T.muted, marginBottom: 14 }}>
@@ -210,7 +246,6 @@ export default function ReviewsPage({ state, dispatch, profile }) {
         </Modal>
       )}
 
-      {/* Metrics & Rating Breakdown */}
       <div style={{ display: "flex", gap: 12, marginBottom: 20 }}>
         <div style={{ background: T.surface, borderRadius: T.r.lg, border: `1px solid ${T.border}`, padding: "20px 24px", display: "flex", alignItems: "center", gap: 20, flex: 1 }}>
           <div style={{ textAlign: "center" }}>
@@ -238,12 +273,11 @@ export default function ReviewsPage({ state, dispatch, profile }) {
 
         <div style={{ display: "flex", flexDirection: "column", gap: 12, flex: 1 }}>
           {[
-            { label: t("reviews.metrics.verifiedReviews"), val: verified, sub: t("reviews.metrics.onYourProfile"), icon: "✅" },
-            { label: t("reviews.metrics.googleClicks"), val: googleClicks, sub: t("reviews.metrics.tappedGoogleLink"), icon: "🔍" },
-            { label: t("reviews.metrics.jobsWithNoReview"), val: jobs.length - reviews.length, sub: t("reviews.metrics.couldRequestReview"), icon: "📱" },
+            { label: t("reviews.metrics.verifiedReviews"), val: verified, sub: t("reviews.metrics.onYourProfile") },
+            { label: t("reviews.metrics.googleClicks"), val: googleClicks, sub: t("reviews.metrics.tappedGoogleLink") },
+            { label: t("reviews.metrics.jobsWithNoReview"), val: jobs.length - reviews.length, sub: t("reviews.metrics.couldRequestReview") },
           ].map(m => (
             <div key={m.label} style={{ background: T.surface, borderRadius: T.r.lg, border: `1px solid ${T.border}`, padding: "12px 16px", display: "flex", alignItems: "center", gap: 12 }}>
-              <span style={{ fontSize: 22 }}>{m.icon}</span>
               <div>
                 <div style={{ fontSize: 22, fontWeight: 800 }}>{m.val}</div>
                 <div style={{ fontSize: 11, fontWeight: 700, color: T.muted, textTransform: "uppercase", letterSpacing: "0.5px" }}>{m.label}</div>
@@ -254,19 +288,17 @@ export default function ReviewsPage({ state, dispatch, profile }) {
         </div>
       </div>
 
-      {/* Google Business Callout */}
       <div style={{ background: T.blueBg, border: `1px solid ${T.blue}30`, borderRadius: T.r.lg, padding: "14px 20px", marginBottom: 20, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <div>
-          <div style={{ fontWeight: 700, color: T.blue, marginBottom: 2 }}>🔍 {t("reviews.googleCta.title")}</div>
+          <div style={{ fontWeight: 700, color: T.blue, marginBottom: 2 }}>{t("reviews.googleCta.title")}</div>
           <div style={{ fontSize: 13, color: T.muted }}>{t("reviews.googleCta.description")}</div>
         </div>
         <Btn variant="ghost" size="sm" onClick={() => window.open("https://business.google.com", "_blank")}>{t("reviews.googleCta.openBtn")}</Btn>
       </div>
 
-      {/* Reviews List */}
       <Card style={{ padding: 0, overflow: "hidden" }}>
         {reviews.length === 0 ? (
-          <Empty icon="⭐" message={t("reviews.list.empty")} action={<Btn size="sm" onClick={() => setModal("request")}>{t("reviews.list.requestFirst")}</Btn>} />
+          <Empty message={t("reviews.list.empty")} action={<Btn size="sm" onClick={() => setModal("request")}>{t("reviews.list.requestFirst")}</Btn>} />
         ) : (
           reviews.map(r => (
             <div key={r.id} style={{ padding: "18px 24px", borderBottom: `1px solid ${T.border}` }}>
@@ -298,7 +330,7 @@ export default function ReviewsPage({ state, dispatch, profile }) {
                       toast.success(t("reviews.toast.markedPushedToGoogle")); 
                     }}
                   >
-                    🔍 {t("reviews.list.askClientToPostBtn")}
+                    {t("reviews.list.askClientToPostBtn")}
                   </Btn>
                 </div>
               )}

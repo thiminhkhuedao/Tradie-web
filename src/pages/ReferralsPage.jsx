@@ -95,24 +95,39 @@ export default function ReferralsPage({ state, dispatch, profile }) {
       return;
     }
 
-    // 2. Dispatch secure invitation email request via Edge Function / Endpoint
+    // 2. Dispatch secure invitation email request via Edge Function
+    let emailSent = false;
     try {
-      await supabase.functions.invoke("send-referral-email", {
+      const { error: fnError } = await supabase.functions.invoke("send-referral-email", {
         body: {
           to: form.email,
           referredName: form.name,
           referrerName: profile.name,
           referralCode: code,
+          referralUrl: referralUrl,
         },
       });
+
+      if (fnError) throw fnError;
+      emailSent = true;
     } catch (emailErr) {
-      console.warn("[referral] Email trigger error:", emailErr);
+      console.warn("[referral] Edge function delivery error:", emailErr);
     }
 
-    // 3. Update local state
+    // 3. Update local state & provide fallback if function failed
     dispatch({ type: "ADD_REFERRAL", payload: data });
     toast.dismiss(tid);
-    toast.success(t("referrals.toast.referralSent", { email: form.email }));
+
+    if (emailSent) {
+      toast.success(t("referrals.toast.referralSent", { email: form.email }));
+    } else {
+      // Fallback: Trigger client mail protocol if Edge Function fails
+      const subject = encodeURIComponent(`Invitation from ${profile?.name || "a friend"}`);
+      const body = encodeURIComponent(`Hi ${form.name || ""},\n\nUse my referral link to sign up: ${referralUrl}`);
+      window.open(`mailto:${form.email}?subject=${subject}&body=${body}`, "_blank");
+      toast.success("Saved to database! Opening email app to complete delivery...");
+    }
+
     setForm({ name: "", email: "" });
     setModal(false);
   }

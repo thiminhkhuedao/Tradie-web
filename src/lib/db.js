@@ -29,10 +29,6 @@ export const createProfile = (clerkId, { name, email, trade = "" }) => {
   );
 };
 
-export const updateProfile = (clerkId, updates) =>
-  handle(
-    supabase.from("profiles").update(updates).eq("clerk_id", clerkId).select().single()
-  );
 
 /* ══════════════════════════════════════════════════
    CLIENTS
@@ -439,4 +435,18 @@ export const getReferrals = (profileId) =>
 export const createReferral = (referrerId, email, name) => {
   const code = `TRD-${Math.random().toString(36).slice(2,8).toUpperCase()}`;
   return handle(supabase.from("referrals").insert({ referrer_id:referrerId, referral_code:code, referred_email:email, referred_name:name }).select().single());
+};
+
+export const updateProfile = async (identifier, data) => {
+  // Détermine si on cherche par id interne ou par clerk_id
+  const column = identifier.includes("-") ? "id" : "clerk_id";
+  
+  const { data: updatedData, error } = await supabase
+    .from("profiles")
+    .update(data)
+    .eq(column, identifier) // Utilise la variable "column" au lieu d'une valeur en dur
+    .select()
+    .single();
+
+  return { data: updatedData, error };
 };

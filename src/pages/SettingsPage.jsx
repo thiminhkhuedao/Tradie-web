@@ -1,14 +1,17 @@
-import { useState } from "react";
+// src/pages/SettingsPage.jsx
+
+import { useState, useEffect, useContext } from "react";
 import { toast } from "react-hot-toast";
-import { updateProfile } from "../lib/db";
+import { updateProfile, uploadImage } from "../lib/db";
 import { T } from "../styles/tokens";
 import {
   PageShell, Card, Btn, Badge, Avatar,
-  Field, FieldRow, Divider, Toggle, Empty,
+  Field, FieldRow, Divider, Toggle,
 } from "../components/UI";
-import { formatCurrency, CURRENCY_SYMBOLS } from "../lib/currency.js";
+import { CURRENCY_SYMBOLS } from "../lib/currency.js";
 import { VERTICALS, getVerticalForProfession, getProfileFields } from "../lib/professions.js";
 import { useTranslation, LANGUAGES } from "../i18n/index.js";
+import { AppCtx } from "../lib/state.jsx";
 
 const INPUT_STYLE = {
   width: "100%",
@@ -22,10 +25,16 @@ const INPUT_STYLE = {
   fontFamily: "inherit",
 };
 
-export default function SettingsPage({ profile, setProfile }) {
+export default function SettingsPage({ profile, setProfile, dispatch }) {
   const { t, lang, setLanguage } = useTranslation();
+  const context = useContext(AppCtx);
+  
+  const activeDispatch = dispatch || context?.dispatch;
+  const refresh = context?.refresh;
+
   const [tab, setTab] = useState("account");
   const [saving, setSaving] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
 
   const [form, setForm] = useState({
     name: profile?.name ?? "",
@@ -47,7 +56,74 @@ export default function SettingsPage({ profile, setProfile }) {
     notif_weekly_digest: profile?.notif_weekly_digest ?? true,
     notif_overdue_reminder: profile?.notif_overdue_reminder ?? true,
     extra_fields: profile?.extra_fields ?? {},
+    avatar_url: profile?.avatar_url ?? "",
   });
+
+  useEffect(() => {
+    if (profile) {
+      setForm({
+        name: profile.name ?? "",
+        trade: profile.trade ?? "",
+        email: profile.email ?? "",
+        phone: profile.phone ?? "",
+        bio: profile.bio ?? "",
+        hourly_rate: profile.hourly_rate ?? "",
+        currency: profile.currency ?? "GBP",
+        bank_name: profile.bank_name ?? "",
+        sort_code: profile.sort_code ?? "",
+        account_number: profile.account_number ?? "",
+        payment_terms: profile.payment_terms ?? "14 days",
+        invoice_notes: profile.invoice_notes ?? "",
+        booking_slug: profile.booking_slug ?? "",
+        google_review_url: profile.google_review_url ?? "",
+        notif_email_booking: profile.notif_email_booking ?? true,
+        notif_sms_paid: profile.notif_sms_paid ?? false,
+        notif_weekly_digest: profile.notif_weekly_digest ?? true,
+        notif_overdue_reminder: profile.notif_overdue_reminder ?? true,
+        extra_fields: profile.extra_fields ?? {},
+        avatar_url: profile.avatar_url ?? "",
+      });
+    }
+  }, [profile]);
+
+  /* ── CAPTURE DU RETOUR OAUTH STRIPE ────────────────── */
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const stripeCode = urlParams.get("code");
+
+    if (stripeCode) {
+      const exchangeCode = async () => {
+        try {
+          toast.loading("Association du compte Stripe en cours...");
+          
+          const targetId = profile?.id || profile?.clerk_id;
+          const response = await fetch("https://<TON_PROJECT_REF>.supabase.co/functions/v1/stripe-connect", {
+            method: "POST",
+            headers: { 
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`
+            },
+            body: JSON.stringify({ code: stripeCode, userId: targetId }),
+          });
+
+          if (!response.ok) throw new Error("Échec de l'association du compte");
+
+          toast.dismiss();
+          toast.success("Compte Stripe connecté avec succès !");
+          
+          if (refresh) await refresh();
+
+          window.history.replaceState({}, document.title, window.location.pathname);
+        } catch (err) {
+          toast.dismiss();
+          toast.error("Erreur lors de la synchronisation avec Stripe");
+          console.error("[Stripe OAuth Error]:", err);
+        }
+      };
+
+      exchangeCode();
+    }
+  }, [profile?.id, profile?.clerk_id, refresh]);
 
   const fields = getProfileFields(form.trade, t);
 
@@ -60,17 +136,106 @@ export default function SettingsPage({ profile, setProfile }) {
     }));
 
   async function save() {
+    const targetId = profile?.id || profile?.clerk_id;
     setSaving(true);
+
     try {
-      const { data, error } = await updateProfile(profile.clerk_id, form);
-      if (error) throw error;
-      setProfile?.(data);
-      toast.success(t("settings.successSave"));
+      let avatarUrl = form.avatar_url;
+      if (selectedFile) {
+        const { data: publicUrl, error: uploadError } = await uploadImage(targetId, selectedFile, "avatars");
+        if (uploadError) throw uploadError;
+        avatarUrl = publicUrl;
+      }
+
+      const payload = {
+        name: form.name,
+        trade: form.trade,
+        email: form.email,
+        phone: form.phone,
+        bio: form.bio,
+        hourly_rate: form.hourly_rate,
+        currency: form.currency,
+        bank_name: form.bank_name,
+        sort_code: form.sort_code,
+        account_number: form.account_number,
+        payment_terms: form.payment_terms,
+        invoice_notes: form.invoice_notes,
+        booking_slug: form.booking_slug,
+        google_review_url: form.google_review_url,
+        notif_email_booking: form.notif_email_booking,
+        notif_sms_paid: form.notif_sms_paid,
+        notif_weekly_digest: form.notif_weekly_digest,
+        notif_overdue_reminder: form.notif_overdue_reminder,
+        extra_fields: form.extra_fields,
+        avatar_url: avatarUrl,
+      };
+
+      let updatedProfile = { ...profile, ...form, avatar_url: avatarUrl };
+
+      if (targetId) {
+        const { data, error } = await updateProfile(targetId, payload);
+        if (error) {
+          // Avant : on loggait juste un warn et on continuait comme si de rien n'était,
+          // ce qui affichait "Modifications enregistrées !" alors que rien n'était en base.
+          throw error;
+        }
+        if (data) updatedProfile = data;
+      } else {
+        console.warn("[Settings save] targetId manquant (profile?.id / profile?.clerk_id) — rien à sauvegarder en base.");
+      }
+
+      if (typeof setProfile === "function") {
+        setProfile(updatedProfile);
+      }
+
+      if (typeof activeDispatch === "function") {
+        activeDispatch({ type: "UPDATE_USER", payload: updatedProfile });
+      }
+
+      if (typeof refresh === "function") {
+        await refresh();
+      }
+      
+      toast.success(t("settings.successSave") || "Modifications enregistrées !");
     } catch (err) {
-      toast.error(t("settings.errorSave"));
-      console.error("[Settings save error]", err);
+      console.error("[Settings save error detailed]:", err);
+      toast.error(t("settings.errorSave") || "Erreur lors de la sauvegarde.");
     } finally {
       setSaving(false);
+    }
+  }
+
+  /* ── PREMIER ENDROIT STRIPE CONNECT (Onglet Payment) ── */
+  async function handleConnectStripe() {
+    const clientId = "ca_XXXXXXXXXXXXXXXXXXXXXXXX"; 
+    const redirectUri = encodeURIComponent(`${window.location.origin}/settings`);
+    const stripeOAuthUrl = `https://connect.stripe.com/oauth/authorize?response_type=code&client_id=${clientId}&scope=read_write&redirect_uri=${redirectUri}`;
+
+    toast.loading(t("settings.redirectingStripe") || "Redirection vers Stripe...");
+    window.location.href = stripeOAuthUrl;
+  }
+
+  async function handleUpgradeStripe() {
+    const userId = profile?.id || profile?.clerk_id;
+    try {
+      toast.loading(t("settings.redirectingStripe") || "Redirection vers Stripe...");
+      const res = await fetch("/api/stripe/create-checkout-session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, email: form.email }),
+      });
+      
+      const data = await res.json();
+      toast.dismiss();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        throw new Error(data.error || "URL Checkout introuvable.");
+      }
+    } catch (err) {
+      toast.dismiss();
+      toast.error("Impossible d'initialiser la redirection Stripe.");
+      console.error("[Stripe checkout error]:", err);
     }
   }
 
@@ -129,7 +294,6 @@ export default function SettingsPage({ profile, setProfile }) {
       </div>
 
       <div style={{ maxWidth: 540 }}>
-        {/* ACCOUNT TAB */}
         {tab === "account" && (
           <Card>
             <div
@@ -142,10 +306,16 @@ export default function SettingsPage({ profile, setProfile }) {
                 borderBottom: `1px solid ${T.border}`,
               }}
             >
-              <Avatar name={form.name || "?"} size={56} />
+              <Avatar name={form.name || "?"} size={56} src={form.avatar_url} />
               <div>
                 <div style={{ fontWeight: 700, fontSize: 16 }}>{form.name || t("settings.yourName")}</div>
-                <div style={{ fontSize: 13, color: T.muted }}>{form.trade}</div>
+                <div style={{ fontSize: 13, color: T.muted, marginBottom: 8 }}>{form.trade}</div>
+                <input 
+                  type="file" 
+                  accept="image/*" 
+                  onChange={(e) => setSelectedFile(e.target.files[0])} 
+                  style={{ fontSize: 12 }}
+                />
               </div>
             </div>
 
@@ -168,24 +338,6 @@ export default function SettingsPage({ profile, setProfile }) {
                     ))}
                   <option value="Other">Other</option>
                 </select>
-                {form.trade && (() => {
-                  const v = getVerticalForProfession(form.trade);
-                  return (
-                    <div style={{ fontSize: 12, color: T.muted, marginTop: 6 }}>
-                      <span
-                        style={{
-                          background: v.color.bg,
-                          color: v.color.text,
-                          borderRadius: 999,
-                          padding: "2px 8px",
-                          fontWeight: 600,
-                        }}
-                      >
-                        {v.icon} {v.label}
-                      </span>
-                    </div>
-                  );
-                })()}
               </Field>
             </FieldRow>
 
@@ -238,7 +390,6 @@ export default function SettingsPage({ profile, setProfile }) {
                 onChange={fld("google_review_url")}
                 placeholder={t("settings.googleReviewUrlPlaceholder")}
               />
-              <div style={{ fontSize: 12, color: T.muted, marginTop: 6 }}>{t("settings.googleReviewUrlHint")}</div>
             </Field>
 
             <Divider />
@@ -268,7 +419,6 @@ export default function SettingsPage({ profile, setProfile }) {
           </Card>
         )}
 
-        {/* PAYMENT TAB */}
         {tab === "payment" && (
           <Card>
             <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 16 }}>{t("settings.currencyTitle")}</div>
@@ -338,7 +488,10 @@ export default function SettingsPage({ profile, setProfile }) {
             <Divider />
             <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 8 }}>Stripe</div>
             <div style={{ fontSize: 13, color: T.muted, marginBottom: 14 }}>{t("settings.stripeDesc")}</div>
-            <Btn variant="ghost">{t("settings.connectStripe")}</Btn>
+            
+            <Btn variant="ghost" onClick={handleConnectStripe}>
+              {t("settings.connectStripe")}
+            </Btn>
 
             <Divider />
             <Btn onClick={save} disabled={saving}>
@@ -347,7 +500,6 @@ export default function SettingsPage({ profile, setProfile }) {
           </Card>
         )}
 
-        {/* NOTIFICATIONS TAB */}
         {tab === "notifs" && (
           <Card>
             <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 16 }}>{t("settings.notifTitle")}</div>
@@ -363,7 +515,6 @@ export default function SettingsPage({ profile, setProfile }) {
           </Card>
         )}
 
-        {/* PLAN TAB */}
         {tab === "plan" && (
           <div>
             <Card style={{ marginBottom: 16 }}>
@@ -381,6 +532,14 @@ export default function SettingsPage({ profile, setProfile }) {
                 </div>
                 {profile?.plan === "pro" && <Btn variant="ghost" size="sm">{t("settings.manageBilling")}</Btn>}
               </div>
+            </Card>
+
+            <Card style={{ marginBottom: 16, background: T.surface2 }}>
+              <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 6 }}>Connexion Stripe Connect</div>
+              <div style={{ fontSize: 13, color: T.muted, marginBottom: 12 }}>Associe ton compte Stripe pour recevoir tes versements.</div>
+              <Btn variant="ghost" size="sm" onClick={handleConnectStripe}>
+                {t("settings.connectStripe") || "Connecter mon compte Stripe"}
+              </Btn>
             </Card>
 
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
@@ -479,7 +638,7 @@ export default function SettingsPage({ profile, setProfile }) {
                   ) : (
                     <Btn
                       fullWidth
-                      onClick={() => p.id === "pro" && toast(t("settings.redirectingStripe"))}
+                      onClick={() => p.id === "pro" && handleUpgradeStripe()}
                     >
                       {p.id === "pro" ? t("settings.upgrade") : t("settings.downgrade")}
                     </Btn>
@@ -490,7 +649,6 @@ export default function SettingsPage({ profile, setProfile }) {
           </div>
         )}
 
-        {/* LANGUAGE TAB */}
         {tab === "language" && (
           <Card>
             <div style={{ fontSize: 15, fontWeight: 700, marginBottom: 6 }}>{t("settings.languageTitle")}</div>

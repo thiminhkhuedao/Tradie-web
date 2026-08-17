@@ -1,12 +1,12 @@
 // src/pages/PaymentsPage.jsx
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { useTranslation } from "../i18n/index.js";
 import { toast } from "react-hot-toast";
 import { T } from "../styles/tokens";
 import {
   PageShell, Card, Btn, Badge, Table, TD,
-  MetricCard, SectionTitle, Divider, Empty,
+  MetricCard, SectionTitle, Empty,
 } from "../components/UI";
 import { formatCurrency } from "../lib/currency.js";
 
@@ -60,14 +60,14 @@ const Accordion = ({ title, children }) => {
   );
 };
 
-// Error State UX Rule (What, Why, Action)
+// Error State UX Rule
 const StructuredError = ({ what, why, action, onRetry }) => (
   <div style={{ padding: 16, backgroundColor: T.redBg || "#fef2f2", border: `1px solid ${T.red || "#dc2626"}40`, borderRadius: T.r.md, color: T.red || "#dc2626", marginBottom: 20 }}>
     <strong style={{ display: "block", marginBottom: 4 }}>{what}</strong>
     <p style={{ margin: "4px 0 8px 0", fontSize: 13 }}>{why}</p>
     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
       <small style={{ fontSize: 12 }}>{action}</small>
-      {onRetry && <Btn size="sm" variant="ghost" onClick={onRetry}>{tr("actions.retry") || "Reessayer"}</Btn>}
+      {onRetry && <Btn size="sm" variant="ghost" onClick={onRetry}>Réessayer</Btn>}
     </div>
   </div>
 );
@@ -75,7 +75,7 @@ const StructuredError = ({ what, why, action, onRetry }) => (
 /* ══════════════════════════════════════════════════════
    MAIN COMPONENT
 ══════════════════════════════════════════════════════ */
-export default function PaymentsPage({ profile, state, dispatch }) {
+export default function PaymentsPage({ profile, state, dispatch, refresh }) {
   const { t: tr } = useTranslation();
   const fmt = n => formatCurrency(n, profile?.currency);
   const [tab, setTab] = useState("overview");
@@ -89,8 +89,7 @@ export default function PaymentsPage({ profile, state, dispatch }) {
   const payouts = state?.payouts ?? [];
 
   const completed = transactions.filter(t => t.status === "completed");
-  const pending = transactions.filter(t => t.status === "pending");
-
+  
   // Stats
   const totalVolume = completed.reduce((s,t) => s + Number(t.gross_amount), 0);
   const totalEarned = completed.reduce((s,t) => s + Number(t.net_amount), 0);
@@ -105,21 +104,71 @@ export default function PaymentsPage({ profile, state, dispatch }) {
   const thisMonth = completed.filter(t => t.paid_at && t.paid_at >= monthStart);
   const thisMonthVol = thisMonth.reduce((s,t) => s + Number(t.gross_amount), 0);
 
-  const isConnected = Boolean(profile?.stripe_customer_id);
+  const isConnected = Boolean(profile?.stripe_customer_id || profile?.stripe_account_id);
 
-  // Optimistic UI Handler example for Account Refresh
+  /* ── STRIPE CONNECT OAUTH STANDARD HANDLER ─────────── */
+  const handleStripeStandardConnect = () => {
+    // ⚠️ Remplace par ton propre Client ID Stripe Connect (Dashboard Stripe > Connect > Paramètres)
+    const clientId = "ca_XXXXXXXXXXXXXXXXXXXXXXXX"; 
+    
+    // URL de retour vers ton application après authentification
+    const redirectUri = encodeURIComponent(`${window.location.origin}/payments`);
+
+    // Construction du lien d'autorisation OAuth Stripe
+    const stripeOAuthUrl = `https://connect.stripe.com/oauth/authorize?response_type=code&client_id=${clientId}&scope=read_write&redirect_uri=${redirectUri}`;
+
+    toast.success(tr("payments.connect.redirectingToast") || "Redirection vers Stripe...");
+    
+    // Redirection de l'utilisateur vers Stripe
+    window.location.href = stripeOAuthUrl;
+  };
+
+  /* ── CAPTURE DU RETOUR D'AUTHENTIFICATION STRIPE ────── */
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const stripeCode = urlParams.get("code");
+
+    if (stripeCode) {
+      const exchangeCode = async () => {
+        setIsLoading(true);
+        try {
+          // Appel à ton API / Edge Function pour échanger le code contre l'ID du compte connecté
+          const response = await fetch("/api/stripe/token-exchange", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ code: stripeCode, userId: profile?.id }),
+          });
+
+          if (!response.ok) throw new Error("Échec de l'association du compte Stripe");
+
+          toast.success(tr("payments.connect.syncSuccess") || "Compte Stripe connecté avec succès !");
+          
+          if (refresh) await refresh();
+
+          // Nettoyage des paramètres d'URL
+          window.history.replaceState({}, document.title, window.location.pathname);
+        } catch (err) {
+          toast.error("Erreur lors de la connexion avec Stripe");
+        } finally {
+          setIsLoading(false);
+        }
+      };
+
+      exchangeCode();
+    }
+  }, [profile?.id, refresh, tr]);
+
   const handleSyncAccount = async () => {
     setIsLoading(true);
     setPageError(null);
     try {
-      // Simulate API sync call
-      await new Promise((resolve, reject) => setTimeout(resolve, 1000));
-      toast.success(tr("payments.connect.syncSuccess") || "Synchronisation effectuee");
+      if (refresh) await refresh();
+      toast.success(tr("payments.connect.syncSuccess") || "Synchronisation effectuée");
     } catch (err) {
       setPageError({
         what: tr("payments.errors.syncFailedWhat") || "Impossible de synchroniser le compte",
         why: tr("payments.errors.syncFailedWhy") || "Le service de paiement est temporairement indisponible",
-        action: tr("payments.errors.syncFailedAction") || "Veuillez reessayer dans quelques instants"
+        action: tr("payments.errors.syncFailedAction") || "Veuillez réessayer dans quelques instants"
       });
     } finally {
       setIsLoading(false);
@@ -128,7 +177,7 @@ export default function PaymentsPage({ profile, state, dispatch }) {
 
   const handleCopyTransactionId = (id) => {
     copyToClipboard(id);
-    toast.success(tr("payments.copied") || "Identifiant copie");
+    toast.success(tr("payments.copied") || "Identifiant copié");
   };
 
   const TabBtn = ({ id, label }) => (
@@ -153,7 +202,6 @@ export default function PaymentsPage({ profile, state, dispatch }) {
   return (
     <PageShell title={`${tr("payments.title")}`}>
 
-      {/* Structured Error Display if any */}
       {pageError && (
         <StructuredError 
           what={pageError.what} 
@@ -163,7 +211,7 @@ export default function PaymentsPage({ profile, state, dispatch }) {
         />
       )}
 
-      {/* Tab nav */}
+      {/* Tab navigation */}
       <div style={{ display: "flex", borderBottom: `1px solid ${T.border}`, marginBottom: 24 }}>
         <TabBtn id="overview" label={tr("payments.tabs.overview")} />
         <TabBtn id="transactions" label={tr("payments.tabs.transactions", { count: completed.length })} />
@@ -174,7 +222,6 @@ export default function PaymentsPage({ profile, state, dispatch }) {
       {/* ── OVERVIEW ─────────────────────────────────── */}
       {tab === "overview" && (
         <>
-          {/* Connection status banner */}
           {!isConnected ? (
             <div style={{ 
               background: T.amberBg, 
@@ -194,7 +241,7 @@ export default function PaymentsPage({ profile, state, dispatch }) {
                   {tr("payments.overview.notConnectedDesc")}
                 </div>
               </div>
-              <Btn onClick={() => setTab("connect")}>{tr("payments.overview.connectStripeBtn")}</Btn>
+              <Btn onClick={handleStripeStandardConnect}>{tr("payments.overview.connectStripeBtn")}</Btn>
             </div>
           ) : (
             <div style={{ 
@@ -252,7 +299,6 @@ export default function PaymentsPage({ profile, state, dispatch }) {
           </div>
 
           <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 16 }}>
-            {/* Recent transactions */}
             <Card>
               <SectionTitle action={
                 <span 
@@ -298,7 +344,6 @@ export default function PaymentsPage({ profile, state, dispatch }) {
       {/* ── TRANSACTIONS ─────────────────────────────── */}
       {tab === "transactions" && (
         <>
-          {/* Summary strip */}
           <div style={{ display: "flex", gap: 10, marginBottom: 16 }}>
             <div style={{ flex: 1, background: T.surface, border: `1px solid ${T.border}`, borderRadius: T.r.md, padding: "12px 16px" }}>
               <div style={{ fontSize: 11, fontWeight: 700, color: T.muted, textTransform: "uppercase", marginBottom: 4 }}>
@@ -485,14 +530,13 @@ export default function PaymentsPage({ profile, state, dispatch }) {
                 <div style={{ fontSize: 13, color: T.muted, marginBottom: 16, lineHeight: 1.6 }}>
                   {tr("payments.connect.notConnectedBody")}
                 </div>
-                <Btn onClick={() => toast.success(tr("payments.connect.redirectingToast"))}>
-                  {tr("payments.connect.connectAccountBtn")}
+                <Btn onClick={handleStripeStandardConnect} disabled={isLoading}>
+                  {isLoading ? "Chargement..." : tr("payments.connect.connectAccountBtn")}
                 </Btn>
               </div>
             )}
           </Card>
 
-          {/* Progressive Disclosure: How it works Accordion */}
           <Card>
             <SectionTitle>{tr("payments.howItWorks.title")}</SectionTitle>
             {["1", "2", "3", "4"].map(num => (

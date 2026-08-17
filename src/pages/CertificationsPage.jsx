@@ -73,9 +73,19 @@ export default function CertificationsPage({ state, dispatch, profile }) {
   const fld = k => e => setForm(p=>({...p,[k]:e.target.value}));
 
   const certs   = state?.certifications ?? [];
-  const active  = certs.filter(c => c.status === "active");
-  const expired = certs.filter(c => c.status === "expired" || daysUntilExpiry(c.expiry_date) < 0);
-  const expiring= active.filter(c => { const d = daysUntilExpiry(c.expiry_date); return d !== null && d <= 90 && d >= 0; });
+  
+  // Correction de la séparation Actif / Expiré
+  const expired = certs.filter(c => {
+    const days = daysUntilExpiry(c.expiry_date);
+    return c.status === "expired" || (days !== null && days < 0);
+  });
+  
+  const active = certs.filter(c => !expired.includes(c));
+  
+  const expiring = active.filter(c => { 
+    const d = daysUntilExpiry(c.expiry_date); 
+    return d !== null && d <= 90 && d >= 0; 
+  });
 
   function openAdd()  { setForm({ name:"", issuing_body:"", cert_number:"", issued_date:"", expiry_date:"", status:"active" }); setModal("add"); }
   function openEdit(c){ setForm({...c}); setModal("edit"); }
@@ -88,19 +98,21 @@ export default function CertificationsPage({ state, dispatch, profile }) {
     }
 
     const days   = daysUntilExpiry(form.expiry_date);
-    const status = !form.expiry_date ? "active" : days < 0 ? "expired" : "active";
+    const status = !form.expiry_date ? "active" : (days !== null && days < 0) ? "expired" : "active";
     const payload = { ...form, status };
 
     setSaving(true);
-    // Optimistic update
     if (modal === "add") {
-      const optimistic = { ...payload, id:`temp-${Date.now()}`, profile_id:profile?.id, created_at:new Date().toISOString() };
+      const optimistic = { 
+        ...payload, 
+        id: `temp-${Date.now()}`, 
+        profile_id: profile?.id, 
+        created_at: new Date().toISOString() 
+      };
       dispatch({ type:"ADD_CERT", payload:optimistic });
       try {
-        // Real DB call would go here
         toast.success(t("certifications.addedToast"));
       } catch {
-        // Rollback
         dispatch({ type:"DELETE_CERT", payload:optimistic.id });
         toast.error(t("certifications.errorAdd"));
         setSaving(false);
@@ -126,7 +138,6 @@ export default function CertificationsPage({ state, dispatch, profile }) {
     const prev = certs.find(c => c.id === delId);
     dispatch({ type:"DELETE_CERT", payload:delId });
     setDelId(null);
-    // Show undo toast
     toast.success(t("certifications.removedToast"), {
       duration:4000,
       action: {
@@ -234,22 +245,26 @@ export default function CertificationsPage({ state, dispatch, profile }) {
         ) : (
           <>
             {active.length > 0 && (
-              <div style={{ padding:"14px 24px 0" }}>
-                <div style={{ fontSize:12, fontWeight:700, color:T.muted, textTransform:"uppercase", letterSpacing:"0.5px", marginBottom:12 }}>
-                  {t("certifications.activeSection",{count:active.length})}
+              <div>
+                <div style={{ padding:"14px 24px 0" }}>
+                  <div style={{ fontSize:12, fontWeight:700, color:T.muted, textTransform:"uppercase", letterSpacing:"0.5px", marginBottom:12 }}>
+                    {t("certifications.activeSection",{count:active.length})}
+                  </div>
                 </div>
+                {active.map(c => <CertRow key={c.id} cert={c} t={t} onEdit={()=>openEdit(c)} onDelete={()=>setDelId(c.id)}/>)}
               </div>
             )}
-            {active.map(c => <CertRow key={c.id} cert={c} t={t} onEdit={()=>openEdit(c)} onDelete={()=>setDelId(c.id)}/>)}
 
             {expired.length > 0 && (
-              <div style={{ padding:"14px 24px 4px", borderTop:`1px solid ${T.border}` }}>
-                <div style={{ fontSize:12, fontWeight:700, color:T.red, textTransform:"uppercase", letterSpacing:"0.5px", marginBottom:12 }}>
-                  {t("certifications.expiredSection",{count:expired.length})}
+              <div>
+                <div style={{ padding:"14px 24px 4px", borderTop:`1px solid ${T.border}` }}>
+                  <div style={{ fontSize:12, fontWeight:700, color:T.red, textTransform:"uppercase", letterSpacing:"0.5px", marginBottom:12 }}>
+                    {t("certifications.expiredSection",{count:expired.length})}
+                  </div>
                 </div>
+                {expired.map(c => <CertRow key={c.id} cert={c} t={t} onEdit={()=>openEdit(c)} onDelete={()=>setDelId(c.id)}/>)}
               </div>
             )}
-            {expired.map(c => <CertRow key={c.id} cert={c} t={t} onEdit={()=>openEdit(c)} onDelete={()=>setDelId(c.id)}/>)}
           </>
         )}
       </Card>

@@ -1,5 +1,3 @@
-// src/pages/MarketplacePage.jsx
-
 import { useState, useEffect, useCallback } from "react";
 import { useTranslation } from "../i18n/index.js";
 import { toast } from "react-hot-toast";
@@ -20,7 +18,7 @@ import { ALL_PROFESSIONS, VERTICALS, getVerticalForProfession, getVerticalLabel,
 /* ── constants ──────────────────────────────────────── */
 
 const TYPE_IDS = ["all", "demand", "sale", "recruitment", "materials"];
-const TYPE_TAB_ICONS = { all: "🌐", demand: "💼", sale: "🏢", recruitment: "👥", materials: "📦" };
+const TYPE_TAB_ICONS = { all: "", demand: "", sale: "", recruitment: "", materials: "" };
 
 const CONTRACT_TYPES = ["Subcontracting", "CDI", "CDD", "Interim", "Apprenticeship", "Other"];
 const MATERIAL_CATEGORIES = ["Electrical", "Plumbing", "General", "Safety", "Tools", "Other"];
@@ -167,12 +165,16 @@ export default function MarketplacePage({ profile }) {
     toast.success(t("marketplace.toast.listingDeleted"));
   }
 
-  // After posting a new listing
-  function onPosted(listing) {
-    setListings(prev => [listing, ...prev]);
-    setMyListings(prev => [listing, ...prev]);
+  // After posting a new listing (Synchronisation serveur forcée)
+  async function onPosted(newListing) {
+    if (newListing) {
+      setListings(prev => [newListing, ...prev]);
+      setMyListings(prev => [newListing, ...prev]);
+    }
     setModal(null);
     toast.success(t("marketplace.toast.listingPosted"));
+    await load();
+    if (profile?.id) await loadMine();
   }
 
   // After expressing interest
@@ -302,10 +304,10 @@ export default function MarketplacePage({ profile }) {
             {/* Stats bar */}
             <div style={{ display: "flex", gap: 10, marginBottom: 20, flexWrap: "wrap" }}>
               {[
-                { label: t("marketplace.stats.activeDemands"), val: listings.filter(l => l.type === "demand").length, icon: "💼" },
-                { label: t("marketplace.stats.businessesForSale"), val: listings.filter(l => l.type === "sale").length, icon: "🏢" },
-                { label: t("marketplace.stats.recruitmentPosts"), val: listings.filter(l => l.type === "recruitment").length, icon: "👥" },
-                { label: t("marketplace.stats.materialsForSale"), val: listings.filter(l => l.type === "materials").length, icon: "📦" },
+                { label: t("marketplace.stats.activeDemands"), val: listings.filter(l => l.type === "demand").length, icon: "" },
+                { label: t("marketplace.stats.businessesForSale"), val: listings.filter(l => l.type === "sale").length, icon: "" },
+                { label: t("marketplace.stats.recruitmentPosts"), val: listings.filter(l => l.type === "recruitment").length, icon: "" },
+                { label: t("marketplace.stats.materialsForSale"), val: listings.filter(l => l.type === "materials").length, icon: "" },
               ].map(s => (
                 <div key={s.label} style={{
                   flex: "1 1 160px", background: T.surface, borderRadius: T.r.lg,
@@ -339,7 +341,7 @@ export default function MarketplacePage({ profile }) {
               />
             ) : displayed.length === 0 ? (
               <Empty 
-                icon="🔍" 
+                icon="" 
                 message={t("marketplace.emptyBrowse")}
                 action={<Btn size="sm" onClick={() => setModal("post")}>{t("marketplace.postFirstOne")}</Btn>}
               />
@@ -366,7 +368,7 @@ export default function MarketplacePage({ profile }) {
             </div>
             {myListings.length === 0 ? (
               <Empty 
-                icon="📝" 
+                icon="" 
                 message={t("marketplace.emptyMine")}
                 action={<Btn size="sm" onClick={() => setModal("post")}>{t("marketplace.postFirstListing")}</Btn>}
               />
@@ -395,7 +397,7 @@ export default function MarketplacePage({ profile }) {
                             {t("marketplace.close")}
                           </Btn>
                         )}
-                        <Btn size="sm" variant="danger" onClick={() => setDelId(l.id)}>✕</Btn>
+                        <Btn size="sm" variant="danger" onClick={() => setDelId(l.id)}>X</Btn>
                       </div>
                     </div>
                   </Card>
@@ -447,7 +449,7 @@ function ListingCard({ listing: l, fmt, onClick }) {
               </Badge>
             )}
           </div>
-          {l.views > 0 && <span style={{ fontSize: 11, color: T.hint }}>👁 {l.views}</span>}
+          {l.views > 0 && <span style={{ fontSize: 11, color: T.hint }}>{l.views}</span>}
         </div>
 
         {/* Title */}
@@ -465,17 +467,17 @@ function ListingCard({ listing: l, fmt, onClick }) {
 
         {/* Tags row */}
         <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 12 }}>
-          {l.category && <span style={tagStyle}>🏷️ {t(`marketplace.materialCategories.${l.category}`)}</span>}
+          {l.category && <span style={tagStyle}>{t(`marketplace.materialCategories.${l.category}`)}</span>}
           {l.trade && (
             <span style={tagStyle}>
               {getVerticalForProfession(l.trade)?.icon} {getProfessionLabel(l.trade, t)}
             </span>
           )}
-          {l.location && <span style={tagStyle}>📍 {l.location}</span>}
-          {l.contract_type && <span style={tagStyle}>📄 {t(`marketplace.contractTypes.${l.contract_type}`)}</span>}
+          {l.location && <span style={tagStyle}>{l.location}</span>}
+          {l.contract_type && <span style={tagStyle}>{t(`marketplace.contractTypes.${l.contract_type}`)}</span>}
           {l.quantity > 1 && <span style={tagStyle}>× {l.quantity}</span>}
           {l.work_start_date && (
-            <span style={tagStyle}>📅 {t("marketplace.fromDate", { date: fmtDate(l.work_start_date) })}</span>
+            <span style={tagStyle}>{t("marketplace.fromDate", { date: fmtDate(l.work_start_date) })}</span>
           )}
         </div>
 
@@ -510,7 +512,7 @@ function ListingCard({ listing: l, fmt, onClick }) {
 ══════════════════════════════════════════════════════ */
 function ListingDetailModal({ listing: l, profile, fmt, onClose, onInterest }) {
   const { t } = useTranslation();
-  const isOwn = profile && l.profile_id === profile.id;
+  const isOwn = profile && (l.profile_id === profile.id || l.profile_id === profile.clerk_id);
 
   return (
     <Modal title="" onClose={onClose} width={580}>
@@ -520,7 +522,7 @@ function ListingDetailModal({ listing: l, profile, fmt, onClose, onInterest }) {
         {l.urgent && <Badge color="red">{t("marketplace.urgent")}</Badge>}
         {l.views > 0 && (
           <span style={{ fontSize: 12, color: T.hint, marginLeft: "auto" }}>
-            👁 {t("marketplace.viewsCount", { count: l.views })}
+            {t("marketplace.viewsCount", { count: l.views })}
           </span>
         )}
       </div>
@@ -543,11 +545,11 @@ function ListingDetailModal({ listing: l, profile, fmt, onClose, onInterest }) {
 
       {/* Location + trade + date */}
       <div style={{ display: "flex", gap: 12, fontSize: 13, color: T.muted, marginBottom: 16, flexWrap: "wrap" }}>
-        {l.location && <span>📍 {l.location}</span>}
+        {l.location && <span>{l.location}</span>}
         {l.trade && (
           <span>{getVerticalForProfession(l.trade)?.icon} {getProfessionLabel(l.trade, t)}</span>
         )}
-        <span>📅 {timeAgo(l.created_at, t)}</span>
+        <span>{timeAgo(l.created_at, t)}</span>
       </div>
 
       {/* Description */}
@@ -568,13 +570,13 @@ function ListingDetailModal({ listing: l, profile, fmt, onClose, onInterest }) {
           background: T.brandLight, borderRadius: T.r.md,
           padding: "14px 18px", marginBottom: 20, border: `1px solid ${T.brand}20`
         }}>
-          <div style={{ fontWeight: 700, marginBottom: 8, fontSize: 14 }}>👤 {t("marketplace.detail.contact")}</div>
+          <div style={{ fontWeight: 700, marginBottom: 8, fontSize: 14 }}>{t("marketplace.detail.contact")}</div>
           <div style={{ fontSize: 14, fontWeight: 600 }}>{l.contact_name}</div>
           {l.contact_email && l.contact_method !== "phone" && (
-            <div style={{ fontSize: 13, color: T.muted }}>✉️ {l.contact_email}</div>
+            <div style={{ fontSize: 13, color: T.muted }}>{l.contact_email}</div>
           )}
           {l.contact_phone && l.contact_method !== "email" && (
-            <div style={{ fontSize: 13, color: T.muted }}>📞 {l.contact_phone}</div>
+            <div style={{ fontSize: 13, color: T.muted }}>{l.contact_phone}</div>
           )}
         </div>
       )}
@@ -587,7 +589,7 @@ function ListingDetailModal({ listing: l, profile, fmt, onClose, onInterest }) {
           </Btn>
           {l.contact_phone && l.contact_method !== "email" && (
             <a href={`tel:${l.contact_phone}`} style={{ textDecoration: "none" }}>
-              <Btn variant="ghost" size="lg">📞 {t("marketplace.detail.call")}</Btn>
+              <Btn variant="ghost" size="lg">{t("marketplace.detail.call")}</Btn>
             </a>
           )}
         </div>
@@ -605,25 +607,25 @@ function DetailGrid({ listing: l, fmt }) {
   const { t } = useTranslation();
   const rows = [];
   if (l.type === "demand") {
-    if (l.budget) rows.push(["💰 " + t("marketplace.detail.fields.budget"), fmt(l.budget)]);
-    if (l.work_start_date) rows.push(["📅 " + t("marketplace.detail.fields.startDate"), fmtDate(l.work_start_date)]);
+    if (l.budget) rows.push([t("marketplace.detail.fields.budget"), fmt(l.budget)]);
+    if (l.work_start_date) rows.push([t("marketplace.detail.fields.startDate"), fmtDate(l.work_start_date)]);
   }
   if (l.type === "sale") {
-    if (l.business_type) rows.push(["🏢 " + t("marketplace.detail.fields.businessType"), l.business_type]);
-    if (l.budget) rows.push(["🏷️ " + t("marketplace.detail.fields.askingPrice"), fmt(l.budget)]);
-    if (l.annual_revenue) rows.push(["📈 " + t("marketplace.detail.fields.annualRevenue"), fmt(l.annual_revenue)]);
-    if (l.employees) rows.push(["👥 " + t("marketplace.detail.fields.employees"), l.employees]);
+    if (l.business_type) rows.push([t("marketplace.detail.fields.businessType"), l.business_type]);
+    if (l.budget) rows.push([t("marketplace.detail.fields.askingPrice"), fmt(l.budget)]);
+    if (l.annual_revenue) rows.push([t("marketplace.detail.fields.annualRevenue"), fmt(l.annual_revenue)]);
+    if (l.employees) rows.push([t("marketplace.detail.fields.employees"), l.employees]);
   }
   if (l.type === "recruitment") {
-    if (l.contract_type) rows.push(["📄 " + t("marketplace.detail.fields.contract"), t(`marketplace.contractTypes.${l.contract_type}`)]);
-    if (l.salary_range) rows.push(["💰 " + t("marketplace.detail.fields.salaryRate"), l.salary_range]);
-    if (l.experience_req) rows.push(["⭐ " + t("marketplace.detail.fields.experience"), l.experience_req]);
+    if (l.contract_type) rows.push([t("marketplace.detail.fields.contract"), t(`marketplace.contractTypes.${l.contract_type}`)]);
+    if (l.salary_range) rows.push([t("marketplace.detail.fields.salaryRate"), l.salary_range]);
+    if (l.experience_req) rows.push([t("marketplace.detail.fields.experience"), l.experience_req]);
   }
   if (l.type === "materials") {
-    if (l.category) rows.push(["🏷️ " + t("marketplace.detail.fields.category"), t(`marketplace.materialCategories.${l.category}`)]);
-    if (l.condition) rows.push(["✨ " + t("marketplace.detail.fields.condition"), t(`marketplace.materialConditions.${CONDITION_KEY[l.condition] || l.condition}`)]);
-    if (l.budget) rows.push(["💰 " + t("marketplace.detail.fields.price"), fmt(l.budget)]);
-    if (l.quantity) rows.push(["📦 " + t("marketplace.detail.fields.quantity"), l.quantity]);
+    if (l.category) rows.push([t("marketplace.detail.fields.category"), t(`marketplace.materialCategories.${l.category}`)]);
+    if (l.condition) rows.push([t("marketplace.detail.fields.condition"), t(`marketplace.materialConditions.${CONDITION_KEY[l.condition] || l.condition}`)]);
+    if (l.budget) rows.push([t("marketplace.detail.fields.price"), fmt(l.budget)]);
+    if (l.quantity) rows.push([t("marketplace.detail.fields.quantity"), l.quantity]);
   }
   if (!rows.length) return null;
   return (
@@ -709,10 +711,11 @@ function PostModal({ profile, onClose, onPosted }) {
       }),
     };
 
-    const { data, error } = await createListing(profile?.id, payload);
+    const userId = profile?.id || profile?.clerk_id;
+    const { data, error } = await createListing(userId, payload);
     setBusy(false);
     if (error) { 
-      toast.error(t("marketplace.toast.failedPost")); 
+      toast.error(t("marketplace.toast.failedPost") + ": " + (error.message || "Error")); 
       return; 
     }
     onPosted(data);
@@ -749,10 +752,10 @@ function PostModal({ profile, onClose, onPosted }) {
               {t("marketplace.post.step1Prompt")}
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 20 }}>
-              <TypeBtn id="demand" icon="💼" />
-              <TypeBtn id="sale" icon="🏢" />
-              <TypeBtn id="recruitment" icon="👥" />
-              <TypeBtn id="materials" icon="📦" />
+              <TypeBtn id="demand" icon="" />
+              <TypeBtn id="sale" icon="" />
+              <TypeBtn id="recruitment" icon="" />
+              <TypeBtn id="materials" icon="" />
             </div>
             <div style={{ display: "flex", justifyContent: "flex-end" }}>
               <Btn onClick={() => setStep(2)}>{t("marketplace.post.next")}</Btn>
@@ -908,7 +911,7 @@ function PostModal({ profile, onClose, onPosted }) {
                 <Field label={t("marketplace.post.fields.photosLabel")}>
                   <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                     <PhotoUpload
-                      profileId={profile?.id}
+                      profileId={profile?.id || profile?.clerk_id}
                       folder="marketplace"
                       value={form.photo_url_1}
                       onChange={url => setForm(p => ({ ...p, photo_url_1: url }))}
@@ -918,7 +921,7 @@ function PostModal({ profile, onClose, onPosted }) {
                     />
                     {(form.photo_url_1 || form.photo_url_2) && (
                       <PhotoUpload
-                        profileId={profile?.id}
+                        profileId={profile?.id || profile?.clerk_id}
                         folder="marketplace"
                         value={form.photo_url_2}
                         onChange={url => setForm(p => ({ ...p, photo_url_2: url }))}
@@ -929,7 +932,7 @@ function PostModal({ profile, onClose, onPosted }) {
                     )}
                     {(form.photo_url_2 || form.photo_url_3) && (
                       <PhotoUpload
-                        profileId={profile?.id}
+                        profileId={profile?.id || profile?.clerk_id}
                         folder="marketplace"
                         value={form.photo_url_3}
                         onChange={url => setForm(p => ({ ...p, photo_url_3: url }))}
@@ -950,7 +953,7 @@ function PostModal({ profile, onClose, onPosted }) {
                 onChange={fld("urgent")}
                 style={{ width: 16, height: 16 }}
               />
-              <span>🔥 {t("marketplace.post.markUrgent")}</span>
+              <span>{t("marketplace.post.markUrgent")}</span>
             </label>
 
             <div style={{
@@ -1007,7 +1010,7 @@ function PostModal({ profile, onClose, onPosted }) {
             }}>
               <Btn variant="ghost" onClick={() => setStep(2)}>{t("marketplace.post.back")}</Btn>
               <Btn type="submit" disabled={busy}>
-                {busy ? <Spinner size={16} color="#FFF" /> : `🚀 ${t("marketplace.post.postBtn")}`}
+                {busy ? <Spinner size={16} color="#FFF" /> : t("marketplace.post.postBtn")}
               </Btn>
             </div>
           </>
@@ -1038,7 +1041,7 @@ export function InterestModal({ listing, profile, onClose, onSent }) {
 
     setBusy(true);
     const { error } = await expressInterest(listing.id, {
-      profile_id: profile?.id,
+      profile_id: profile?.id || profile?.clerk_id,
       ...form,
     });
     setBusy(false);

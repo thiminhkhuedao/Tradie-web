@@ -124,7 +124,6 @@ export const VERTICALS = {
   other: {
     id: "other",
     label: "Other services",
-    icon: "📋",
     color: { bg: "#F2F0EC", text: "#6B6460" },
     professions: ["Other"],
     terms: {

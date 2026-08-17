@@ -1,4 +1,6 @@
-// src/pages/PublicBookingPage.jsx
+/* ══════════════════════════════════════════════════════
+  src/pages/PublicBookingPage.jsx (Cleaned: No Icons/Emojis)
+══════════════════════════════════════════════════════ */
 
 import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import { useParams } from "react-router-dom";
@@ -58,7 +60,7 @@ function generateSlots(startTime, endTime, durationMins) {
   return slots;
 }
 
-// ── UI UI ELEMENTS ──────────────────────────────────────
+// ── UI ELEMENTS ────────────────────────────────────────
 function Avatar({ name, size = 64 }) {
   const initials = useMemo(() => {
     return (name || "?")
@@ -139,7 +141,7 @@ function Steps({ current, hasServices }) {
                   flexShrink: 0,
                 }}
               >
-                {isDone ? "✓" : i + 1}
+                {isDone ? "" : i + 1}
               </div>
               <div
                 style={{
@@ -230,13 +232,13 @@ function Calendar({ availability, blockedSlots, selectedService, onSelectSlot, s
       {/* Month Navigation */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "18px 20px", borderBottom: `1px solid ${THEME.border}` }}>
         <button onClick={handlePrevMonth} style={{ background: "none", border: `1px solid ${THEME.border}`, borderRadius: THEME.radius.md, width: 34, height: 34, cursor: "pointer", fontSize: 16, display: "flex", alignItems: "center", justifyContent: "center" }}>
-          ‹
+          Prev
         </button>
         <div style={{ fontWeight: 700, fontSize: 16 }}>
           {MONTHS[month]} {year}
         </div>
         <button onClick={handleNextMonth} style={{ background: "none", border: `1px solid ${THEME.border}`, borderRadius: THEME.radius.md, width: 34, height: 34, cursor: "pointer", fontSize: 16, display: "flex", alignItems: "center", justifyContent: "center" }}>
-          ›
+          Next
         </button>
       </div>
 
@@ -373,13 +375,13 @@ function ServiceCard({ service, selected, onClick, currency }) {
         </div>
         {service.duration_min && (
           <div style={{ fontSize: 12, color: THEME.muted, marginTop: 2 }}>
-            ⏱ {service.duration_min < 60 ? `${service.duration_min} min` : `${Math.floor(service.duration_min / 60)}h${service.duration_min % 60 > 0 ? ` ${service.duration_min % 60}min` : ""}`}
+            {service.duration_min < 60 ? `${service.duration_min} min` : `${Math.floor(service.duration_min / 60)}h${service.duration_min % 60 > 0 ? ` ${service.duration_min % 60}min` : ""}`}
           </div>
         )}
         {service.description && (
           <div style={{ fontSize: 12, color: THEME.muted, marginTop: 4, lineHeight: 1.5 }}>{service.description}</div>
         )}
-        {selected && <div style={{ marginTop: 8, fontSize: 12, fontWeight: 700, color: THEME.brand }}>✓ Selected</div>}
+        {selected && <div style={{ marginTop: 8, fontSize: 12, fontWeight: 700, color: THEME.brand }}>Selected</div>}
       </div>
     </button>
   );
@@ -444,7 +446,7 @@ function ImageUpload({ value, onChange, label, hint }) {
         {uploading ? (
           <div style={{ padding: 24, display: "flex", alignItems: "center", justifyContent: "center", gap: 12 }}>
             <Spinner />
-            <span style={{ fontSize: 14, color: THEME.muted }}>Uploading…</span>
+            <span style={{ fontSize: 14, color: THEME.muted }}>Uploading...</span>
           </div>
         ) : preview ? (
           <div style={{ position: "relative" }}>
@@ -466,12 +468,11 @@ function ImageUpload({ value, onChange, label, hint }) {
                 fontSize: 15,
               }}
             >
-              ×
+              x
             </button>
           </div>
         ) : (
           <div>
-            <div style={{ fontSize: 24, marginBottom: 6 }}>📎</div>
             <div style={{ fontSize: 13, fontWeight: 600, color: THEME.text }}>Drop image or tap to upload</div>
             <div style={{ fontSize: 11, color: THEME.muted, marginTop: 2 }}>JPG, PNG up to 10MB</div>
           </div>
@@ -610,7 +611,6 @@ export default function PublicBookingPage() {
     return (
       <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: THEME.bg, padding: 20 }}>
         <div style={{ textAlign: "center" }}>
-          <div style={{ fontSize: 48, marginBottom: 16 }}>🔍</div>
           <h2>Page not found</h2>
         </div>
       </div>
@@ -632,7 +632,6 @@ export default function PublicBookingPage() {
     return (
       <div style={{ minHeight: "100vh", background: THEME.bg, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }}>
         <div style={{ maxWidth: 420, width: "100%", background: THEME.surface, borderRadius: THEME.radius.xl, padding: "48px 40px", boxShadow: THEME.shadow, textAlign: "center" }}>
-          <div style={{ fontSize: 56, marginBottom: 16 }}>🎉</div>
           <h2 style={{ fontSize: 22, fontWeight: 900, marginBottom: 8 }}>Request sent!</h2>
           <p style={{ fontSize: 15, color: THEME.muted, lineHeight: 1.7, marginBottom: 16 }}>
             <strong>{profile.name}</strong> will confirm your{" "}
@@ -661,7 +660,7 @@ export default function PublicBookingPage() {
       <div style={{ background: THEME.surface, borderBottom: `1px solid ${THEME.border}` }}>
         <div style={{ maxWidth: 720, margin: "0 auto", height: 56, padding: "0 20px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <a href="/" style={{ fontSize: 15, fontWeight: 900, color: THEME.brand, textDecoration: "none" }}>
-            ⚡ Vimen
+            Vimen
           </a>
           <span style={{ fontSize: 13, color: THEME.muted }}>{profile.name}</span>
         </div>
@@ -675,7 +674,7 @@ export default function PublicBookingPage() {
             <h1 style={{ fontSize: 20, fontWeight: 900, letterSpacing: -0.5, margin: 0 }}>{profile.name}</h1>
             <div style={{ marginTop: 6, display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
               <span style={{ background: verticalColor.bg, color: verticalColor.text, borderRadius: 100, padding: "3px 12px", fontSize: 13, fontWeight: 700 }}>
-                {vertical.icon} {profile.trade}
+                {profile.trade}
               </span>
               {profile.bio && <span style={{ fontSize: 13, color: THEME.muted }}>{profile.bio}</span>}
             </div>
@@ -683,7 +682,7 @@ export default function PublicBookingPage() {
               <div style={{ marginTop: 8, display: "flex", gap: 6, flexWrap: "wrap" }}>
                 {visibleCertifications.map((cert, idx) => (
                   <span key={idx} style={{ fontSize: 11, background: THEME.bg, padding: "2px 8px", borderRadius: THEME.radius.sm, color: THEME.muted }}>
-                    📜 {cert}
+                    {cert}
                   </span>
                 ))}
               </div>
@@ -736,12 +735,11 @@ export default function PublicBookingPage() {
                 marginBottom: 20,
               }}
             >
-              <span style={{ fontSize: 20 }}>💡</span>
               <div>
                 <div style={{ fontSize: 14, fontWeight: 700, color: custom ? THEME.brand : THEME.text }}>Something else</div>
                 <div style={{ fontSize: 12, color: THEME.muted }}>Describe a custom request</div>
               </div>
-              {custom && <span style={{ marginLeft: "auto", color: THEME.brand, fontWeight: 700 }}>✓</span>}
+              {custom && <span style={{ marginLeft: "auto", color: THEME.brand, fontWeight: 700 }}>Selected</span>}
             </button>
 
             <button
@@ -761,7 +759,7 @@ export default function PublicBookingPage() {
                 fontFamily: "inherit",
               }}
             >
-              Continue →
+              Continue &rarr;
             </button>
           </div>
         )}
@@ -807,7 +805,7 @@ export default function PublicBookingPage() {
                     fontFamily: "inherit",
                   }}
                 >
-                  ← Back
+                  &larr; Back
                 </button>
               )}
               <button
@@ -827,7 +825,7 @@ export default function PublicBookingPage() {
                   fontFamily: "inherit",
                 }}
               >
-                Continue →
+                Continue &rarr;
               </button>
             </div>
           </div>
@@ -855,112 +853,40 @@ export default function PublicBookingPage() {
               </button>
             </div>
 
-            {/* Custom Request Fields */}
-            {(custom || !hasServices) && (
-              <div style={{ background: THEME.surface, borderRadius: THEME.radius.xl, border: `1px solid ${THEME.border}`, padding: "18px 22px", marginBottom: 16 }}>
-                <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 12 }}>Your custom request</div>
-                <div style={{ marginBottom: 14 }}>
-                  <label style={{ fontSize: 13, fontWeight: 600, color: THEME.muted, display: "block", marginBottom: 6 }}>
-                    Budget (£) <span style={{ fontWeight: 400 }}>— optional</span>
-                  </label>
-                  <input style={inputStyle} type="number" min="0" step="0.01" value={form.quoted_price} onChange={updateFormField("quoted_price")} placeholder="e.g. 150" />
-                </div>
-                <ImageUpload value={clientImage} onChange={setClientImage} label="Reference image — optional" hint="Upload a photo or inspiration image." />
-              </div>
-            )}
+            <div style={{ fontSize: 17, fontWeight: 800, marginBottom: 4 }}>Your details</div>
+            <div style={{ fontSize: 13, color: THEME.muted, marginBottom: 16 }}>Enter your contact information so {profile.name} can reach you.</div>
 
-            {/* Reference Image Attachment for Normal Services */}
-            {selSvc && !custom && (
-              <div style={{ background: THEME.surface, borderRadius: THEME.radius.xl, border: `1px solid ${THEME.border}`, padding: "18px 22px", marginBottom: 16 }}>
-                <ImageUpload value={clientImage} onChange={setClientImage} label="Reference image — optional" hint="A photo or example of what you'd like." />
-              </div>
-            )}
-
-            {/* Form Details Container */}
-            <div style={{ background: THEME.surface, borderRadius: THEME.radius.xl, border: `1px solid ${THEME.border}`, padding: "20px 24px", boxShadow: THEME.shadow }}>
-              <div style={{ fontSize: 15, fontWeight: 700, marginBottom: 16 }}>Your details</div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-                <div>
-                  <label style={{ fontSize: 13, fontWeight: 600, color: THEME.muted, display: "block", marginBottom: 6 }}>Name *</label>
-                  <input style={inputStyle} value={form.customer_name} onChange={updateFormField("customer_name")} placeholder="Sarah Mitchell" required autoFocus />
-                </div>
-                <div>
-                  <label style={{ fontSize: 13, fontWeight: 600, color: THEME.muted, display: "block", marginBottom: 6 }}>Email *</label>
-                  <input type="email" style={inputStyle} value={form.customer_email} onChange={updateFormField("customer_email")} required />
-                </div>
-                <div>
-                  <label style={{ fontSize: 13, fontWeight: 600, color: THEME.muted, display: "block", marginBottom: 6 }}>
-                    Phone <span style={{ fontWeight: 400 }}>— optional</span>
-                  </label>
-                  <input style={inputStyle} value={form.customer_phone} onChange={updateFormField("customer_phone")} />
-                </div>
-                <div>
-                  <label style={{ fontSize: 13, fontWeight: 600, color: THEME.muted, display: "block", marginBottom: 6 }}>
-                    {vertical.id === "beauty" ? "Any specific requests?" : vertical.id === "professional" ? "What's this regarding?" : "Additional notes"}{" "}
-                    <span style={{ fontWeight: 400 }}>— optional</span>
-                  </label>
-                  <textarea
-                    style={{ ...inputStyle, height: 80, resize: "vertical" }}
-                    value={form.client_instructions}
-                    onChange={updateFormField("client_instructions")}
-                    placeholder={
-                      vertical.id === "beauty"
-                        ? "e.g. Please avoid bleach…"
-                        : vertical.id === "professional"
-                        ? "Briefly describe what you'd like to discuss…"
-                        : "Any details or requirements…"
-                    }
-                  />
-                </div>
+            <div style={{ background: THEME.surface, borderRadius: THEME.radius.xl, border: `1px solid ${THEME.border}`, padding: "24px", marginBottom: 16, boxShadow: THEME.shadow, display: "flex", flexDirection: "column", gap: 16 }}>
+              <div>
+                <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: THEME.muted, marginBottom: 6 }}>Your Name *</label>
+                <input type="text" required placeholder="John Doe" value={form.customer_name} onChange={updateFormField("customer_name")} style={inputStyle} />
               </div>
 
-              {/* Form Navigation Controls */}
-              <div style={{ display: "flex", gap: 10, marginTop: 16 }}>
-                <button
-                  type="button"
-                  onClick={() => setStep(2)}
-                  style={{
-                    flex: 1,
-                    padding: "13px",
-                    borderRadius: THEME.radius.lg,
-                    border: `1px solid ${THEME.border}`,
-                    background: THEME.surface,
-                    fontWeight: 600,
-                    fontSize: 14,
-                    cursor: "pointer",
-                    fontFamily: "inherit",
-                  }}
-                >
-                  ← Back
-                </button>
-                <button
-                  type="submit"
-                  disabled={sending}
-                  style={{
-                    flex: 2,
-                    padding: "13px",
-                    borderRadius: THEME.radius.lg,
-                    border: "none",
-                    background: THEME.brand,
-                    color: "#fff",
-                    fontWeight: 800,
-                    fontSize: 15,
-                    cursor: sending ? "not-allowed" : "pointer",
-                    opacity: sending ? 0.7 : 1,
-                    fontFamily: "inherit",
-                  }}
-                >
-                  {sending ? "Sending…" : "Send booking request →"}
-                </button>
+              <div>
+                <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: THEME.muted, marginBottom: 6 }}>Email Address *</label>
+                <input type="email" required placeholder="john@example.com" value={form.customer_email} onChange={updateFormField("customer_email")} style={inputStyle} />
               </div>
 
-              <div style={{ textAlign: "center", fontSize: 12, color: THEME.muted, marginTop: 10 }}>
-                {vertical.id === "beauty"
-                  ? "No payment needed · Confirmed by message"
-                  : vertical.id === "professional"
-                  ? "No payment needed · Confidential"
-                  : "No payment needed · Free quote"}
+              <div>
+                <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: THEME.muted, marginBottom: 6 }}>Phone Number</label>
+                <input type="tel" placeholder="+1 (555) 000-0000" value={form.customer_phone} onChange={updateFormField("customer_phone")} style={inputStyle} />
               </div>
+
+              <div>
+                <label style={{ display: "block", fontSize: 13, fontWeight: 600, color: THEME.muted, marginBottom: 6 }}>Notes or Instructions</label>
+                <textarea placeholder="Any specific details or gate codes..." rows={3} value={form.client_instructions} onChange={updateFormField("client_instructions")} style={{ ...inputStyle, resize: "vertical" }} />
+              </div>
+
+              <ImageUpload value={clientImage} onChange={setClientImage} label="Attach photo or file (optional)" hint="Show us the problem or area to help the professional prepare." />
+            </div>
+
+            <div style={{ display: "flex", gap: 10 }}>
+              <button type="button" onClick={() => setStep(2)} style={{ flex: 1, padding: "13px", borderRadius: THEME.radius.lg, border: `1px solid ${THEME.border}`, background: THEME.surface, fontWeight: 600, fontSize: 14, cursor: "pointer", fontFamily: "inherit" }}>
+                &larr; Back
+              </button>
+              <button type="submit" disabled={sending} style={{ flex: 2, padding: "13px", borderRadius: THEME.radius.lg, border: "none", background: THEME.brand, color: "#fff", fontWeight: 800, fontSize: 15, cursor: sending ? "not-allowed" : "pointer", opacity: sending ? 0.7 : 1, fontFamily: "inherit" }}>
+                {sending ? "Sending request..." : "Request Booking"}
+              </button>
             </div>
           </form>
         )}
