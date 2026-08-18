@@ -42,8 +42,6 @@ const supabase = createClient(
 
 const WEBHOOK_SECRET = Deno.env.get("STRIPE_WEBHOOK_SECRET") ?? "";
 
-// Platform fee rate: 2%
-const PLATFORM_FEE_RATE = 0.02;
 // Stripe UK rate: 1.4% + 20p
 const STRIPE_FEE_RATE   = 0.014;
 const STRIPE_FEE_FIXED  = 0.20;
@@ -59,9 +57,8 @@ interface StripeEvent {
 
 function calculateFees(grossAmount: number) {
   const stripeFee    = Math.round((grossAmount * STRIPE_FEE_RATE + STRIPE_FEE_FIXED) * 100) / 100;
-  const platformFee  = Math.round(grossAmount * PLATFORM_FEE_RATE * 100) / 100;
-  const netAmount    = Math.round((grossAmount - stripeFee - platformFee) * 100) / 100;
-  return { stripeFee, platformFee, netAmount };
+  const netAmount    = Math.round((grossAmount - stripeFee) * 100) / 100;
+  return { stripeFee, netAmount };
 }
 
 /**
@@ -157,7 +154,7 @@ Deno.serve(async (req) => {
         }
 
         const grossAmount = pi.amount / 100; // Stripe stores in pence
-        const { stripeFee, platformFee, netAmount } = calculateFees(grossAmount);
+        const { stripeFee, netAmount } = calculateFees(grossAmount);
 
         // Get invoice details for context
         const { data: invoice } = await supabase
@@ -175,7 +172,6 @@ Deno.serve(async (req) => {
           stripe_charge_id:         pi.latest_charge,
           gross_amount:             grossAmount,
           stripe_fee:               stripeFee,
-          platform_fee:             platformFee,
           net_amount:               netAmount,
           status:                   "completed",
           description:              invoice?.job?.title ?? "Trade services",

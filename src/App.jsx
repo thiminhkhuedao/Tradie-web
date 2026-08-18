@@ -6,6 +6,7 @@ import Sidebar        from "./components/Sidebar";
 import { ToastStack }   from "./components/UI";
 import {  useSignIn,  useSignUp,  useAuth, useClerk, useUser } from "@clerk/clerk-react";
 import { setClerkTokenGetter, supabase } from "./lib/supabase";
+import { useTranslation } from "./i18n/index.js";
 
 // Marketing / logged-out
 import HomePage         from "./pages/HomePage";
@@ -110,6 +111,7 @@ function AuthPage({ initialMode = "login" }) {
 
   const { signIn, setActive: setActiveSignIn } = useSignIn();
   const { signUp, setActive: setActiveSignUp } = useSignUp();
+  const { t, lang, setLanguage, languages } = useTranslation();
 
   const strength = getPasswordStrength(pass);
   const inp = { width:"100%", padding:"11px 14px", borderRadius:8, border:`1px solid ${T.borderMed}`, fontSize:15, background:T.surface, color:T.text, boxSizing:"border-box", fontFamily:"inherit", marginBottom:0 };
@@ -119,7 +121,7 @@ function AuthPage({ initialMode = "login" }) {
     setError("");
     const rateLimitMsg = checkRateLimit();
     if (rateLimitMsg) { setError(rateLimitMsg); return; }
-    if (mode==="signup" && strength.score < 2) { setError("Password is too weak — use at least 8 characters with a mix of letters and numbers."); return; }
+    if (mode==="signup" && strength.score < 2) { setError(t("auth.error.weakPassword") || "Password is too weak — use at least 8 characters with a mix of letters and numbers."); return; }
     setLoading(true);
     try {
       if (mode === "signup") {
@@ -152,11 +154,37 @@ function AuthPage({ initialMode = "login" }) {
   }
 
   if (step === "verify") return (
-    <div style={{ minHeight:"100vh", background:T.bg, display:"flex", alignItems:"center", justifyContent:"center", padding:20 }}>
+    <div style={{ minHeight:"100vh", background:T.bg, display:"flex", alignItems:"center", justifyContent:"center", padding:20, position:"relative" }}>
+      {/* Sélecteur de langue */}
+      <div style={{ position:"absolute", top: 20, right: 28, zIndex: 100, display: "flex", gap: 2, background: T.border, borderRadius: 999, padding: 2 }}>
+        {languages?.map((l) => {
+          const isActive = lang === l.code;
+          return (
+            <button
+              key={l.code}
+              type="button"
+              onClick={() => setLanguage?.(l.code)}
+              style={{
+                border: "none",
+                cursor: "pointer",
+                padding: "5px 10px",
+                borderRadius: 999,
+                fontSize: 12,
+                fontWeight: 700,
+                background: isActive ? T.surface : "transparent",
+                color: isActive ? T.text : T.muted,
+              }}
+            >
+              {l.code?.toUpperCase()}
+            </button>
+          );
+        })}
+      </div>
+
       <div style={{ width:420, maxWidth:"100%", background:T.surface, borderRadius:T.r.xl, padding:"52px 48px", boxShadow:T.shadow.xl }}>
-        <h3 style={{ fontSize:22, fontWeight:800, marginBottom:8, letterSpacing:-0.5, textAlign:"center" }}>Check your email</h3>
+        <h3 style={{ fontSize:22, fontWeight:800, marginBottom:8, letterSpacing:-0.5, textAlign:"center" }}>{t("auth.verify.title") || "Check your email"}</h3>
         <p style={{ fontSize:14, color:T.muted, marginBottom:28, textAlign:"center", lineHeight:1.6 }}>
-          We sent a 6-digit code to <strong>{email}</strong>.
+          {t("auth.verify.subtitle") || "We sent a 6-digit code to"} <strong>{email}</strong>.
         </p>
         <form onSubmit={verifyCode} style={{ display:"flex", flexDirection:"column", gap:14 }}>
           <input style={{ ...inp, fontSize:28, fontWeight:800, letterSpacing:8, textAlign:"center" }}
@@ -165,11 +193,11 @@ function AuthPage({ initialMode = "login" }) {
           {error && <div style={{ fontSize:13, color:"#EF4444", background:"#FEF2F2", padding:"10px 14px", borderRadius:8 }}>{error}</div>}
           <button type="submit" disabled={loading||code.length!==6}
             style={{ padding:"14px", borderRadius:8, background:T.brand, color:"#fff", border:"none", fontWeight:700, fontSize:15, cursor:loading||code.length!==6?"not-allowed":"pointer", opacity:loading||code.length!==6?0.6:1 }}>
-            {loading ? "Verifying…" : "Verify email →"}
+            {loading ? (t("auth.verify.verifying") || "Verifying…") : (t("auth.verify.submit") || "Verify email →")}
           </button>
           <button type="button" onClick={()=>{ setStep("form"); setError(""); }}
             style={{ background:"none", border:"none", color:T.muted, fontSize:13, cursor:"pointer", textDecoration:"underline" }}>
-            ← Back to sign up
+            {t("auth.verify.back") || "← Back to sign up"}
           </button>
         </form>
       </div>
@@ -177,21 +205,60 @@ function AuthPage({ initialMode = "login" }) {
   );
 
   return (
-    <div style={{ minHeight:"100vh", background:T.bg, display:"flex", alignItems:"center", justifyContent:"center", padding:20 }}>
-      <div style={{ display:"flex", width:900, maxWidth:"100%", borderRadius:T.r.xl, overflow:"hidden", boxShadow:T.shadow.xl }}>
+    <div style={{ minHeight:"100vh", background:T.bg, display:"flex", alignItems:"center", justifyContent:"center", padding:20, position:"relative" }}>
+      {/* Sélecteur de langue */}
+      <div style={{ position:"absolute", top: 20, right: 28, zIndex: 100, display: "flex", gap: 2, background: T.border, borderRadius: 999, padding: 2 }}>
+        {languages?.map((l) => {
+          const isActive = lang === l.code;
+          return (
+            <button
+              key={l.code}
+              type="button"
+              onClick={() => setLanguage?.(l.code)}
+              style={{
+                border: "none",
+                cursor: "pointer",
+                padding: "5px 10px",
+                borderRadius: 999,
+                fontSize: 12,
+                fontWeight: 700,
+                background: isActive ? T.surface : "transparent",
+                color: isActive ? T.text : T.muted,
+              }}
+            >
+              {l.code?.toUpperCase()}
+            </button>
+          );
+        })}
+      </div>
+
+      <style>{`
+        @media (max-width: 720px) {
+          .vimen-auth-shell { flex-direction: column !important; width: 100% !important; }
+          .vimen-auth-left  { display: none !important; }
+          .vimen-auth-right { width: 100% !important; padding: 32px 24px !important; }
+        }
+      `}</style>
+      <div className="vimen-auth-shell" style={{ display:"flex", width:900, maxWidth:"100%", borderRadius:T.r.xl, overflow:"hidden", boxShadow:T.shadow.xl }}>
         {/* Left brand panel */}
-        <div style={{ flex:1, background:"#0F0E0D", padding:"52px 48px", display:"flex", flexDirection:"column", justifyContent:"space-between" }}>
+        <div className="vimen-auth-left" style={{ flex:1, background:"#0F0E0D", padding:"52px 48px", display:"flex", flexDirection:"column", justifyContent:"space-between" }}>
           <div>
             <div style={{ fontSize:22, fontWeight:900, color:T.brand, marginBottom:48, letterSpacing:-0.5 }}>Vimen</div>
             <h2 style={{ fontSize:34, fontWeight:900, color:"#fff", letterSpacing:-1.5, lineHeight:1.15, marginBottom:16 }}>
-              Booking and<br/>billing for<br/><span style={{ color:T.brand }}>every profession</span>
+              {t("auth.brand.headlineLine1") || "Booking and"}<br/>{t("auth.brand.headlineLine2") || "billing for"}<br/><span style={{ color:T.brand }}>{t("auth.brand.headlineHighlight") || "every profession"}</span>
             </h2>
             <p style={{ fontSize:15, color:"rgba(255,255,255,0.5)", lineHeight:1.7 }}>
-              Trades, beauty & wellness, or professional services — quotes, appointments, invoices and payments, all in one place.
+              {t("auth.brand.sub") || "Trades, beauty & wellness, or professional services — quotes, appointments, invoices and payments, all in one place."}
             </p>
           </div>
           <div style={{ display:"flex", flexDirection:"column", gap:14 }}>
-            {[["Clients book their own appointments"],["Invoice and get paid"],["Vimen Pay — 2% flat"],["Automatic review requests"],["Your data stays yours"]].map(([text]) => (
+            {[
+              t("auth.brand.feature1") || "Clients book their own appointments",
+              t("auth.brand.feature2") || "Invoice and get paid",
+              t("auth.brand.feature3") || "Vimen Pay",
+              t("auth.brand.feature4") || "Automatic review requests",
+              t("auth.brand.feature5") || "Your data stays yours"
+            ].map((text) => (
               <div key={text} style={{ display:"flex", alignItems:"center", gap:12, fontSize:14, color:"rgba(255,255,255,0.55)" }}>
                 {text}
               </div>
@@ -200,7 +267,7 @@ function AuthPage({ initialMode = "login" }) {
         </div>
 
         {/* Right form */}
-        <div style={{
+        <div className="vimen-auth-right" style={{
           width: 440,
           background: T.surface,
           padding: "48px 44px",
@@ -212,24 +279,24 @@ function AuthPage({ initialMode = "login" }) {
           boxSizing: "border-box",
         }}>
           <h3 style={{ fontSize:22, fontWeight:800, marginBottom:6, letterSpacing:-0.5 }}>
-            {mode==="login" ? "Welcome back" : "Create account"}
+            {mode==="login" ? (t("auth.form.loginTitle") || "Welcome back") : (t("auth.form.signupTitle") || "Create account")}
           </h3>
           <p style={{ fontSize:14, color:T.muted, marginBottom:24 }}>
-            {mode==="login" ? "Sign in to your Vimen account" : "Start for free — no card needed"}
+            {mode==="login" ? (t("auth.form.loginSub") || "Sign in to your Vimen account") : (t("auth.form.signupSub") || "Start for free — no card needed")}
           </p>
 
           <form onSubmit={submit} style={{ display:"flex", flexDirection:"column", gap:12 }}>
             {mode==="signup" && <>
               <div>
-                <label style={{ fontSize:13, fontWeight:500, color:T.muted, display:"block", marginBottom:6 }}>Full name</label>
+                <label style={{ fontSize:13, fontWeight:500, color:T.muted, display:"block", marginBottom:6 }}>{t("auth.form.nameLabel") || "Full name"}</label>
                 <input style={inp} value={name} onChange={e=>setName(e.target.value)} placeholder="Jake Morrison" autoFocus/>
               </div>
               <div>
-                <label style={{ fontSize:13, fontWeight:500, color:T.muted, display:"block", marginBottom:6 }}>Username</label>
+                <label style={{ fontSize:13, fontWeight:500, color:T.muted, display:"block", marginBottom:6 }}>{t("auth.form.usernameLabel") || "Username"}</label>
                 <input style={inp} value={username} onChange={e=>setUsername(e.target.value.replace(/\s/g,""))} placeholder="jakemorrison"/>
               </div>
               <div>
-                <label style={{ fontSize:13, fontWeight:500, color:T.muted, display:"block", marginBottom:8 }}>What do you do?</label>
+                <label style={{ fontSize:13, fontWeight:500, color:T.muted, display:"block", marginBottom:8 }}>{t("auth.form.categoryLabel") || "What do you do?"}</label>
                 <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:6 }}>
                   {CATEGORIES.map(cat=>(
                     <button key={cat.id} type="button" onClick={()=>setCategory(cat)}
@@ -243,20 +310,20 @@ function AuthPage({ initialMode = "login" }) {
             </>}
 
             <div>
-              <label style={{ fontSize:13, fontWeight:500, color:T.muted, display:"block", marginBottom:6 }}>Email</label>
+              <label style={{ fontSize:13, fontWeight:500, color:T.muted, display:"block", marginBottom:6 }}>{t("auth.form.emailLabel") || "Email"}</label>
               <input style={inp} type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="you@example.com" autoFocus={mode==="login"}/>
             </div>
 
             <div>
               <label style={{ fontSize:13, fontWeight:500, color:T.muted, display:"block", marginBottom:6 }}>
-                Password {mode==="signup" && <span style={{ fontWeight:400 }}>— min. 8 characters</span>}
+                {t("auth.form.passwordLabel") || "Password"} {mode==="signup" && <span style={{ fontWeight:400 }}>{t("auth.form.passwordHint") || "— min. 8 characters"}</span>}
               </label>
               <div style={{ position:"relative" }}>
                 <input style={{ ...inp, paddingRight:60 }} type={showPass?"text":"password"}
                   value={pass} onChange={e=>setPass(e.target.value)} placeholder="••••••••"/>
                 <button type="button" onClick={()=>setShowPass(s=>!s)}
                   style={{ position:"absolute", right:12, top:"50%", transform:"translateY(-50%)", background:"none", border:"none", cursor:"pointer", color:T.muted, fontSize:12, fontWeight:600 }}>
-                  {showPass ? "Hide" : "Show"}
+                  {showPass ? (t("auth.form.hidePass") || "Hide") : (t("auth.form.showPass") || "Show")}
                 </button>
               </div>
               {mode==="signup" && pass.length>0 && (
@@ -275,16 +342,16 @@ function AuthPage({ initialMode = "login" }) {
 
             <button disabled={loading}
               style={{ padding:"12px", borderRadius:8, background:T.brand, color:"#fff", border:"none", fontSize:15, fontWeight:700, cursor:loading?"not-allowed":"pointer", opacity:loading?0.7:1, marginTop:4 }}>
-              {loading ? "Please wait…" : mode==="login" ? "Sign in →" : "Create account →"}
+              {loading ? (t("auth.form.loading") || "Please wait…") : mode==="login" ? (t("auth.form.submitLogin") || "Sign in →") : (t("auth.form.submitSignup") || "Create account →")}
             </button>
           </form>
 
           <div style={{ height:1, background:T.border, margin:"20px 0" }}/>
           <div style={{ textAlign:"center", fontSize:14, color:T.muted }}>
-            {mode==="login" ? "No account? " : "Already signed up? "}
+            {mode==="login" ? (t("auth.form.noAccount") || "No account? ") : (t("auth.form.hasAccount") || "Already signed up? ")}
             <span style={{ color:T.brand, cursor:"pointer", fontWeight:700 }}
               onClick={()=>{ setMode(m=>m==="login"?"signup":"login"); setError(""); }}>
-              {mode==="login" ? "Sign up free" : "Sign in"}
+              {mode==="login" ? (t("auth.form.gotoSignup") || "Sign up free") : (t("auth.form.gotoLogin") || "Sign in")}
             </span>
           </div>
         </div>
@@ -296,8 +363,9 @@ function AuthPage({ initialMode = "login" }) {
 /* ── Main app shell ─────────────────────────────────── */
 function AppShell() {
   const [page, setPage] = useState("dashboard");
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const { toasts, addToast } = useToasts();
-  const { profile, data, setData, loading, refresh, saveProfile, setProfile } = useAppData();
+  const { profile, data, setData, loading, error, refresh, saveProfile, setProfile } = useAppData();
   const { signOut } = useClerk();
 
   const state = {
@@ -358,6 +426,20 @@ function AppShell() {
     );
   }
 
+  if (error) {
+    return (
+      <div style={{ display:"flex", alignItems:"center", justifyContent:"center", height:"100vh", background:T.bg, padding:20 }}>
+        <div style={{ background:T.surface, padding:32, borderRadius:T.r.xl, boxShadow:T.shadow.xl, maxWidth:450, textAlign:"center" }}>
+          <h3 style={{ fontSize:18, fontWeight:700, color:"#EF4444", marginBottom:8 }}>Failed to load workspace</h3>
+          <p style={{ fontSize:14, color:T.muted, marginBottom:20 }}>{error.message || JSON.stringify(error)}</p>
+          <button onClick={() => window.location.reload()} style={{ padding:"10px 20px", background:T.brand, color:"#fff", border:"none", borderRadius:8, fontWeight:600, cursor:"pointer" }}>
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   const pageProps = { profile:state.user, setPage, state, dispatch, toast:addToast, refresh, setProfile };
 
   const PAGES = {
@@ -385,14 +467,40 @@ function AppShell() {
         }} 
       />
       <div style={{ display:"flex", minHeight:"100vh" }}>
+        <style>{`
+          .vimen-mobile-nav-toggle { display: none; }
+          .vimen-content-area { }
+          @media (max-width: 860px) {
+            .vimen-mobile-nav-toggle { display: flex !important; }
+            .vimen-content-area { padding-top: 56px !important; }
+          }
+        `}</style>
         <Sidebar
           page={page} setPage={setPage}
           profile={state.user}
           onSignOut={() => signOut()}
           pendingBookings={state.booking_requests?.filter(b=>b.status==="pending").length ?? 0}
           pendingQuotes={state.quotes?.filter(q=>q.status==="sent").length ?? 0}
+          mobileOpen={mobileNavOpen}
+          onCloseMobile={() => setMobileNavOpen(false)}
         />
-        <div style={{ flex:1, overflow:"auto", minWidth:0, background:T.bg }}>
+        <div className="vimen-content-area" style={{ flex:1, overflow:"auto", minWidth:0, background:T.bg }}>
+          <button
+            type="button"
+            onClick={() => setMobileNavOpen(true)}
+            className="vimen-mobile-nav-toggle"
+            style={{
+              position:"fixed", top:14, left:14, zIndex:100,
+              alignItems:"center", justifyContent:"center",
+              width:38, height:38, borderRadius:T.r.md,
+              border:`1px solid ${T.border}`, background:T.surface,
+              color:T.text, cursor:"pointer", fontSize:18,
+              boxShadow:T.shadow.sm,
+            }}
+            aria-label="Menu"
+          >
+            ☰
+          </button>
           {PAGES[page] || PAGES.dashboard}
         </div>
       </div>
@@ -404,6 +512,7 @@ function AppShell() {
 /* ── Demo mode shell (no Clerk key configured) ─────── */
 function DemoAppShell() {
   const [page, setPage] = useState("dashboard");
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const { toasts, addToast } = useToasts();
   const [demoState, demoDispatch] = useReducer(reducer, SEED);
 
@@ -437,14 +546,40 @@ function DemoAppShell() {
         }} 
       />
       <div style={{ display:"flex", minHeight:"100vh" }}>
+        <style>{`
+          .vimen-mobile-nav-toggle { display: none; }
+          .vimen-content-area { }
+          @media (max-width: 860px) {
+            .vimen-mobile-nav-toggle { display: flex !important; }
+            .vimen-content-area { padding-top: 56px !important; }
+          }
+        `}</style>
         <Sidebar
           page={page} setPage={setPage}
           profile={demoState.user}
           onSignOut={() => window.location.reload()}
           pendingBookings={demoState.booking_requests?.filter(b=>b.status==="pending").length ?? 0}
           pendingQuotes={demoState.quotes?.filter(q=>q.status==="sent").length ?? 0}
+          mobileOpen={mobileNavOpen}
+          onCloseMobile={() => setMobileNavOpen(false)}
         />
-        <div style={{ flex:1, overflow:"auto", minWidth:0, background:T.bg }}>
+        <div className="vimen-content-area" style={{ flex:1, overflow:"auto", minWidth:0, background:T.bg }}>
+          <button
+            type="button"
+            onClick={() => setMobileNavOpen(true)}
+            className="vimen-mobile-nav-toggle"
+            style={{
+              position:"fixed", top:14, left:14, zIndex:100,
+              alignItems:"center", justifyContent:"center",
+              width:38, height:38, borderRadius:T.r.md,
+              border:`1px solid ${T.border}`, background:T.surface,
+              color:T.text, cursor:"pointer", fontSize:18,
+              boxShadow:T.shadow.sm,
+            }}
+            aria-label="Menu"
+          >
+            ☰
+          </button>
           {PAGES[page] || PAGES.dashboard}
         </div>
       </div>
@@ -462,70 +597,8 @@ function ClerkGatedApp() {
   const [searchParams] = useSearchParams();
 
   useEffect(() => {
-  setClerkTokenGetter(() => getToken());
-
-  async function testAuth() {
-    const token = await getToken();
-
-    console.log("[CLERK TOKEN EXISTS]", !!token);
-  }
-
-  testAuth();
-}, [getToken]);
-
-
-  useEffect(() => {
-    if (!isLoaded || !isSignedIn || !user) return;
-
-    async function runSecurityTests() {
-      const publicProfiles = await supabase.from("public_profiles").select("id, name, trade, bio, hourly_rate, booking_slug, extra_fields");
-      if (publicProfiles?.data?.length > 0) {
-        const targetId = publicProfiles.data[0].id;
-        await supabase.from("profiles").select("*").eq("id", targetId);
-        await supabase.from("jobs").select("*").eq("profile_id", targetId);
-        await supabase.from("clients").select("*").eq("profile_id", targetId);
-        await supabase.from("invoices").select("*").eq("profile_id", targetId);
-      }
-
-      // [15] CAN I UPDATE ANOTHER USER'S PROFILE?
-
-const { data: targetProfile, error: targetProfileError } =
-  await supabase
-    .from("profiles")
-    .select("id, clerk_id, name")
-    .neq("clerk_id", user.id)
-    .limit(1)
-    .maybeSingle();
-
-console.log("[15A] TARGET PROFILE:", targetProfile);
-console.log("[15A] ERROR:", targetProfileError);
-
-if (targetProfile) {
-  const { data: updateOtherProfile, error: updateOtherProfileError } =
-    await supabase
-      .from("profiles")
-      .update({ name: "RLS_SECURITY_TEST" })
-      .eq("id", targetProfile.id)
-      .select("id, clerk_id, name");
-
-  console.log("[15B] UPDATE OTHER PROFILE:", updateOtherProfile);
-  console.log("[15B] UPDATE OTHER PROFILE ERROR:", updateOtherProfileError);
-}
-
-const OTHER_PROFILE_ID = "116cc88b-45e4-4dc3-858c-afd0c7a58ce9";
-
-const { data, error } = await supabase
-  .from("profiles")
-  .update({ name: "RLS_SECURITY_TEST" })
-  .eq("id", OTHER_PROFILE_ID)
-  .select("id, clerk_id, name");
-
-console.log("[15] UPDATE OTHER PROFILE:", data);
-console.log("[15] ERROR:", error);
-    }
-
-    runSecurityTests();
-  }, [isLoaded, isSignedIn, user]);
+    setClerkTokenGetter(() => getToken());
+  }, [getToken]);
 
   const wantsSignup   = searchParams.get("signup") === "1";
   const hasAuthIntent = searchParams.has("signup") || searchParams.has("login");

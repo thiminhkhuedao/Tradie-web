@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useContext } from "react";
 import { toast } from "react-hot-toast";
-import { updateProfile, uploadImage } from "../lib/db";
+import { updateProfile, uploadImage, getStripeConnectUrl } from "../lib/db";
 import { T } from "../styles/tokens";
 import {
   PageShell, Card, Btn, Badge, Avatar,
@@ -55,6 +55,8 @@ export default function SettingsPage({ profile, setProfile, dispatch }) {
     notif_sms_paid: profile?.notif_sms_paid ?? false,
     notif_weekly_digest: profile?.notif_weekly_digest ?? true,
     notif_overdue_reminder: profile?.notif_overdue_reminder ?? true,
+    reminder_frequency_days: profile?.reminder_frequency_days ?? 7,
+    reminder_max_count: profile?.reminder_max_count ?? 5,
     extra_fields: profile?.extra_fields ?? {},
     avatar_url: profile?.avatar_url ?? "",
   });
@@ -80,50 +82,25 @@ export default function SettingsPage({ profile, setProfile, dispatch }) {
         notif_sms_paid: profile.notif_sms_paid ?? false,
         notif_weekly_digest: profile.notif_weekly_digest ?? true,
         notif_overdue_reminder: profile.notif_overdue_reminder ?? true,
+        reminder_frequency_days: profile.reminder_frequency_days ?? 7,
+        reminder_max_count: profile.reminder_max_count ?? 5,
         extra_fields: profile.extra_fields ?? {},
         avatar_url: profile.avatar_url ?? "",
       });
     }
   }, [profile]);
 
-  /* ── CAPTURE DU RETOUR OAUTH STRIPE ────────────────── */
+  /* ── RETOUR DE L'ONBOARDING STRIPE (Account Links) ─── */
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
-    const stripeCode = urlParams.get("code");
-
-    if (stripeCode) {
-      const exchangeCode = async () => {
-        try {
-          toast.loading("Association du compte Stripe en cours...");
-          
-          const targetId = profile?.id || profile?.clerk_id;
-          const response = await fetch("https://<TON_PROJECT_REF>.supabase.co/functions/v1/stripe-connect", {
-            method: "POST",
-            headers: { 
-              "Content-Type": "application/json",
-              "Authorization": `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`
-            },
-            body: JSON.stringify({ code: stripeCode, userId: targetId }),
-          });
-
-          if (!response.ok) throw new Error("Échec de l'association du compte");
-
-          toast.dismiss();
-          toast.success("Compte Stripe connecté avec succès !");
-          
-          if (refresh) await refresh();
-
-          window.history.replaceState({}, document.title, window.location.pathname);
-        } catch (err) {
-          toast.dismiss();
-          toast.error("Erreur lors de la synchronisation avec Stripe");
-          console.error("[Stripe OAuth Error]:", err);
-        }
-      };
-
-      exchangeCode();
+    if (urlParams.get("tab") === "payment" && urlParams.get("stripe_return") === "1") {
+      (async () => {
+        if (refresh) await refresh();
+        toast.success("Statut Stripe mis à jour.");
+        window.history.replaceState({}, document.title, window.location.pathname + "?tab=payment");
+      })();
     }
-  }, [profile?.id, profile?.clerk_id, refresh]);
+  }, [refresh]);
 
   const fields = getProfileFields(form.trade, t);
 
@@ -166,6 +143,8 @@ export default function SettingsPage({ profile, setProfile, dispatch }) {
         notif_sms_paid: form.notif_sms_paid,
         notif_weekly_digest: form.notif_weekly_digest,
         notif_overdue_reminder: form.notif_overdue_reminder,
+        reminder_frequency_days: form.reminder_frequency_days,
+        reminder_max_count: form.reminder_max_count,
         extra_fields: form.extra_fields,
         avatar_url: avatarUrl,
       };
@@ -207,12 +186,20 @@ export default function SettingsPage({ profile, setProfile, dispatch }) {
 
   /* ── PREMIER ENDROIT STRIPE CONNECT (Onglet Payment) ── */
   async function handleConnectStripe() {
-    const clientId = "ca_XXXXXXXXXXXXXXXXXXXXXXXX"; 
-    const redirectUri = encodeURIComponent(`${window.location.origin}/settings`);
-    const stripeOAuthUrl = `https://connect.stripe.com/oauth/authorize?response_type=code&client_id=${clientId}&scope=read_write&redirect_uri=${redirectUri}`;
+    const targetId = profile?.id || profile?.clerk_id;
+    const returnUrl = `${window.location.origin}/settings?tab=payment&stripe_return=1`;
 
     toast.loading(t("settings.redirectingStripe") || "Redirection vers Stripe...");
-    window.location.href = stripeOAuthUrl;
+    try {
+      const { data, error } = await getStripeConnectUrl(targetId, returnUrl);
+      if (error || !data?.url) throw new Error(error?.message || "URL Stripe manquante");
+      toast.dismiss();
+      window.location.href = data.url;
+    } catch (err) {
+      toast.dismiss();
+      toast.error("Impossible de démarrer la connexion Stripe.");
+      console.error("[Stripe Connect Error]:", err);
+    }
   }
 
   async function handleUpgradeStripe() {
@@ -507,6 +494,35 @@ export default function SettingsPage({ profile, setProfile, dispatch }) {
             <SettingRow label={t("settings.notifSms")} sub={t("settings.notifSmsSub")} k="notif_sms_paid" />
             <SettingRow label={t("settings.notifDigest")} sub={t("settings.notifDigestSub")} k="notif_weekly_digest" />
             <SettingRow label={t("settings.notifOverdue")} sub={t("settings.notifOverdueSub")} k="notif_overdue_reminder" />
+            {form.notif_overdue_reminder && (
+              <div style={{ display: "flex", gap: 14, marginTop: 4, marginBottom: 8, paddingLeft: 4 }}>
+                <Field label={t("settings.reminderFrequency") || "Rappeler tous les"} htmlFor="reminder_frequency_days">
+                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    <input
+                      id="reminder_frequency_days"
+                      type="number"
+                      min={1}
+                      max={30}
+                      style={{ ...INPUT_STYLE, width: 80 }}
+                      value={form.reminder_frequency_days}
+                      onChange={e => setForm(p => ({ ...p, reminder_frequency_days: Math.max(1, Number(e.target.value) || 1) }))}
+                    />
+                    <span style={{ fontSize: 13, color: T.muted }}>{t("settings.days") || "jours"}</span>
+                  </div>
+                </Field>
+                <Field label={t("settings.reminderMaxCount") || "Nombre max de rappels"} htmlFor="reminder_max_count">
+                  <input
+                    id="reminder_max_count"
+                    type="number"
+                    min={1}
+                    max={5}
+                    style={{ ...INPUT_STYLE, width: 80 }}
+                    value={form.reminder_max_count}
+                    onChange={e => setForm(p => ({ ...p, reminder_max_count: Math.min(5, Math.max(1, Number(e.target.value) || 1)) }))}
+                  />
+                </Field>
+              </div>
+            )}
             <div style={{ marginTop: 16 }}>
               <Btn onClick={save} disabled={saving}>
                 {saving ? t("common.saving") : t("settings.savePreferences")}

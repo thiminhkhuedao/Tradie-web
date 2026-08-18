@@ -1,4 +1,3 @@
-
 const CORS = {
   "Access-Control-Allow-Origin":  "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
@@ -24,9 +23,10 @@ Deno.serve(async (req) => {
       sortCode,
       accountNumber,
       invoiceNotes,
+      reminder = false, // true when sent by the automatic overdue-reminder cron
     } = await req.json();
 
-    const fmtGBP = (n) =>
+    const fmtGBP = (n: number) =>
       `€${Number(n).toLocaleString("en-GB", { minimumFractionDigits: 2 })}`;
 
     // ── Branded HTML email ────────────────────────────
@@ -69,6 +69,10 @@ Deno.serve(async (req) => {
   </div>
   <div class="body">
     <p style="font-size:15px;margin-bottom:24px">Hi ${clientName},</p>
+    ${reminder ? `
+    <div style="background:#FEF3E2;border:1px solid #F5C97A;border-radius:8px;padding:12px 16px;margin-bottom:24px;font-size:13px;color:#92400E;font-weight:600">
+      Friendly reminder — this invoice is still awaiting payment.
+    </div>` : ""}
     <p style="font-size:14px;color:#555;margin-bottom:28px;line-height:1.6">
       Please find your invoice from <strong>${tradeName}</strong> below.
       ${dueDate ? `Payment is due by <strong>${dueDate}</strong>.` : ""}
@@ -138,7 +142,7 @@ Deno.serve(async (req) => {
       body: JSON.stringify({
         from:    `${tradeName} via ${FROM_NAME} <${FROM_EMAIL}>`,
         to:      [to],
-        subject: `Invoice ${invoiceNumber} — ${fmtGBP(amount)} due${dueDate ? ` by ${dueDate}` : ""}`,
+        subject: `${reminder ? "Reminder: " : ""}Invoice ${invoiceNumber} — ${fmtGBP(amount)} due${dueDate ? ` by ${dueDate}` : ""}`,
         html,
       }),
     });
@@ -148,7 +152,8 @@ Deno.serve(async (req) => {
 
     return new Response(JSON.stringify({ success: true, id: result.id }), { headers: CORS });
   } catch (err) {
-    console.error("send-invoice-email error:", err.message);
-    return new Response(JSON.stringify({ error: err.message }), { status: 500, headers: CORS });
+    const message = err instanceof Error ? err.message : String(err);
+    console.error("send-invoice-email error:", message);
+    return new Response(JSON.stringify({ error: message }), { status: 500, headers: CORS });
   }
 });

@@ -1,6 +1,6 @@
-import { T } from "../styles/tokens";
+import { T } from "../styles/tokens.js";
 import { useTranslation } from "../i18n/index.js";
-import PublicLayout from "../components/PublicLayout";
+import PublicLayout from "../components/PublicLayout.jsx";
 
 const S = {
   page: {

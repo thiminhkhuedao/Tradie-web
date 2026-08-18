@@ -51,7 +51,7 @@ export default function ReferralsPage({ state, dispatch, profile }) {
 
   // Stable personal referral link
   const myCode = `TRD-${(profile?.name || "USER").replace(/\s/g, "").slice(0, 4).toUpperCase()}${profile?.id?.slice(0, 4)?.toUpperCase() || "0000"}`;
-  const referralUrl = `https://tradie.app/signup?ref=${myCode}`;
+  const referralUrl = `https://Vimen.app/signup?ref=${myCode}`;
 
   async function copyLink() {
     const ok = await copyToClipboard(referralUrl);

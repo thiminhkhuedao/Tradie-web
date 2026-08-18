@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { T } from "../styles/tokens";
+import { T } from "../styles/tokens.js";
 import { useTranslation } from "../i18n/index.js";
-import { supabase } from "../lib/supabase";
-import PublicLayout from "../components/PublicLayout";
+import { supabase } from "../lib/supabase.js";
+import PublicLayout from "../components/PublicLayout.jsx";
 
 const S = {
   wrap: {
@@ -209,8 +209,8 @@ export default function ContactPage({ onSignIn, onSignUp }) {
 
           <p style={{ fontSize: 13, color: T.hint, textAlign: "center", marginTop: 24, marginBottom: 0 }}>
             {t("contactPage.emailAlternative")}{" "}
-            <a href="mailto:hello@tradie.app" style={{ color: T.text, textDecoration: "underline" }}>
-              hello@tradie.app
+            <a href="mailto:contact.vimen@gmail.com" style={{ color: T.text, textDecoration: "underline" }}>
+              contact.vimen@gmail.com
             </a>
           </p>
         </div>

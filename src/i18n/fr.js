@@ -1,5 +1,5 @@
 // src/i18n/fr.js
-// Traductions françaises — langue secondaire.
+// Traductions françaises, langue secondaire.
 
 export default {
   // ── Common ──────────────────────────────────────────
@@ -21,7 +21,7 @@ export default {
     error:      "Une erreur est survenue",
     success:    "Succès",
     noData:     "Rien ici pour l'instant",
-    viewAll:    "Tout voir →",
+    viewAll:    "Tout voir",
     share:      "Partager",
     copy:       "Copier",
     copied:     "Copié !",
@@ -106,7 +106,7 @@ export default {
     welcomeBack:       "Bon retour",
     createAccount:     "Créer un compte",
     signInSub:         "Connectez-vous à votre compte Vimen",
-    signUpSub:         "Démarrez gratuitement — sans carte bancaire",
+    signUpSub:         "Démarrez gratuitement, sans carte bancaire",
     email:             "Adresse e-mail",
     password:          "Mot de passe",
     passwordMin:       "8 caractères minimum",
@@ -124,10 +124,10 @@ export default {
     verifying:         "Vérification…",
     verifyEmail2:      "Vérifier l'e-mail",
     heroTitle:         "Réservations et facturation pour toutes les professions",
-    heroSub:           "Artisans, beauté & bien-être ou professions libérales — devis, rendez-vous, factures et paiements, tout en un seul endroit.",
+    heroSub:           "Artisans, beauté et bien-être, ou professions libérales : devis, rendez-vous, factures et paiements, tout en un seul endroit.",
     feature1:          "Les clients réservent leurs {{bookingPlural}} eux-mêmes",
     feature2:          "Facturez et encaissez",
-    feature3:          "Vimen Pay — 2% fixe",
+    feature3:          "Vimen Pay : 2 % fixe",
     feature4:          "Conçu pour {{vertical}}",
     feature5:          "Demandes d'avis automatiques",
     passwordRequirements: "EXIGENCES DU MOT DE PASSE",
@@ -136,6 +136,50 @@ export default {
       uppercase: "Une lettre majuscule",
       numberOrSpecial: "Un chiffre ou caractère spécial",
     },
+    signUpTitle: "Créer un compte gratuit",
+  signInTitle: "Se connecter à Vimen",
+  verify: {
+    title: "Vérifiez vos e-mails",
+    subtitle: "Nous avons envoyé un code à 6 chiffres à",
+    verifying: "Vérification…",
+    submit: "Vérifier l'e-mail →",
+    back: "← Retour à l'inscription"
+  },
+  brand: {
+    headlineLine1: "Réservation et",
+    headlineLine2: "facturation pour",
+    headlineHighlight: "chaque profession",
+    sub: "Artisans, beauté & bien-être ou services professionnels — devis, rendez-vous, factures et paiements, tout en un.",
+    feature1: "Vos clients réservent eux-mêmes",
+    feature2: "Facturez et soyez payé",
+    feature3: "Paiements Vimen Pay",
+    feature4: "Demandes d'avis automatiques",
+    feature5: "Vos données vous appartiennent"
+  },
+  form: {
+    loginTitle: "Bon retour",
+    signupTitle: "Créer un compte",
+    loginSub: "Connectez-vous à votre compte Vimen",
+    signupSub: "Commencez gratuitement — sans carte",
+    nameLabel: "Nom complet",
+    usernameLabel: "Nom d'utilisateur",
+    categoryLabel: "Que faites-vous ?",
+    emailLabel: "E-mail",
+    passwordLabel: "Mot de passe",
+    passwordHint: "— min. 8 caractères",
+    hidePass: "Cacher",
+    showPass: "Afficher",
+    loading: "Veuillez patienter…",
+    submitLogin: "Se connecter →",
+    submitSignup: "Créer un compte →",
+    noAccount: "Pas de compte ? ",
+    hasAccount: "Déjà inscrit ? ",
+    gotoSignup: "S'inscrire gratuitement",
+    gotoLogin: "Se connecter"
+  },
+  error: {
+    weakPassword: "Le mot de passe est trop faible — utilisez au moins 8 caractères avec un mélange de lettres et de chiffres."
+  }
   },
 
   // ── Navigation ───────────────────────────────────────
@@ -196,7 +240,7 @@ export default {
   bookingPageLive: "Votre page de réservation est en ligne",
   copyLink: "Copier le lien",
   linkCopied: "Lien copié !",
-  copyFailedManual: "Impossible de copier automatiquement — veuillez sélectionner et copier le lien ci-dessus manuellement.",
+  copyFailedManual: "Impossible de copier automatiquement. Veuillez sélectionner et copier le lien ci-dessus manuellement.",
   viewPage: "Voir la page",
   },
 
@@ -310,7 +354,7 @@ export default {
 
     detail: {
       contact: "Contact",
-      interestedBtn: "Je suis intéressé(e) — me contacter",
+      interestedBtn: "Je suis intéressé(e), me contacter",
       call: "Appeler",
       thisIsYourListing: "Ceci est votre annonce.",
       fields: {
@@ -333,12 +377,12 @@ export default {
     toast: {
       listingClosed: "Annonce clôturée",
       listingDeleted: "Annonce supprimée",
-      listingPosted: "Annonce publiée ✓",
+      listingPosted: "Annonce publiée",
       interestSent: "Intérêt envoyé ! L'auteur de l'annonce vous contactera.",
       requiredTitleDescLocation: "Le titre, la description et la localisation sont obligatoires",
       requiredContact: "Le nom et l'email de contact sont obligatoires",
       failedPost: "Échec de la publication de l'annonce",
-      failedInterest: "Échec de l'envoi — réessayez",
+      failedInterest: "Échec de l'envoi, réessayez",
       requiredNameEmail: "Nom et email obligatoires",
     },
 
@@ -351,10 +395,10 @@ export default {
         recruitment: { label: "Recrutement", desc: "Recrutement de salariés ou sous-traitants" },
         materials: { label: "Matériel", desc: "Vendre du matériel ou des outils entre particuliers" },
       },
-      next: "Suivant →",
-      back: "← Retour",
-      step2Of3: "Étape 2 sur 3 — Détails de l'annonce",
-      step3Of3: "Étape 3 sur 3 — Vos coordonnées (visibles par les personnes intéressées)",
+      next: "Suivant",
+      back: "Retour",
+      step2Of3: "Étape 2 sur 3 : détails de l'annonce",
+      step3Of3: "Étape 3 sur 3 : vos coordonnées (visibles par les personnes intéressées)",
       markUrgent: "Marquer comme urgent",
       postBtn: "Publier l'annonce",
       posting: "Publication…",
@@ -363,8 +407,8 @@ export default {
         titleLabel: "Titre *",
         titlePlaceholders: {
           demand: "ex. Recherche électricien à Rouen pour rénovation complète",
-          sale: "ex. Entreprise d'électricité à vendre — Normandie, CA 200k+",
-          recruitment: "ex. Recherche plombier qualifié — région de Rouen, sous-traitance",
+          sale: "ex. Entreprise d'électricité à vendre, Normandie, CA 200k+",
+          recruitment: "ex. Recherche plombier qualifié, région de Rouen, sous-traitance",
           materials: "ex. Câble twin & earth 100m neuf, non utilisé",
         },
         descriptionLabel: "Description *",
@@ -388,11 +432,11 @@ export default {
         conditionLabel: "État",
         priceLabel: "Prix (£) *",
         quantityLabel: "Quantité",
-        photosLabel: "Photos (facultatif — jusqu'à 3)",
+        photosLabel: "Photos (facultatif, jusqu'à 3)",
         photoUploadHint: "Déposez une photo ou touchez pour envoyer",
         photoUploadHintOptional: "Ajouter une autre photo (facultatif)",
         photoUploading: "Envoi en cours…",
-        photoUploadFailed: "Échec de l'envoi — veuillez réessayer",
+        photoUploadFailed: "Échec de l'envoi, veuillez réessayer",
       },
 
       contact: {
@@ -406,7 +450,7 @@ export default {
           email: "Email uniquement",
           phone: "Téléphone uniquement",
         },
-        privacyNote: "Votre annonce sera visible par tous les utilisateurs de la place de marché. Votre email ne sera pas affiché publiquement — les personnes intéressées vous enverront d'abord un message.",
+        privacyNote: "Votre annonce sera visible par tous les utilisateurs de la place de marché. Votre email ne sera pas affiché publiquement, les personnes intéressées vous enverront d'abord un message.",
       },
     },
 
@@ -545,7 +589,7 @@ export default {
     preview: {
       markAsSent: "Marquer comme envoyé",
       clientSign: "Signature client",
-      convertToJob: "→ Convertir en mission",
+      convertToJob: "Convertir en mission",
       signature: {
         title: "Signature du client",
         fullNameLabel: "Nom complet du client",
@@ -604,7 +648,7 @@ export default {
     row: {
       view: "Voir",
       edit: "Modifier",
-      toJob: "→ Mission",
+      toJob: "Mission",
     },
   },
 
@@ -617,7 +661,7 @@ export default {
     all:          "Toutes",
     unpaid:       "Impayées",
     overdue:      "En retard",
-    markPaid:     "✓ Marquer payée",
+    markPaid:     "Marquer payée",
     email:        "Envoyer par e-mail",
     paymentLink:  "Lien de paiement",
 
@@ -637,7 +681,7 @@ export default {
     clientLabel: "Client",
     selectClient: "Sélectionner un client…",
     linkedJobLabel: "Job associé (optionnel)",
-    noneOption: "— aucun —",
+    noneOption: "Aucun",
     amountLabel: "Montant (£)",
     dueDateLabel: "Date d'échéance",
     selectClientAndAmount: "Sélectionnez un client et saisissez un montant",
@@ -672,7 +716,7 @@ export default {
     bankTransferTitle: "Ou payer par virement bancaire",
     copyBankDetails: "Copier les coordonnées bancaires",
     bankDetailsCopied: "Coordonnées bancaires copiées",
-    copyFailedManual: "Impossible de copier — copiez manuellement",
+    copyFailedManual: "Impossible de copier, copiez manuellement",
     defaultPaymentTerms: "14 jours",
     deleteConfirmTitle: "Supprimer cette facture ?",
     deleteConfirmMessage: "Cette action est irréversible.",
@@ -789,16 +833,16 @@ export default {
     pageSettings:   "Paramètres de la page",
     sharePage:      "Partager la page",
     pageLive:       "Votre page de réservation est en ligne",
-    newRequests:    "En attente — {{count}}",
-    accepted:       "Acceptées — {{count}}",
-    declined:       "Refusées — {{count}}",
+    newRequests:    "En attente ({{count}})",
+    accepted:       "Acceptées ({{count}})",
+    declined:       "Refusées ({{count}})",
     noRequests:     "Aucune demande de réservation pour l'instant. Partagez votre page pour en recevoir.",
     accept:         "Accepter",
     decline:        "Refuser",
     received:       "Reçue le {{date}}",
     openPreview:    "Voir ma page en ligne",
     opening:        "Ouverture…",
-    previewSub:     "Ceci ouvre votre vraie page de réservation — exactement ce que voient vos clients quand ils cliquent sur votre lien.",
+    previewSub:     "Ceci ouvre votre vraie page de réservation, exactement ce que voient vos clients quand ils cliquent sur votre lien.",
     slugLabel:      "Identifiant de votre page de réservation",
     bioLabel:       "Présentation (visible par les clients)",
     rateLabel:      "Tarif horaire (€)",
@@ -809,7 +853,7 @@ export default {
     noPayment:      "Sans engagement · Devis gratuit",
     noPaymentProf:  "Sans engagement · Confidentiel",
     noPaymentBeauty:"Sans engagement · Confirmation par message",
-    sendConsult:    "Envoyer la demande →",
+    sendConsult:    "Envoyer la demande",
     requestTitle:   "Demander un rendez-vous",
     whichService:   "Quelle prestation ?",
     regarding:      "Quel est l'objet de votre demande ?",
@@ -840,7 +884,7 @@ export default {
     copyLink: "Copier",
     linkCopied: "Lien copié !",
     copyFailedManual: "Impossible de copier automatiquement. Veuillez sélectionner et copier le lien ci-dessus manuellement.",
-    shareHint: "Partage ce lien où tu veux — dans ta bio Instagram, ton statut WhatsApp, sur ton véhicule, ou ton site. Les clients remplissent un formulaire de demande, et tu acceptes ou refuses depuis l'onglet Demandes ci-dessus.",
+    shareHint: "Partage ce lien où tu veux : dans ta bio Instagram, ton statut WhatsApp, sur ton véhicule, ou ton site. Les clients remplissent un formulaire de demande, et tu acceptes ou refuses depuis l'onglet Demandes ci-dessus.",
     updateFailed: "Échec de la mise à jour de la réservation",
     acceptedToast: "Réservation acceptée",
     declinedToast: "Réservation refusée",
@@ -856,7 +900,7 @@ export default {
     },
     services: {
       title: "Prestations",
-      subtitle: "Ajoutez les prestations que vous proposez, avec photos, prix et durées — affichées aux visiteurs sur votre page de réservation publique.",
+      subtitle: "Ajoutez les prestations que vous proposez, avec photos, prix et durées. Elles seront affichées aux visiteurs sur votre page de réservation publique.",
       addService: "Ajouter une prestation",
       editService: "Modifier la prestation",
       loading: "Chargement des prestations…",
@@ -906,7 +950,7 @@ export default {
     totalPaidOut:   "Total viré",
     recentPayments: "Paiements récents",
     noPayments:     "Aucun paiement pour l'instant",
-    feeTitle:       "Détail des frais — exemple 550 €",
+    feeTitle:       "Détail des frais : exemple 550 €",
     invoiceAmount:  "Montant de la facture",
     stripeFee:      "Frais Stripe (1,4 %+0,25 €)",
     VimenFee:      "Vimen Pay (2 %)",
@@ -943,11 +987,11 @@ export default {
     overview: {
       notConnectedTitle: "Connectez votre compte Stripe pour accepter les paiements",
       notConnectedDesc: "Les clients ne peuvent pas payer leurs factures en ligne tant que Stripe n'est pas connecté.",
-      connectStripeBtn: "Connecter Stripe →",
-      connectedBanner: "Vimen Pay actif — les clients peuvent payer leurs factures en ligne instantanément",
+      connectStripeBtn: "Connecter Stripe",
+      connectedBanner: "Vimen Pay actif. Les clients peuvent payer leurs factures en ligne instantanément",
       viewAll: "Tout voir",
       recentPayments: "Paiements récents",
-      emptyPayments: "Aucun paiement pour l'instant — envoyez des factures avec des liens de paiement",
+      emptyPayments: "Aucun paiement pour l'instant. Envoyez des factures avec des liens de paiement",
       ofGrossAmount: "sur {{amount}}",
     },
 
@@ -969,9 +1013,9 @@ export default {
       title: "Comment fonctionnent les frais Vimen Pay",
       intro: "Lorsqu'un client paie une facture en ligne, deux frais sont déduits avant que l'argent n'arrive sur votre compte :",
       stripeLabel: "Stripe (1,4 % + 20p)",
-      stripeDesc: "— les frais de traitement des cartes, taux standard au Royaume-Uni.",
+      stripeDesc: "Les frais de traitement des cartes, taux standard au Royaume-Uni.",
       VimenLabel: "Vimen Pay (2 %)",
-      VimenDesc: "— ce qui permet de faire fonctionner et d'améliorer l'application.",
+      VimenDesc: "Ce qui permet de faire fonctionner et d'améliorer l'application.",
     },
 
     feeBreakdown: {
@@ -1018,7 +1062,7 @@ export default {
       inTransit: "En transit",
       expectedWithin2Days: "Attendu sous 2 jours",
       totalPaidOut: "Total versé",
-      empty: "Aucun versement pour l'instant — ils apparaîtront ici dès votre premier paiement traité",
+      empty: "Aucun versement pour l'instant. Ils apparaîtront ici dès votre premier paiement traité",
     },
 
     payoutSchedule: {
@@ -1030,8 +1074,8 @@ export default {
     connect: {
       stripeAccountTitle: "Compte Stripe",
       stripeConnect: "Stripe Connect",
-      connectedDesc: "Connecté — les paiements peuvent être reçus",
-      notConnectedDesc: "Non connecté — les clients ne peuvent pas encore payer en ligne",
+      connectedDesc: "Connecté. Les paiements peuvent être reçus",
+      notConnectedDesc: "Non connecté. Les clients ne peuvent pas encore payer en ligne",
       connectedBody: "Votre compte Stripe est connecté et vérifié. Les versements arrivent automatiquement sur votre compte bancaire lié.",
       openDashboard: "Ouvrir le tableau de bord Stripe",
       notConnectedBody: "Connectez votre compte Stripe pour commencer à accepter les paiements par carte sur vos factures. Cela prend 5 minutes. Vous aurez besoin de vos coordonnées bancaires et d'une pièce d'identité.",
@@ -1041,7 +1085,7 @@ export default {
 
     howItWorks: {
       title: "Comment fonctionne Vimen Pay",
-      step1: { title: "Vous créez une facture", desc: "Comme d'habitude — pour tout travail effectué." },
+      step1: { title: "Vous créez une facture", desc: "Comme d'habitude, pour tout travail effectué." },
       step2: { title: "Ajoutez un lien de paiement", desc: "Cliquez sur « Créer un lien de paiement » sur n'importe quelle facture. Cela prend 2 secondes." },
       step3: { title: "Le client paie en ligne", desc: "Il clique sur le lien, saisit sa carte, et c'est terminé. Fonctionne sur tous les appareils." },
       step4: { title: "Vous êtes payé", desc: "L'argent arrive sur votre compte bancaire sous 2 jours ouvrés, automatiquement." },
@@ -1054,7 +1098,7 @@ export default {
         VimenPay: { label: "Vimen Pay", fee: "2,0 %", note: "Permet de faire fonctionner la plateforme" },
         total: { label: "Total déduit", fee: "~3,4 %", note: "Sur une facture de 500£, cela fait 17£ de frais" },
       },
-      bankTransferNote: "Facture payée par virement bancaire ? Aucun frais — seuls les paiements par carte passent par Vimen Pay.",
+      bankTransferNote: "Facture payée par virement bancaire ? Aucun frais. Seuls les paiements par carte passent par Vimen Pay.",
     },
   },
 
@@ -1092,7 +1136,7 @@ export default {
       completedJobLabel: "Mission terminée",
       selectJobPlaceholder: "Sélectionner une mission…",
       smsPreviewTitle: "Aperçu du SMS",
-      smsTemplate: "\"Bonjour {{clientName}}, j'espère que vous êtes satisfait(e) du {{jobTitle}}. Auriez-vous 60 secondes pour nous laisser un avis Google ? Cela nous aide vraiment. Cliquez ici : {{urlPreview}}… — {{profileName}}\"",
+      smsTemplate: "\"Bonjour {{clientName}}, j'espère que vous êtes satisfait(e) du {{jobTitle}}. Auriez-vous 60 secondes pour nous laisser un avis Google ? Cela nous aide vraiment. Cliquez ici : {{urlPreview}}… De la part de {{profileName}}\"",
       cancel: "Annuler",
       sendSmsBtn: "Envoyer le SMS",
     },
@@ -1113,10 +1157,10 @@ export default {
       selectCompletedJob: "Sélectionnez une mission terminée",
       clientNoPhone: "Ce client n'a pas de numéro de téléphone enregistré",
       noGoogleUrlConfigured: "Ajoutez votre lien d'avis Google dans les Paramètres avant d'envoyer des demandes",
-      sendFailed: "Échec de l'envoi — veuillez réessayer",
+      sendFailed: "Échec de l'envoi, veuillez réessayer",
       requestSent: "SMS de demande d'avis envoyé à {{name}}",
       nameRatingRequired: "Le nom et la note sont obligatoires",
-      reviewAdded: "Avis ajouté ✓",
+      reviewAdded: "Avis ajouté",
       markedPushedToGoogle: "Marqué comme publié sur Google",
     },
 
@@ -1158,9 +1202,9 @@ export default {
   certifications: {
     title:        "Certifications",
     add:          "Ajouter",
-    active:       "Actives — {{count}}",
-    expiring:     "Expirant bientôt — {{count}}",
-    expired:      "Expirées — {{count}}",
+    active:       "Actives ({{count}})",
+    expiring:     "Expirant bientôt ({{count}})",
+    expired:      "Expirées ({{count}})",
     visibleNote:  "Les certifications actives sont visibles sur votre page de réservation",
     expiryAlert:  "{{count}} certification(s) expirant bientôt",
     noExpiry:     "Sans expiration",
@@ -1170,7 +1214,7 @@ export default {
     issueDate:    "Date d'obtention",
     expiryDate:   "Date d'expiration",
     saveChanges:  "Enregistrer les modifications",
-    quickAdd:     "Ajout rapide — certifications courantes",
+    quickAdd:     "Ajout rapide : certifications courantes",
     status: {
       active:   "Valide",
       expiring: "Expire {{when}}",
@@ -1194,8 +1238,8 @@ export default {
     visibilityNote: "Toutes les {{credentialPlural}} actives sont visibles sur votre page de réservation publique. Les clients peuvent les vérifier avant de réserver.",
     noneYet: "Aucune certification ajoutée pour le moment",
     addFirst: "Ajouter votre première certification",
-    activeSection: "Actives — {{count}}",
-    expiredSection: "Expirées — {{count}}",
+    activeSection: "Actives ({{count}})",
+    expiredSection: "Expirées ({{count}})",
     commonFor: "{{credentialPlural}} courantes pour {{trade}}",
     expiresLabel: "Expire le",
     expiresOn: "Expire le {{date}}",
@@ -1277,7 +1321,7 @@ export default {
 
     toast: {
       linkCopied: "Lien de parrainage copié !",
-      copyFailedManual: "Impossible de copier automatiquement — veuillez sélectionner et copier le lien manuellement.",
+      copyFailedManual: "Impossible de copier automatiquement. Veuillez sélectionner et copier le lien manuellement.",
       emailRequired: "L'email est obligatoire",
       referralSent: "Parrainage envoyé à {{email}}",
     },
@@ -1295,7 +1339,7 @@ export default {
 
     linkCard: {
       title: "Votre lien de parrainage",
-      description: "Partagez ce lien où vous voulez — WhatsApp, groupes Facebook, forums de métiers. Toute personne qui s'inscrit via ce lien est automatiquement liée à vous.",
+      description: "Partagez ce lien où vous voulez : WhatsApp, groupes Facebook, forums de métiers. Toute personne qui s'inscrit via ce lien est automatiquement liée à vous.",
       copied: "Copié !",
       copyLink: "Copier le lien",
     },
@@ -1304,8 +1348,8 @@ export default {
       whatsapp: "WhatsApp",
       facebook: "Facebook",
       email: "Email",
-      whatsappMessage: "J'utilise Vimen pour gérer mon activité — c'est excellent pour la facturation et les paiements. Inscris-toi gratuitement ici : {{url}}",
-      emailSubject: "Essaie Vimen — l'appli gratuite pour les artisans",
+      whatsappMessage: "J'utilise Vimen pour gérer mon activité, c'est excellent pour la facturation et les paiements. Inscris-toi gratuitement ici : {{url}}",
+      emailSubject: "Essaie Vimen : l'appli gratuite pour les artisans",
       emailBody: "Salut, j'utilise Vimen pour gérer mon activité et je pense que ça pourrait t'être utile. Inscris-toi gratuitement ici : {{url}}",
     },
 
@@ -1318,9 +1362,9 @@ export default {
     },
 
     statusDesc: {
-      pending: "Lien envoyé — en attente de son inscription",
-      signed_up: "Il s'est inscrit — doit terminer son premier chantier",
-      qualified: "Validé — récompense en cours de traitement",
+      pending: "Lien envoyé, en attente de son inscription",
+      signed_up: "Il s'est inscrit, doit terminer son premier chantier",
+      qualified: "Validé, récompense en cours de traitement",
       rewarded: "2 mois de Pro appliqués à votre compte",
     },
 
@@ -1358,7 +1402,7 @@ export default {
     bookingSlug:      "Identifiant de votre page de réservation",
     googleReviewUrl:  "Lien d'avis Google",
     googleReviewUrlPlaceholder: "https://g.page/r/.../review",
-    googleReviewUrlHint: "Utilisé quand vous demandez des avis à vos clients par SMS — retrouvez ce lien dans votre profil Google Business.",
+    googleReviewUrlHint: "Utilisé quand vous demandez des avis à vos clients par SMS. Retrouvez ce lien dans votre profil Google Business.",
     saveAccount:      "Enregistrer le compte",
     bankDetails:      "Coordonnées bancaires",
     bankName:         "Nom de la banque",
@@ -1377,20 +1421,20 @@ export default {
     notifOverdueSub:  "via Twilio",
     savePreferences:  "Enregistrer les préférences",
     currentPlan:      "Abonnement actuel",
-    upgrade:          "Passer à Pro →",
+    upgrade:          "Passer à Pro",
     downgrade:        "Rétrograder",
-    currentPlanBadge: "✓ Abonnement actuel",
+    currentPlanBadge: "Abonnement actuel",
     mostPopular:      "LE PLUS CHOISI",
     signOutConfirm:   "Se déconnecter ?",
     languageTitle:    "Language / Langue",
     languageSub:      "Choisissez votre langue préférée",
-    verticalDetails:  "Informations — {{vertical}}",
-    verticalSub:      "Champs spécifiques à votre profession — affichés sur votre page de réservation si renseignés.",
+    verticalDetails:  "Informations : {{vertical}}",
+    verticalSub:      "Champs spécifiques à votre profession, affichés sur votre page de réservation si renseignés.",
     yourName:              "Votre nom",
     invoiceDefaults:       "Paramètres de facturation",
     invoiceNotesPlaceholder: "ex. TVA non applicable. Merci d'indiquer le numéro de facture en référence de paiement.",
     notifTitle:            "Préférences de notification",
-    stripeDesc:            "Connectez Stripe pour que vos clients puissent payer leurs factures en ligne par carte. Votre clé secrète reste dans Supabase — jamais dans le navigateur.",
+    stripeDesc:            "Connectez Stripe pour que vos clients puissent payer leurs factures en ligne par carte. Votre clé secrète reste dans Supabase et ne touche jamais le navigateur.",
     connectStripe:         "Connecter un compte Stripe",
     termsImmediate:        "Immédiat",
     terms7:                "7 jours",
@@ -1399,8 +1443,8 @@ export default {
     renewsMonthly:         "renouvellement mensuel",
     manageBilling:         "Gérer la facturation",
     redirectingStripe:     "Redirection vers Stripe…",
-    errorSave:             "Échec de l'enregistrement — réessayez",
-    successSave:           "Paramètres enregistrés ✓",
+    errorSave:             "Échec de l'enregistrement, réessayez",
+    successSave:           "Paramètres enregistrés",
     planFeat1:             "5 clients actifs",
     planFeat2:             "10 factures/mois",
     planFeat3:             "Page de réservation (personnalisée)",
@@ -1513,11 +1557,11 @@ export default {
         instagram_handle: { label: "Identifiant Instagram", placeholder: "@votresalon" },
       },
       professional: {
-        bar_number:        { label: "Numéro d'inscription / immatriculation", placeholder: "ex. Ordre des Avocats de Rouen — 12345" },
+        bar_number:        { label: "Numéro d'inscription / immatriculation", placeholder: "ex. Ordre des Avocats de Rouen, 12345" },
         professional_body: { label: "Ordre professionnel",                    placeholder: "ex. Ordre des Avocats" },
         gdpr_accepted: {
           label: "Traitement des données clients conforme au RGPD",
-          helpText: "Confirme que les informations clients sont stockées et traitées conformément au RGPD — affiché sur votre page de réservation.",
+          helpText: "Confirme que les informations clients sont stockées et traitées conformément au RGPD. Affiché sur votre page de réservation.",
         },
       },
     },
@@ -1526,7 +1570,7 @@ export default {
   publicBooking: {
     loading: "Chargement…",
     brand: "Vimen",
-    poweredBy: "Propulsé par Vimen",
+    poweredBy: "Via Vimen",
     perHour: "/h",
 
     notFound: {
@@ -1582,8 +1626,8 @@ export default {
         default: "Décrivez les travaux…",
       },
       sending: "Envoi…",
-      sendRequest: "Envoyer la demande →",
-      sendBookingRequest: "Envoyer la demande de réservation →",
+      sendRequest: "Envoyer la demande",
+      sendBookingRequest: "Envoyer la demande de réservation",
       footerNote: {
         beauty: "Aucun paiement requis · Confirmé par message",
         professional: "Aucun paiement requis · Confidentiel",
@@ -1593,7 +1637,7 @@ export default {
 
     toast: {
       missingNameEmail: "Merci de renseigner votre nom et votre email",
-      genericError: "Une erreur est survenue — veuillez réessayer",
+      genericError: "Une erreur est survenue, veuillez réessayer",
     },
   },
 
@@ -2014,7 +2058,7 @@ loading: {
       },
       pro: {
         name: "Pro",
-        tagline: "Débloquez tout le potentiel pour développer votre activité.",
+        tagline: "Tout ce qu'il faut pour développer votre activité en toute autonomie.",
         cta: "Passer au plan Pro",
         feat1: "Tout ce qui est inclus dans le plan Gratuit",
         feat2: "Services et demandes personnalisées illimités",
@@ -2049,11 +2093,14 @@ home: {
     pricing: "Tarifs",
     signIn: "Se connecter",
     startFree: "Commencer gratuitement",
+      about: "À propos",
+      faq: "FAQ",
+      contact: "Contact",
   },
   hero: {
     titleLine1: "Gérez toute votre activité",
     titleLine2: "en pilote automatique.",
-    sub: "La plateforme tout-en-un pour les professionnels et artisans. Gérez facilement vos réservations, devis, factures, paiements et clients.",
+    sub: "Une plateforme unique pour les professionnels et artisans : réservations, devis, factures, paiements et clients.",
     ctaPrimary: "Démarrer l'essai gratuit",
     ctaSecondary: "Voir les tarifs",
     stats: {
@@ -2068,7 +2115,7 @@ home: {
     booking: {
       tabLabel: "Réservation en ligne",
       title: "Recevez des rendez-vous pendant votre sommeil",
-      desc: "Offrez à vos clients une expérience de réservation fluide en ligne. Définissez vos horaires, services et tarifs.",
+      desc: "Offrez à vos clients une réservation en ligne simple. Définissez vos horaires, services et tarifs.",
       bullet1: "Module de prise de rendez-vous en ligne",
       bullet2: "Rappels automatiques par SMS et e-mail",
       bullet3: "Formulaires de réservation sur mesure",
@@ -2144,7 +2191,7 @@ home: {
     },
     growth: {
       tabLabel: "Avis & Croissance",
-      title: "Transformez vos clients satisfaits en avis Google 5 étoiles",
+      title: "Demandez à vos clients satisfaits de laisser un avis Google 5 étoiles",
       desc: "Sollicitez automatiquement des avis Google auprès de vos clients à la fin de chaque intervention.",
       bullet1: "Demandes d'avis envoyées automatiquement",
       bullet2: "Améliorez votre classement Google Maps",
@@ -2174,10 +2221,6 @@ home: {
   },
 },
 
-auth: {
-  signUpTitle: "Créer un compte gratuit",
-  signInTitle: "Se connecter à Vimen"
-}, 
 
 nav: {
   booking: "Réservations",
@@ -2580,7 +2623,7 @@ jobs: {
   addFirst: "+ Ajouter votre première mission",
 
   // Table Actions & Statuses
-  markDone: "Terminer ✓",
+  markDone: "Terminer",
   status: {
     scheduled: "Planifiée",
     completed: "Terminée",
@@ -2681,8 +2724,8 @@ marketplace: {
     step1Prompt: "Sélectionnez le type d'annonce que vous souhaitez publier :",
     next: "Suivant",
     back: "Retour",
-    step2Of3: "Étape 2 sur 3 — Détails",
-    step3Of3: "Étape 3 sur 3 — Contact",
+    step2Of3: "Étape 2 sur 3 : détails",
+    step3Of3: "Étape 3 sur 3 : contact",
     markUrgent: "Marquer comme annonce urgente",
     posting: "Publication en cours...",
     postBtn: "Publier l'annonce",
@@ -2709,8 +2752,8 @@ marketplace: {
     fields: {
       titleLabel: "Titre",
       titlePlaceholders: {
-        demand: "ex. Rénovation électrique chantier — Recherche 2 électriciens",
-        sale: "ex. Vente entreprise de plomberie — Établie depuis 12 ans",
+        demand: "ex. Rénovation électrique chantier, recherche 2 électriciens",
+        sale: "ex. Vente entreprise de plomberie, établie depuis 12 ans",
         recruitment: "ex. Recrutement Technicien CVC Expérimenté",
         materials: "ex. Lot d'échafaudages & électroportatif Makita",
       },
@@ -2876,7 +2919,7 @@ payments: {
     connectedDesc: "Votre compte est connecté et configuré pour traiter les paiements.",
     notConnectedDesc: "Connectez-vous pour activer le paiement par carte sur vos factures.",
     connectedBody: "Vos virements sont gérés via Stripe. Vous pouvez modifier vos coordonnées bancaires et consulter le détail des frais directement sur votre tableau de bord Stripe.",
-    openDashboard: "Ouvrir le tableau de bord Stripe ↗",
+    openDashboard: "Ouvrir le tableau de bord Stripe",
     notConnectedBody: "En connectant Stripe, vous permettez à vos clients de régler leurs devis et factures directement en ligne par carte bancaire. Les fonds sont automatiquement versés sur votre compte.",
     connectAccountBtn: "Connecter le compte Stripe",
     redirectingToast: "Redirection vers Stripe Connect...",
@@ -2956,7 +2999,7 @@ publicBooking: {
     somethingElse: "Autre demande",
     somethingElseDesc: "Décrivez une demande sur mesure",
     selected: "Sélectionné",
-    continue: "Continuer →",
+    continue: "Continuer",
   },
 
   step2: {
@@ -2965,18 +3008,18 @@ publicBooking: {
     subtitleGeneric: "Choisissez votre créneau préféré.",
     noAvailability: "Ce professionnel n'a pas encore défini ses disponibilités.\nVeuillez le contacter directement pour convenir d'un rendez-vous.",
     noSlotsForDay: "Aucun créneau disponible pour cette journée.",
-    back: "← Retour",
-    continue: "Continuer →",
+    back: "Retour",
+    continue: "Continuer",
   },
 
   step3: {
     change: "Modifier",
     customRequestTitle: "Votre demande sur mesure",
     budgetLabel: "Budget (€)",
-    budgetOptional: "— optionnel",
+    budgetOptional: "(optionnel)",
     budgetPlaceholder: "ex. 150",
     refImageLabel: "Image de référence",
-    refImageOptional: "— optionnel",
+    refImageOptional: "(optionnel)",
     refImageHint: "Téléversez une photo ou une image d'inspiration.",
     refImageHintService: "Une photo ou un exemple de ce que vous souhaitez.",
     
@@ -2985,7 +3028,7 @@ publicBooking: {
     namePlaceholder: "Sarah Mitchell",
     emailLabel: "E-mail *",
     phoneLabel: "Téléphone",
-    phoneOptional: "— optionnel",
+    phoneOptional: "(optionnel)",
     
     notesLabelBeauty: "Des demandes particulières ?",
     notesLabelPro: "Quel est le sujet ?",
@@ -2995,8 +3038,8 @@ publicBooking: {
     notesPlaceholderPro: "Décrivez brièvement ce dont vous souhaitez discuter…",
     notesPlaceholderGeneric: "Précisions ou besoins particuliers…",
     
-    back: "← Retour",
-    sendBtn: "Envoyer la demande de réservation →",
+    back: "Retour",
+    sendBtn: "Envoyer la demande de réservation",
     sendingBtn: "Envoi en cours…",
     
     noPaymentBeauty: "Sans paiement immédiat · Confirmation par message",
@@ -3089,7 +3132,7 @@ quotes: {
   preview: {
     markAsSent: "Marquer comme envoyé",
     clientSign: "Faire signer le client",
-    convertToJob: "Convertir en chantier →",
+    convertToJob: "Convertir en chantier",
     issued: "Émis le {{date}}",
     validUntil: "Valable jusqu'au {{date}}",
     preparedFor: "Préparé pour",
@@ -3149,7 +3192,7 @@ quotes: {
   row: {
     view: "Voir",
     edit: "Éditer",
-    toJob: "→ Chantier",
+    toJob: "Chantier",
   },
 },
 
@@ -3187,7 +3230,7 @@ referrals: {
 
   linkCard: {
     title: "Partagez votre lien de parrainage",
-    description: "Partagez votre lien personnel avec vos confrères artisan, collègues ou sous-traitants. Lorsqu'ils s'inscrivent et utilisent Tradie, vous débloquez tous les deux un accès Pro gratuit.",
+    description: "Partagez votre lien personnel avec vos confrères artisans, collègues ou sous-traitants. Lorsqu'ils s'inscrivent et utilisent Vimen, vous obtenez tous les deux un accès Pro gratuit.",
     copied: "Copié !",
     copyLink: "Copier le lien",
   },
@@ -3200,7 +3243,7 @@ referrals: {
     },
     step2: {
       title: "Ils s'inscrivent gratuitement",
-      desc: "Votre filleul crée un compte Tradie en utilisant votre code ou votre lien.",
+      desc: "Votre filleul crée un compte Vimen en utilisant votre code ou votre lien.",
     },
     step3: {
       title: "Ils terminent leur premier chantier",
@@ -3264,7 +3307,7 @@ reviews: {
     title: "Demander un avis",
     intro: "Envoyez un lien de demande d'avis à un client après avoir terminé un chantier. Les clients satisfaits laissent d'excellents avis qui vous aident à décrocher de nouveaux contrats.",
     completedJobLabel: "Intervention terminée",
-    selectJobPlaceholder: "— Sélectionner un chantier —",
+    selectJobPlaceholder: "Sélectionner un chantier",
     smsPreviewTitle: "Aperçu du message",
     smsTemplate: "Bonjour {{clientName}}, merci d'avoir fait appel à {{profileName}} ! Si vous êtes satisfait de {{jobTitle}}, auriez-vous 60 secondes pour nous laisser un avis ? {{urlPreview}}...",
     cancel: "Annuler",
@@ -3299,7 +3342,7 @@ reviews: {
   },
 
   googleCta: {
-    title: "Boostez votre référencement Google",
+    title: "Améliorez votre référencement Google",
     description: "Liez votre fiche Google Business Profile pour rediriger directement les clients satisfaits vers votre page d'avis Google.",
     openBtn: "Ouvrir Google Business",
   },
@@ -3394,7 +3437,7 @@ settings: {
   planFeat11: "Support prioritaire",
 
   languageTitle: "Choisir la langue de la plateforme",
-  languageSub: "Sélectionnez la langue utilisée dans votre espace de gestion Tradie.",
+  languageSub: "Sélectionnez la langue utilisée dans votre espace de gestion Vimen.",
   currencyTitle: "Devise par défaut",
   currencyLabel: "Devise",
 
@@ -3455,10 +3498,10 @@ footerNav: {
 faqPage: {
   eyebrow: "FAQ",
   title: "Questions fréquentes",
-  sub: "Tout ce qu'il faut savoir sur le fonctionnement de Tradie.",
-  q1: { question: "Qu'est ce que Tradie", answer: "Tradie est une plateforme de réservation, devis et facturation pour les professionnels. Gérez vos clients, soyez réservé en ligne, envoyez des devis et des factures, et soyez payé, le tout au même endroit." },
-  q2: { question: "Ai je besoin d'un abonnement pour envoyer des factures", answer: "Non. Vous pouvez facturer et être payé avec le forfait Gratuit. Des frais de deux pour cent s'appliquent aux paiements traités via Tradie Pay." },
-  q3: { question: "Comment fonctionne Tradie Pay", answer: "Tradie Pay permet à vos clients de payer vos factures en ligne par carte. Les fonds sont traités en toute sécurité et versés automatiquement sur votre compte bancaire, moins des frais fixes de deux pour cent." },
+  sub: "Tout ce qu'il faut savoir sur le fonctionnement de Vimen.",
+  q1: { question: "Qu'est ce que Vimen", answer: "Vimen est une plateforme de réservation, devis et facturation pour les professionnels. Gérez vos clients, soyez réservé en ligne, envoyez des devis et des factures, et soyez payé, le tout au même endroit." },
+  q2: { question: "Ai je besoin d'un abonnement pour envoyer des factures", answer: "Non. Vous pouvez facturer et être payé avec le forfait Gratuit. Des frais de deux pour cent s'appliquent aux paiements traités via Vimen Pay." },
+  q3: { question: "Comment fonctionne Vimen Pay", answer: "Vimen Pay permet à vos clients de payer vos factures en ligne par carte. Les fonds sont traités en toute sécurité et versés automatiquement sur votre compte bancaire, moins des frais fixes de deux pour cent." },
   q4: { question: "Les clients peuvent ils payer par virement à la place", answer: "Oui. Chaque facture peut afficher vos coordonnées bancaires comme alternative au paiement par carte, sans aucun frais." },
   q5: { question: "Quelle est la différence entre Gratuit et Illimité", answer: "Le forfait Gratuit couvre jusqu'à cinq clients et dix factures par mois. Illimité supprime ces limites et ajoute une page de réservation personnalisée, des demandes d'avis automatiques et un programme de parrainage." },
   q6: { question: "Puis je annuler à tout moment", answer: "Oui. Il n'y a aucun engagement. Vous pouvez revenir au forfait Gratuit quand vous le souhaitez." },
@@ -3471,14 +3514,14 @@ faqPage: {
 
 aboutPage: {
   eyebrow: "À propos",
-  title: "À propos de Tradie",
+  title: "À propos de Vimen",
   sub: "Réservation, devis, facturation et paiements, conçus pour les professionnels qui préfèrent passer du temps avec leurs clients plutôt que sur la paperasse.",
-  paragraph1: "Tradie a été conçu pour les professionnels qui passent plus de temps à courir après la paperasse qu'à faire le travail qu'ils maîtrisent. Réserver, faire des devis, facturer et être payé ne devrait pas nécessiter cinq outils différents.",
-  paragraph2: "Tradie réunit réservations, devis, factures et paiements au même endroit, pour que les professionnels passent moins de temps sur l'administratif et plus de temps avec leurs clients.",
+  paragraph1: "Vimen a été conçu pour les professionnels qui passent plus de temps à courir après la paperasse qu'à faire le travail qu'ils maîtrisent. Réserver, faire des devis, facturer et être payé ne devrait pas nécessiter cinq outils différents.",
+  paragraph2: "Vimen réunit réservations, devis, factures et paiements au même endroit, pour que les professionnels passent moins de temps sur l'administratif et plus de temps avec leurs clients.",
   paragraph3: "Nous gardons une tarification simple, des frais transparents et un support réactif, parce que c'est ce que nous attendrions d'un outil que nous utilisons chaque jour.",
   valuesTitle: "Ce qui compte pour nous",
   value1: { title: "Tarification simple", desc: "Deux forfaits, des frais clairs, aucun coût caché." },
-  value2: { title: "Pensé pour tous les métiers", desc: "Quel que soit votre métier, Tradie s'adapte à votre façon de travailler." },
+  value2: { title: "Pensé pour tous les métiers", desc: "Quel que soit votre métier, Vimen s'adapte à votre façon de travailler." },
   value3: { title: "Un support qui répond", desc: "De vraies réponses d'une équipe qui utilise aussi le produit." },
   finalCta: { title: "Prêt à commencer", cta: "Essai gratuit" },
 },
@@ -3587,4 +3630,53 @@ invoices: {
     overdue: "En retard",
   },
 },
+
+reviews: {
+  // Modal d'ajout manuel visible sur image_67ddc4.png
+  manualModal: {
+    title: "Ajouter un avis manuellement",
+    intro: "Enregistrez un avis reçu de vive voix, via WhatsApp ou sur papier.",
+    clientNameLabel: "Nom du client",
+    clientNamePlaceholder: "ex. Jean Dupont",
+    ratingLabel: "Note",
+    ratingDisplay: "{{rating}} sur {{total}} étoiles",
+    reviewTitleLabel: "Titre de l'avis (optionnel)",
+    reviewTitlePlaceholder: "ex. Excellent travail dans notre cuisine",
+    reviewTextLabel: "Texte de l'avis (optionnel)",
+    reviewTextPlaceholder: "Qu'a dit le client ?",
+    addReviewBtn: "Ajouter l'avis"
+  },
+  // Statistiques & CTA visibles sur image_67e0ad.png
+  stats: {
+    reviewsCount: "{{count}} avis"
+  },
+  metrics: {
+    verifiedReviews: "Avis vérifiés",
+    onYourProfile: "Sur votre profil",
+    googleClicks: "Clics Google",
+    tappedGoogleLink: "Ont cliqué sur le lien Google",
+    jobsWithNoReview: "Chantiers sans avis",
+    couldRequestReview: "Terminés, sans demande envoyée"
+  },
+  googleCta: {
+    title: "Améliorez votre référencement Google",
+    description: "Liez votre fiche Google Business Profile pour rediriger directement les clients satisfaits vers votre page d'avis Google.",
+    openBtn: "Ouvrir Google Business"
+  }
+},
+
+referrals: {
+  modal: {
+    namePlaceholder: "e.g., John Smith",
+    emailPlaceholder: "e.g., john@example.com"
+  }
+},
+
+// Inside your translation object
+"settings": {
+  // ... existing keys ...
+  "reminderFrequency": "Fréquence des rappels",
+  "reminderMaxCount": "Nombre max de rappels",
+  "days": "jours"
+}
 }

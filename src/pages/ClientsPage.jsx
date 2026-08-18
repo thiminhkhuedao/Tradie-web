@@ -2,7 +2,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { toast } from "react-hot-toast";
 import { T } from "../styles/tokens";
-import { getClients, getJobs, getInvoices, createClient, updateClient, deleteClient } from "../lib/db";
+import { getClients, getJobs, getInvoices, createClient, updateClient, deleteClient, supabase } from "../lib/db";
 import { useTranslation } from "../i18n/index.js";
 import {
   PageShell, Card, Btn, Badge, Avatar,
@@ -114,6 +114,10 @@ export default function ClientsPage({ profile, onUpgradeClick }) {
       toast.error(t("clients.nameRequired")); 
       return; 
     }
+
+    const { data: dbg, error: dbgErr } = await supabase.rpc('debug_auth');
+console.log('[DEBUG AUTH]', dbg, dbgErr);
+
     setBusy(true);
     if (modal === "add") {
       const { data, error } = await createClient(profile.id, form);

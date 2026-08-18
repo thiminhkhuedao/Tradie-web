@@ -79,7 +79,7 @@ export default function InvoicesPage({ profile, onUpgradeClick }) {
 
   const fld = k => e => { setForm(p=>({...p,[k]:e.target.value})); setFormErrors(p=>({...p,[k]:""})); };
 
-  // ✅ Gestion des limites du plan Free pour les factures (max 10)
+  // Gestion des limites du plan Free pour les factures (max 10)
   const isPro = profile?.plan === "pro";
   const totalInvoicesCount = invoices.length;
   const isInvoiceLimitReached = !isPro && totalInvoicesCount >= 10;
@@ -358,7 +358,7 @@ export default function InvoicesPage({ profile, onUpgradeClick }) {
           <div style={{border:`1px solid ${T.border}`,borderRadius:T.r.lg,padding:28}}>
             <div style={{display:"flex",justifyContent:"space-between",marginBottom:24}}>
               <div>
-                <div style={{fontSize:26,fontWeight:900,color:T.brand,letterSpacing:-1.5}}>Tradie</div>
+                <div style={{fontSize:26,fontWeight:900,color:T.brand,letterSpacing:-1.5}}>Vimen</div>
                 <div style={{fontSize:13,color:T.muted}}>{profile.name} · {profile.trade}</div>
                 <div style={{fontSize:12,color:T.muted}}>{profile.email}</div>
               </div>

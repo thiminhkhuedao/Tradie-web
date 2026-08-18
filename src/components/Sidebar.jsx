@@ -5,7 +5,7 @@ import { useTranslation } from "../i18n/index.js";
 
 const initials = n => (n||"?").split(" ").filter(Boolean).map(w=>w[0]).join("").toUpperCase().slice(0,2);
 
-export default function Sidebar({ page, setPage, profile, onSignOut, pendingBookings=0, pendingQuotes=0 }) {
+export default function Sidebar({ page, setPage, profile, onSignOut, pendingBookings=0, pendingQuotes=0, mobileOpen=false, onCloseMobile=()=>{} }) {
   const { t } = useTranslation();
   const terms = getTerms(profile?.trade);
 
@@ -47,20 +47,74 @@ export default function Sidebar({ page, setPage, profile, onSignOut, pendingBook
   const BADGES = { booking:pendingBookings, quotes:pendingQuotes };
 
   return (
-    <nav style={{
-      width:220, background:T.surface, borderRight:`1px solid ${T.border}`,
-      display:"flex", flexDirection:"column", flexShrink:0,
-      position:"sticky", top:0, height:"100vh", zIndex:50,
-      overflowY:"auto",
-    }}>
+    <>
+      <style>{`
+        @media (max-width: 860px) {
+          .vimen-sidebar {
+            position: fixed !important;
+            left: 0;
+            top: 0;
+            transform: translateX(-100%);
+            transition: transform 0.2s ease;
+            z-index: 200;
+            box-shadow: 2px 0 20px rgba(0,0,0,0.2);
+          }
+          .vimen-sidebar.vimen-sidebar-open { transform: translateX(0); }
+          .vimen-sidebar-backdrop {
+            display: block;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.4);
+            z-index: 150;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+          }
+          .vimen-sidebar-backdrop.vimen-sidebar-backdrop-open {
+            opacity: 1;
+            pointer-events: auto;
+          }
+          .vimen-sidebar-close { display: flex !important; }
+        }
+      `}</style>
+
+      {/* Fond assombri derrière le tiroir, cliquable pour fermer */}
+      <div
+        className={`vimen-sidebar-backdrop ${mobileOpen ? "vimen-sidebar-backdrop-open" : ""}`}
+        style={{ display: "none" }}
+        onClick={onCloseMobile}
+      />
+
+      <nav className={`vimen-sidebar ${mobileOpen ? "vimen-sidebar-open" : ""}`} style={{
+        width:220, background:T.surface, borderRight:`1px solid ${T.border}`,
+        display:"flex", flexDirection:"column", flexShrink:0,
+        position:"sticky", top:0, height:"100vh", zIndex:50,
+        overflowY:"auto",
+      }}>
       {/* Logo */}
-      <div style={{ padding:"18px 20px 14px", borderBottom:`1px solid ${T.border}`, flexShrink:0 }}>
-        <div style={{ fontSize:20, fontWeight:900, color:T.brand, letterSpacing:-0.5 }}> Vimen</div>
-        <div style={{ fontSize:11, color:T.muted, marginTop:2 }}>
-          {profile?.trade
-            ? `${getVerticalForProfession(profile.trade).icon} ${profile.trade}`
-            : t("nav.tagline")}
+      <div style={{ padding:"18px 20px 14px", borderBottom:`1px solid ${T.border}`, flexShrink:0, display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+        <div>
+          <div style={{ fontSize:20, fontWeight:900, color:T.brand, letterSpacing:-0.5 }}> Vimen</div>
+          <div style={{ fontSize:11, color:T.muted, marginTop:2 }}>
+            {profile?.trade
+              ? `${getVerticalForProfession(profile.trade).icon} ${profile.trade}`
+              : t("nav.tagline")}
+          </div>
         </div>
+        {/* Bouton fermer, visible seulement sur mobile (voir media query ci-dessus) */}
+        <button
+          type="button"
+          onClick={onCloseMobile}
+          className="vimen-sidebar-close"
+          style={{
+            display:"none", alignItems:"center", justifyContent:"center",
+            width:28, height:28, borderRadius:T.r.md, border:"none",
+            background:T.surface2, color:T.muted, cursor:"pointer", fontSize:16, flexShrink:0,
+          }}
+          aria-label={t("common.close")}
+        >
+          ×
+        </button>
       </div>
 
       {/* Nav sections */}
@@ -74,7 +128,7 @@ export default function Sidebar({ page, setPage, profile, onSignOut, pendingBook
               const active = page === item.id;
               const badge  = BADGES[item.id];
               return (
-                <button key={item.id} onClick={() => setPage(item.id)} style={{
+                <button key={item.id} onClick={() => { setPage(item.id); onCloseMobile(); }} style={{
                   display:"flex", alignItems:"center", gap:9,
                   width:"100%", padding:"8px 12px", borderRadius:T.r.md,
                   cursor:"pointer", marginBottom:1, border:"none",
@@ -113,5 +167,6 @@ export default function Sidebar({ page, setPage, profile, onSignOut, pendingBook
         </button>
       </div>
     </nav>
+    </>
   );
 }

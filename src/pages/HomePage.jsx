@@ -600,15 +600,26 @@ function FeatureTabs({ t }) {
           ))}
         </div>
 
+        <style>{`
+          @media (max-width: 720px) {
+            .vimen-features-grid {
+              grid-template-columns: 1fr !important;
+              gap: 32px !important;
+            }
+          }
+        `}</style>
+
         <div
+          className="vimen-features-grid"
           style={{
             display: "grid",
             gridTemplateColumns: "1fr 1fr",
             gap: 64,
             alignItems: "center",
+            minWidth: 0,
           }}
         >
-          <div style={{ minHeight: 180 }}>
+          <div style={{ minHeight: 180, minWidth: 0 }}>
             <h3
               style={{
                 fontSize: 26,
@@ -667,7 +678,9 @@ function FeatureTabs({ t }) {
             </ul>
           </div>
 
-          <Visual t={t} />
+          <div style={{ minWidth: 0 }}>
+            <Visual t={t} />
+          </div>
         </div>
       </div>
     </section>
@@ -749,7 +762,6 @@ export default function HomePage({ onSignIn, onSignUp }) {
   const { t } = useTranslation();
 
   const stats = [
-    ["2%", t("home.hero.stats.fee")],
     ["5 min", t("home.hero.stats.setup")],
     ["£0", t("home.hero.stats.free")],
   ];

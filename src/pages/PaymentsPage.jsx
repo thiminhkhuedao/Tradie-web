@@ -9,6 +9,7 @@ import {
   MetricCard, SectionTitle, Empty,
 } from "../components/UI";
 import { formatCurrency } from "../lib/currency.js";
+import { getStripeConnectUrl } from "../lib/db.js";
 
 /* ── HELPERS & UTILITIES ─────────────────────────────── */
 
@@ -80,6 +81,19 @@ export default function PaymentsPage({ profile, state, dispatch, refresh }) {
   const fmt = n => formatCurrency(n, profile?.currency);
   const [tab, setTab] = useState("overview");
   
+  // Au retour du parcours d'onboarding Stripe (voir returnUrl dans
+  // handleStripeStandardConnect), on arrive sur ?tab=connect — on ouvre
+  // le bon onglet et on rafraîchit le profil pour récupérer le statut
+  // à jour (stripe_charges_enabled / stripe_payouts_enabled).
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("tab") === "connect") {
+      setTab("connect");
+      if (refresh) refresh();
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }, [refresh]);
+  
   // Local states for async management and error handling
   const [isLoading, setIsLoading] = useState(false);
   const [pageError, setPageError] = useState(null);
@@ -106,57 +120,27 @@ export default function PaymentsPage({ profile, state, dispatch, refresh }) {
 
   const isConnected = Boolean(profile?.stripe_customer_id || profile?.stripe_account_id);
 
-  /* ── STRIPE CONNECT OAUTH STANDARD HANDLER ─────────── */
-  const handleStripeStandardConnect = () => {
-    // ⚠️ Remplace par ton propre Client ID Stripe Connect (Dashboard Stripe > Connect > Paramètres)
-    const clientId = "ca_XXXXXXXXXXXXXXXXXXXXXXXX"; 
-    
-    // URL de retour vers ton application après authentification
-    const redirectUri = encodeURIComponent(`${window.location.origin}/payments`);
-
-    // Construction du lien d'autorisation OAuth Stripe
-    const stripeOAuthUrl = `https://connect.stripe.com/oauth/authorize?response_type=code&client_id=${clientId}&scope=read_write&redirect_uri=${redirectUri}`;
-
-    toast.success(tr("payments.connect.redirectingToast") || "Redirection vers Stripe...");
-    
-    // Redirection de l'utilisateur vers Stripe
-    window.location.href = stripeOAuthUrl;
-  };
-
-  /* ── CAPTURE DU RETOUR D'AUTHENTIFICATION STRIPE ────── */
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const stripeCode = urlParams.get("code");
-
-    if (stripeCode) {
-      const exchangeCode = async () => {
-        setIsLoading(true);
-        try {
-          // Appel à ton API / Edge Function pour échanger le code contre l'ID du compte connecté
-          const response = await fetch("/api/stripe/token-exchange", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ code: stripeCode, userId: profile?.id }),
-          });
-
-          if (!response.ok) throw new Error("Échec de l'association du compte Stripe");
-
-          toast.success(tr("payments.connect.syncSuccess") || "Compte Stripe connecté avec succès !");
-          
-          if (refresh) await refresh();
-
-          // Nettoyage des paramètres d'URL
-          window.history.replaceState({}, document.title, window.location.pathname);
-        } catch (err) {
-          toast.error("Erreur lors de la connexion avec Stripe");
-        } finally {
-          setIsLoading(false);
-        }
-      };
-
-      exchangeCode();
+  /* ── STRIPE CONNECT (Express + Account Links) ──────── */
+  const handleStripeStandardConnect = async () => {
+    setIsLoading(true);
+    setPageError(null);
+    try {
+      const returnUrl = `${window.location.origin}/payments?tab=connect`;
+      const { data, error } = await getStripeConnectUrl(profile?.id, returnUrl);
+      if (error || !data?.url) {
+        throw new Error(error?.message || "URL Stripe manquante");
+      }
+      toast.success(tr("payments.connect.redirectingToast") || "Redirection vers Stripe...");
+      window.location.href = data.url;
+    } catch (err) {
+      setIsLoading(false);
+      setPageError({
+        what: tr("payments.errors.connectFailedWhat") || "Impossible de démarrer la connexion Stripe",
+        why: err.message,
+        action: tr("payments.errors.connectFailedAction") || "Vérifie ta connexion et réessaie",
+      });
     }
-  }, [profile?.id, refresh, tr]);
+  };
 
   const handleSyncAccount = async () => {
     setIsLoading(true);

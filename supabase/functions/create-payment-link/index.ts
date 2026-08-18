@@ -93,7 +93,7 @@ Deno.serve(async (req) => {
       after_completion: {
         type: "redirect",
         redirect: {
-          url: `${Deno.env.get("APP_URL") ?? "https://tradie.app"}/paid?invoice=${invoiceId}`,
+          url: `${Deno.env.get("APP_URL") ?? "https://Vimen.app"}/paid?invoice=${invoiceId}`,
         },
       },
       metadata: {
