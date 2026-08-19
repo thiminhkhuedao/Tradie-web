@@ -44,10 +44,16 @@ export default function PublicQuotePage() {
         const { data, error } = await supabase.functions.invoke("get-public-quote", {
           body: { token },
         });
-        if (error || data?.error) throw new Error(data?.error || error?.message || t("publicQuote.notFound.generic"));
+        // data?.error vient de notre propre Edge Function (message déjà
+        // pensé pour l'utilisateur) — sûr à afficher tel quel. error?.message
+        // est une erreur de transport (réseau, CORS...) et ne doit jamais
+        // être montré brut.
+        if (data?.error) throw new Error(data.error);
+        if (error) throw new Error("__generic__");
         setQuote(data.quote);
       } catch (err) {
-        setLoadError(err.message || t("publicQuote.notFound.generic"));
+        console.error("[PublicQuotePage] load error:", err);
+        setLoadError(err.message === "__generic__" ? t("publicQuote.notFound.generic") : (err.message || t("publicQuote.notFound.generic")));
       } finally {
         setIsLoading(false);
       }
@@ -75,11 +81,13 @@ export default function PublicQuotePage() {
       const { data, error } = await supabase.functions.invoke("sign-quote", {
         body: { token, signedBy: signName.trim() },
       });
-      if (error || data?.error) throw new Error(data?.error || error?.message || t("publicQuote.accept.errorGeneric"));
+      if (data?.error) throw new Error(data.error);
+      if (error) throw new Error("__generic__");
       setJustSigned(true);
       setQuote((q) => ({ ...q, status: "accepted", signed_at: data.signedAt, signed_by: signName.trim() }));
     } catch (err) {
-      setSignError(err.message || t("publicQuote.accept.errorGeneric"));
+      console.error("[PublicQuotePage] sign error:", err);
+      setSignError(err.message === "__generic__" ? t("publicQuote.accept.errorGeneric") : (err.message || t("publicQuote.accept.errorGeneric")));
     } finally {
       setIsSigning(false);
     }

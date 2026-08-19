@@ -90,8 +90,9 @@ export default function ReferralsPage({ state, dispatch, profile }) {
       .single();
 
     if (error) {
+      console.error("[ReferralsPage] save referral error:", error);
       toast.dismiss(tid);
-      toast.error(t("referrals.toast.saveFailed", { message: error.message }));
+      toast.error(t("referrals.toast.saveFailed"));
       return;
     }
 

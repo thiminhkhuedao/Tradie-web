@@ -112,7 +112,8 @@ export default function CertificationsPage({ state, dispatch, profile }) {
       dispatch({ type:"ADD_CERT", payload:optimistic });
       try {
         toast.success(t("certifications.addedToast"));
-      } catch {
+      } catch (err) {
+        console.error("[CertificationsPage] add error:", err);
         dispatch({ type:"DELETE_CERT", payload:optimistic.id });
         toast.error(t("certifications.errorAdd"));
         setSaving(false);
@@ -123,7 +124,8 @@ export default function CertificationsPage({ state, dispatch, profile }) {
       dispatch({ type:"UPDATE_CERT", payload });
       try {
         toast.success(t("common.success"));
-      } catch {
+      } catch (err) {
+        console.error("[CertificationsPage] update error:", err);
         dispatch({ type:"UPDATE_CERT", payload:prev });
         toast.error(t("certifications.errorUpdate"));
         setSaving(false);

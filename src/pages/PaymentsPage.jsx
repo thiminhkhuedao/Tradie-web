@@ -192,10 +192,11 @@ export default function PaymentsPage({ profile, state, dispatch, refresh }) {
       toast.success(tr("payments.connect.redirectingToast") || "Redirection vers Stripe...");
       window.location.href = data.url;
     } catch (err) {
+      console.error("[PaymentsPage] Stripe connect error:", err);
       setIsLoading(false);
       setPageError({
         what: tr("payments.errors.connectFailedWhat") || "Impossible de démarrer la connexion Stripe",
-        why: err.message,
+        why: tr("payments.errors.connectFailedWhy") || "Le service de paiement est temporairement indisponible",
         action: tr("payments.errors.connectFailedAction") || "Vérifie ta connexion et réessaie",
       });
     }

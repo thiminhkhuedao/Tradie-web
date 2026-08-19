@@ -66,9 +66,10 @@ export default function JobsPage({ profile }) {
       setJobs(j ?? []);
       setClients(c ?? []);
     } catch (err) {
+      console.error("[JobsPage] load error:", err);
       setError({
         what: t("jobs.loadErrorWhat", "Failed to load jobs list"),
-        why: err.message || t("jobs.loadErrorWhy", "Could not fetch data from the server."),
+        why: t("jobs.loadErrorWhy", "Could not fetch data from the server."),
         nextAction: t("jobs.loadErrorNext", "Please check your connection and try again."),
       });
     } finally {

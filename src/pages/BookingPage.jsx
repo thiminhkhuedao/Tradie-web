@@ -76,9 +76,10 @@ export default function BookingPage({ profile }) {
       setBookings(b ?? []);
       setCerts(c ?? []);
     } catch (err) {
+      console.error("[BookingPage] load error:", err);
       setError({
         what: t("booking.loadErrorWhat", "Failed to load booking requests"),
-        why: err.message || t("booking.loadErrorWhy", "Could not synchronize data with the server."),
+        why: t("booking.loadErrorWhy", "Could not synchronize data with the server."),
         nextAction: t("booking.loadErrorNext", "Please check your network connection and try refreshing."),
       });
     } finally {
@@ -91,7 +92,8 @@ export default function BookingPage({ profile }) {
   async function respond(id, status) {
     const { data, error } = await updateBookingStatus(id, status);
     if (error) {
-      toast.error(`${t("booking.updateFailed")}: ${error.message}`);
+      console.error("[BookingPage] update status error:", error);
+      toast.error(t("booking.updateFailed"));
       return;
     }
     setBookings(prev => prev.map(b => b.id === id ? data : b));
@@ -173,7 +175,8 @@ export default function BookingPage({ profile }) {
     setSubmitting(false);
 
     if (error) {
-      toast.error(`${t("booking.submitFailed")}: ${error.message}`);
+      console.error("[BookingPage] submit preview error:", error);
+      toast.error(t("booking.submitFailed"));
       return;
     }
     setBookings(prev => [data, ...prev]);
@@ -467,7 +470,8 @@ function AvailabilityEditor({ profile }) {
       .eq("profile_id", profile.id);
 
     if (delErr) {
-      toast.error(`Could not save availability: ${delErr.message}`);
+      console.error("[BookingPage] availability delete error:", delErr);
+      toast.error(t("booking.availabilitySaveFailed") || "Could not save availability, please try again");
       setSaving(false);
       return;
     }
@@ -484,7 +488,8 @@ function AvailabilityEditor({ profile }) {
     if (rows.length > 0) {
       const { error: insErr } = await supabase.from("availability").insert(rows);
       if (insErr) {
-        toast.error(`Could not update time slots: ${insErr.message}`);
+        console.error("[BookingPage] availability insert error:", insErr);
+        toast.error(t("booking.availabilitySaveFailed") || "Could not save availability, please try again");
         setSaving(false);
         return;
       }

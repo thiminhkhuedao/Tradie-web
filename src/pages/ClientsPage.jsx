@@ -2,7 +2,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { toast } from "react-hot-toast";
 import { T } from "../styles/tokens";
-import { getClients, getJobs, getInvoices, createClient, updateClient, deleteClient, supabase } from "../lib/db";
+import { getClients, getJobs, getInvoices, createClient, updateClient, deleteClient } from "../lib/db";
 import { useTranslation } from "../i18n/index.js";
 import {
   PageShell, Card, Btn, Badge, Avatar,
@@ -31,6 +31,15 @@ const iStyle = {
 
 const AV_COLORS = ["#E8500A", "#1A7F4B", "#7C3AED", "#0369A1", "#B45309", "#BE185D", "#0F766E", "#C2410C"];
 
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PHONE_RE = /^[+]?[0-9\s().-]{6,20}$/;
+
+const isValidEmail = v => !v || EMAIL_RE.test(v.trim());
+const isValidPhone = v => !v || PHONE_RE.test(v.trim());
+
+const errInputStyle = { ...iStyle, border: "1px solid #DC2626" };
+const errTextStyle = { fontSize: 12, color: "#DC2626", marginTop: 4 };
+
 export default function ClientsPage({ profile, onUpgradeClick }) {
   const { t } = useTranslation();
   const fmt = n => formatCurrency(n, profile?.currency);
@@ -47,8 +56,12 @@ export default function ClientsPage({ profile, onUpgradeClick }) {
   const [busy, setBusy] = useState(false);
   const [form, setForm] = useState({});
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState({});
 
-  const fld = k => e => setForm(p => ({ ...p, [k]: e.target.value }));
+  const fld = k => e => {
+    setForm(p => ({ ...p, [k]: e.target.value }));
+    setFieldErrors(p => (p[k] ? { ...p, [k]: null } : p));
+  };
 
   const isPro = profile?.plan === "pro";
   const clientsCount = clients.length;
@@ -73,9 +86,10 @@ export default function ClientsPage({ profile, onUpgradeClick }) {
       setJobs(j ?? []);
       setInvoices(i ?? []);
     } catch (err) {
+      console.error("[ClientsPage] load error:", err);
       setError({
         what: t("clients.loadErrorWhat", "Failed to load clients list"),
-        why: err.message || t("clients.loadErrorWhy", "Could not fetch clients from the server."),
+        why: t("clients.loadErrorWhy", "Could not fetch clients from the server."),
         nextAction: t("clients.loadErrorNext", "Please check your network connection and try again."),
       });
     } finally {
@@ -100,11 +114,13 @@ export default function ClientsPage({ profile, onUpgradeClick }) {
       return;
     }
     setForm({ name: "", email: "", phone: "", address: "", notes: "" });
+    setFieldErrors({});
     setModal("add");
   }
 
   function openEdit(c) { 
     setForm({ ...c }); 
+    setFieldErrors({});
     setModal("edit"); 
   }
 
@@ -115,14 +131,26 @@ export default function ClientsPage({ profile, onUpgradeClick }) {
       return; 
     }
 
-    const { data: dbg, error: dbgErr } = await supabase.rpc('debug_auth');
-console.log('[DEBUG AUTH]', dbg, dbgErr);
+    const errors = {};
+    if (!isValidEmail(form.email)) {
+      errors.email = t("clients.invalidEmail", "Please enter a valid email address");
+    }
+    if (!isValidPhone(form.phone)) {
+      errors.phone = t("clients.invalidPhone", "Please enter a valid phone number");
+    }
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors);
+      toast.error(t("clients.fixFieldsError", "Please fix the highlighted fields"));
+      return;
+    }
+    setFieldErrors({});
 
     setBusy(true);
     if (modal === "add") {
       const { data, error } = await createClient(profile.id, form);
       if (error) { 
-        toast.error(`${t("clients.addFailed")}: ${error.message}`); 
+        console.error("[ClientsPage] add client error:", error);
+        toast.error(t("clients.addFailed")); 
         setBusy(false); 
         return; 
       }
@@ -134,7 +162,8 @@ console.log('[DEBUG AUTH]', dbg, dbgErr);
         address: form.address, notes: form.notes,
       });
       if (error) { 
-        toast.error(`${t("clients.updateFailed")}: ${error.message}`); 
+        console.error("[ClientsPage] update client error:", error);
+        toast.error(t("clients.updateFailed")); 
         setBusy(false); 
         return; 
       }
@@ -148,7 +177,8 @@ console.log('[DEBUG AUTH]', dbg, dbgErr);
   async function handleDelete() {
     const { error } = await deleteClient(delId);
     if (error) { 
-      toast.error(`${t("clients.deleteFailed")}: ${error.message}`); 
+      console.error("[ClientsPage] delete client error:", error);
+      toast.error(t("clients.deleteFailed")); 
       return; 
     }
     setClients(prev => prev.filter(c => c.id !== delId));
@@ -193,10 +223,16 @@ console.log('[DEBUG AUTH]', dbg, dbgErr);
               </Field>
               <FieldRow>
                 <Field label={t("clients.emailLabel")} flex="1">
-                  <input type="email" style={iStyle} value={form.email || ""} onChange={fld("email")} />
+                  <input type="email" style={fieldErrors.email ? errInputStyle : iStyle}
+                    value={form.email || ""} onChange={fld("email")}
+                    aria-invalid={!!fieldErrors.email} />
+                  {fieldErrors.email && <div style={errTextStyle}>{fieldErrors.email}</div>}
                 </Field>
                 <Field label={t("clients.phoneLabel")} flex="1">
-                  <input style={iStyle} value={form.phone || ""} onChange={fld("phone")} />
+                  <input style={fieldErrors.phone ? errInputStyle : iStyle}
+                    value={form.phone || ""} onChange={fld("phone")}
+                    aria-invalid={!!fieldErrors.phone} />
+                  {fieldErrors.phone && <div style={errTextStyle}>{fieldErrors.phone}</div>}
                 </Field>
               </FieldRow>
               <Field label={t("clients.addressLabel")}>

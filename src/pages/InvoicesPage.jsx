@@ -94,7 +94,8 @@ export default function InvoicesPage({ profile, onUpgradeClick }) {
       const { data, error } = await getInvoices(profile.id);
       if (error) throw error;
       setInvoices(data ?? []);
-    } catch {
+    } catch (err) {
+      console.error("[InvoicesPage] load error:", err);
       setLoadError(t("invoices.loadError") || "Failed to load invoices. Please try again.");
     } finally {
       setLoading(false);
@@ -183,7 +184,8 @@ export default function InvoicesPage({ profile, onUpgradeClick }) {
           toast.success(t("invoices.emailedToast", { email: client.email }));
         }
       }
-    } catch {
+    } catch (err) {
+      console.error("[InvoicesPage] create invoice error:", err);
       setInvoices(prev => prev.filter(i => i.id!==tempId));
       toast.error(t("invoices.createFailed") || "Failed to create invoice. Please try again.");
       setModal("add");
@@ -203,7 +205,8 @@ export default function InvoicesPage({ profile, onUpgradeClick }) {
         const inv = invoices.find(i=>i.id===id);
         if (inv) sendInvoicePaidSMS(inv, profile);
       }
-    } catch {
+    } catch (err) {
+      console.error("[InvoicesPage] mark paid error:", err);
       setInvoices(prev => prev.map(i => i.id===id ? {...i, status:"unpaid"} : i));
       toast.error(t("invoices.markPaidFailed") || "Failed to mark as paid. Please try again.");
     }
@@ -222,10 +225,12 @@ export default function InvoicesPage({ profile, onUpgradeClick }) {
       if (result.success) {
         toast.success(t("invoices.emailedToast",{email:inv.client.email}));
       } else {
-        toast.error(t("invoices.emailFailedToast",{error:result.error}) || "Email failed to send.");
+        console.error("[InvoicesPage] send email failed:", result.error);
+        toast.error(t("invoices.emailFailedToast") || "Email failed to send.");
       }
-    } catch {
-      toast.error(t("invoices.emailFailedToast",{error:""}) || "Email failed to send.");
+    } catch (err) {
+      console.error("[InvoicesPage] send email error:", err);
+      toast.error(t("invoices.emailFailedToast") || "Email failed to send.");
     }
     setBusy(false);
   }
@@ -240,7 +245,8 @@ export default function InvoicesPage({ profile, onUpgradeClick }) {
         i.id === inv.id ? { ...i, stripe_payment_link_url:result.url, stripe_payment_link_id:result.id } : i
       ));
       toast.success(t("invoices.paymentLinkCreated"));
-    } catch {
+    } catch (err) {
+      console.error("[InvoicesPage] Stripe payment link error:", err);
       toast.error(t("invoices.paymentLinkFailed") || "Failed to create payment link. Check your Stripe connection.");
     }
     setBusy(false);
@@ -269,7 +275,8 @@ export default function InvoicesPage({ profile, onUpgradeClick }) {
       const { error } = await deleteInvoice(prev.id);
       if (error) throw error;
       toast.success(t("invoices.deletedToast"));
-    } catch {
+    } catch (err) {
+      console.error("[InvoicesPage] delete invoice error:", err);
       setInvoices(p => [prev, ...p]);
       toast.error(t("invoices.deleteFailed") || "Failed to delete invoice.");
     }

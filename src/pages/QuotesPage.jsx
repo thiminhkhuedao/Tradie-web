@@ -130,7 +130,8 @@ export default function QuotesPage({ state, dispatch, profile, refresh, isLoadin
       if (refresh) await refresh(); // Rechargement des données fraîches
       setModal(null);
     } catch (err) {
-      toast.error(err?.message || tr("quotes.toast.errorSaving"));
+      console.error("[QuotesPage] save error:", err);
+      toast.error(tr("quotes.toast.errorSaving"));
     } finally {
       setBusy(false);
     }
@@ -145,7 +146,8 @@ export default function QuotesPage({ state, dispatch, profile, refresh, isLoadin
       if (refresh) await refresh();
       toast.success(tr("quotes.toast.markedAsSent"));
     } catch (err) {
-      toast.error(err?.message || tr("quotes.toast.errorUpdating"));
+      console.error("[QuotesPage] mark sent error:", err);
+      toast.error(tr("quotes.toast.errorUpdating"));
     } finally {
       setBusy(false);
     }
@@ -169,7 +171,8 @@ export default function QuotesPage({ state, dispatch, profile, refresh, isLoadin
       if (refresh) await refresh();
       toast.success(tr("quotes.toast.quoteEmailSent", { name: client.name }) || `Devis envoyé à ${client.name}`);
     } catch (err) {
-      toast.error(err?.message || tr("quotes.toast.errorSendingEmail") || "Échec de l'envoi, réessaie");
+      console.error("[QuotesPage] send email error:", err);
+      toast.error(tr("quotes.toast.errorSendingEmail") || "Échec de l'envoi, réessaie");
     } finally {
       setBusy(false);
     }
@@ -187,7 +190,8 @@ export default function QuotesPage({ state, dispatch, profile, refresh, isLoadin
       setModal(null);
       toast.success(tr("quotes.toast.quoteSignedBy", { name: signName }));
     } catch (err) {
-      toast.error(err?.message || tr("quotes.toast.errorSigning"));
+      console.error("[QuotesPage] sign error:", err);
+      toast.error(tr("quotes.toast.errorSigning"));
     } finally {
       setBusy(false);
     }
@@ -217,7 +221,8 @@ export default function QuotesPage({ state, dispatch, profile, refresh, isLoadin
       if (refresh) await refresh();
       toast.success(tr("quotes.toast.convertedToJob"));
     } catch (err) {
-      toast.error(err?.message || tr("quotes.toast.errorConverting"));
+      console.error("[QuotesPage] convert to job error:", err);
+      toast.error(tr("quotes.toast.errorConverting"));
     } finally {
       setBusy(false);
     }
@@ -234,7 +239,8 @@ export default function QuotesPage({ state, dispatch, profile, refresh, isLoadin
       setDelId(null);
       toast.success(tr("quotes.toast.quoteDeleted"));
     } catch (err) {
-      toast.error(err?.message || tr("quotes.toast.errorDeleting"));
+      console.error("[QuotesPage] delete error:", err);
+      toast.error(tr("quotes.toast.errorDeleting"));
     } finally {
       setBusy(false);
     }

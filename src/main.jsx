@@ -3,6 +3,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AppProvider } from "../context/AppContext.jsx";
+import { ErrorBoundary } from "./components/ErrorBoundary.jsx";
 import "./styles/globals.css";
 
 const CLERK_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
@@ -12,17 +13,21 @@ async function bootstrap() {
   const { default: PublicBookingPage } = await import("./pages/PublicBookingPage.jsx");
   const { default: PublicQuotePage } = await import("./pages/PublicQuotePage.jsx");
 
-  // Wrap the routes inside AppProvider here
+  // Wrap the routes inside AppProvider here — ErrorBoundary en tout premier
+  // pour attraper n'importe quel crash de rendu, n'importe où dans l'app,
+  // et afficher un message générique plutôt qu'une page blanche.
   const routedApp = (
-    <AppProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/b/:slug" element={<PublicBookingPage />} />
-          <Route path="/quote/:token" element={<PublicQuotePage />} />
-          <Route path="*" element={<App useClerk={!!CLERK_KEY} />} />
-        </Routes>
-      </BrowserRouter>
-    </AppProvider>
+    <ErrorBoundary fullPage>
+      <AppProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/b/:slug" element={<PublicBookingPage />} />
+            <Route path="/quote/:token" element={<PublicQuotePage />} />
+            <Route path="*" element={<App useClerk={!!CLERK_KEY} />} />
+          </Routes>
+        </BrowserRouter>
+      </AppProvider>
+    </ErrorBoundary>
   );
 
   const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -49,12 +54,26 @@ async function bootstrap() {
 }
 
 bootstrap().catch((err) => {
-  console.error(err);
+  // Détail complet en console pour toi — jamais montré à l'utilisateur.
+  console.error("[Vimen] Startup error:", err);
+
+  const fr = typeof navigator !== "undefined" && navigator.language?.toLowerCase().startsWith("fr");
   document.getElementById("root").innerHTML = `
-    <div style="font-family:sans-serif;padding:40px;max-width:600px;margin:0 auto">
-      <h2 style="color:#E8500A">⚡ Vimen — startup error</h2>
-      <p style="color:#666;margin:12px 0">Something went wrong loading the app:</p>
-      <pre style="background:#f5f5f5;padding:16px;border-radius:8px;overflow:auto;font-size:13px">${err.message}</pre>
+    <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;font-family:-apple-system,sans-serif;background:#F5F4F1">
+      <div style="text-align:center;max-width:420px">
+        <div style="font-size:40px;margin-bottom:16px">⚠️</div>
+        <h2 style="font-size:18px;font-weight:700;margin:0 0 8px;color:#131211">
+          ${fr ? "Oups, une erreur est survenue" : "Oops, something went wrong"}
+        </h2>
+        <p style="color:#666;margin:0 0 24px;font-size:14px;line-height:1.6">
+          ${fr
+            ? "Le problème a été enregistré. Essaie de recharger la page — si ça persiste, contacte le support."
+            : "The issue has been logged. Try reloading the page — if it persists, contact support."}
+        </p>
+        <button onclick="window.location.reload()" style="padding:10px 24px;border-radius:8px;border:none;background:#E8500A;color:#fff;cursor:pointer;font-size:14px;font-weight:700">
+          ${fr ? "Recharger la page" : "Reload page"}
+        </button>
+      </div>
     </div>
   `;
 });

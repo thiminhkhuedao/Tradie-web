@@ -102,9 +102,10 @@ export default function MarketplacePage({ profile }) {
       if (err) throw err;
       setListings(data ?? []);
     } catch (err) {
+      console.error("[MarketplacePage] load listings error:", err);
       setError({
         what: t("marketplace.loadErrorWhat", "Failed to load marketplace listings"),
-        why: err.message || t("marketplace.loadErrorWhy", "Could not fetch data from the server."),
+        why: t("marketplace.loadErrorWhy", "Could not fetch data from the server."),
         nextAction: t("marketplace.loadErrorNext", "Please check your connection and try again."),
       });
     } finally {
@@ -119,6 +120,7 @@ export default function MarketplacePage({ profile }) {
       if (err) throw err;
       setMyListings(data ?? []);
     } catch (err) {
+      console.error("[MarketplacePage] load my listings error:", err);
       toast.error(t("marketplace.toast.failedLoadMine"));
     }
   }, [profile?.id, t]);
@@ -715,7 +717,8 @@ function PostModal({ profile, onClose, onPosted }) {
     const { data, error } = await createListing(userId, payload);
     setBusy(false);
     if (error) { 
-      toast.error(t("marketplace.toast.failedPost") + ": " + (error.message || "Error")); 
+      console.error("[MarketplacePage] create listing error:", error);
+      toast.error(t("marketplace.toast.failedPost")); 
       return; 
     }
     onPosted(data);

@@ -62,9 +62,10 @@ export default function DashboardPage({ profile, setPage, state, dispatch, toast
         setClients(c.data ?? []); 
         setBookings(b.data ?? []);
       } catch (err) {
+        console.error("[DashboardPage] load error:", err);
         setError({
           what: t("dashboard.loadErrorWhat", "Failed to load dashboard data"),
-          why: err.message,
+          why: t("dashboard.loadErrorWhy", "Could not fetch data from the server."),
           nextAction: t("dashboard.loadErrorNext", "Please check your connection and refresh.")
         });
       } finally {
