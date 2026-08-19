@@ -1,12 +1,11 @@
 // supabase/functions/send-invoice-reminders/index.ts
 //
 // Appelée quotidiennement par pg_cron (voir sql/001_invoice_reminders.sql).
-// Cherche les factures "unpaid" dont la date d'échéance (due_date) est
-// dépassée, et renvoie l'email de facture (via ta fonction existante
+// Cherche TOUTES les factures "unpaid" (peu importe la date d'échéance —
+// pas besoin d'être en retard) et renvoie l'email de facture (via
 // send-invoice-email, avec reminder: true) si :
-//   - le pro a activé notif_overdue_reminder
-//   - reminder_count < reminder_max_count (défaut 5)
-//   - le dernier rappel date de plus de reminder_frequency_days (défaut 7)
+//   - le dernier envoi date de plus de reminder_frequency_days (défaut 7)
+//   - reminder_count < plafond : 5 pour le plan Free, illimité pour le plan Pro
 //
 // Secrets requis (supabase secrets set ...):
 //   CRON_SECRET                 (chaîne aléatoire choisie par toi — doit
@@ -41,10 +40,15 @@ interface InvoiceProfile {
   bank_name: string | null;
   sort_code: string | null;
   account_number: string | null;
+  iban: string | null;
+  bic: string | null;
+  bank_account_holder: string | null;
   invoice_notes: string | null;
   notif_overdue_reminder: boolean | null;
   reminder_frequency_days: number | null;
   reminder_max_count: number | null;
+  plan: string | null;
+  currency: string | null;
 }
 
 interface InvoiceRow {
@@ -69,7 +73,6 @@ Deno.serve(async (req) => {
   }
 
   const admin = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
-  const nowIso = new Date().toISOString();
 
   const { data: invoices, error } = await admin
     .from("invoices")
@@ -80,13 +83,12 @@ Deno.serve(async (req) => {
       job:jobs ( title ),
       profile:profiles (
         id, name, email, phone, bank_name, sort_code, account_number,
-        invoice_notes, notif_overdue_reminder, reminder_frequency_days, reminder_max_count
+        iban, bic, bank_account_holder,
+        invoice_notes, notif_overdue_reminder, reminder_frequency_days, reminder_max_count, plan, currency
       )
     `)
     .eq("status", "unpaid")
-    .not("due_date", "is", null)
-    .lt("due_date", nowIso)
-    .lt("reminder_count", 5) // filet de sécurité même si le réglage utilisateur est plus permissif
+    .lt("reminder_count", 999) // filet de sécurité large ; le vrai plafond (plan) est appliqué plus bas
     .returns<InvoiceRow[]>();
 
   if (error) {
@@ -98,10 +100,14 @@ Deno.serve(async (req) => {
 
   for (const invoice of invoices ?? []) {
     const profile = invoice.profile;
-    if (!profile?.notif_overdue_reminder) continue;
+    if (!profile) continue;
     if (!invoice.client?.email) continue;
 
-    const maxReminders  = profile.reminder_max_count ?? 5;
+    // Plafond des rappels selon le plan : illimité pour Pro (sauf si le pro a
+    // lui-même défini un plafond plus bas), 5 maximum pour Free quoi qu'il arrive.
+    const maxReminders = profile.plan === "pro"
+      ? (profile.reminder_max_count && profile.reminder_max_count > 0 ? profile.reminder_max_count : Infinity)
+      : Math.min(profile.reminder_max_count ?? 5, 5);
     const frequencyDays = profile.reminder_frequency_days ?? 7;
 
     if (invoice.reminder_count >= maxReminders) continue;
@@ -141,6 +147,10 @@ Deno.serve(async (req) => {
         bankName:      profile.bank_name,
         sortCode:      profile.sort_code,
         accountNumber: profile.account_number,
+        iban:          profile.iban,
+        bic:           profile.bic,
+        bankAccountHolder: profile.bank_account_holder,
+        currencyCode:  profile.currency ?? "EUR",
         invoiceNotes:  profile.invoice_notes,
         reminder:      true,
       }),

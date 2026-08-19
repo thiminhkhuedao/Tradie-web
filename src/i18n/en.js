@@ -3670,5 +3670,48 @@ referrals: {
   "reminderFrequency": "Reminder frequency",
   "reminderMaxCount": "Max reminders count",
   "days": "days"
-}
+},
+
+publicQuote: {
+    loading: "Loading your quote...",
+    notFound: {
+      title: "Quote not found",
+      generic: "This quote could not be found.",
+    },
+    status: {
+      draft: "Draft",
+      awaitingReview: "Awaiting your review",
+      accepted: "Accepted",
+      declined: "Declined",
+      expired: "Expired",
+    },
+    from: "From {{name}}",
+    preparedFor: "Prepared for",
+    table: {
+      description: "Description",
+      qty: "Qty",
+      total: "Total",
+    },
+    totals: {
+      subtotal: "Subtotal",
+      vat: "VAT ({{rate}}%)",
+      total: "Total",
+    },
+    validUntil: "Valid until {{date}}",
+    expiredOn: "This quote expired on {{date}}",
+    acceptedBy: "Accepted by {{name}} on {{date}}",
+    expiredNotice: "This quote has expired. Please contact {{name}} for an updated quote.",
+    accept: {
+      title: "Accept this quote",
+      namePlaceholder: "Your full name",
+      agreement: "I agree to the terms of this quote and confirm I want to proceed at {{amount}}.",
+      signBtn: "Sign & accept quote",
+      signing: "Signing...",
+      errorGeneric: "Something went wrong, please try again.",
+    },
+    success: {
+      title: "Quote accepted",
+      sub: "{{name}} has been notified and will be in touch shortly.",
+    },
+  },
 }

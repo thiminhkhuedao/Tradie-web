@@ -2,8 +2,9 @@
 import { useState, useEffect, useCallback } from "react";
 import { toast } from "react-hot-toast";
 import { T } from "../styles/tokens";
-import { getJobs, getClients, createJob, updateJob, completeJob, deleteJob } from "../lib/db";
-import { sendJobReminderSMS } from "../lib/notifications";
+import { getJobs, getClients, createJob, updateJob, completeJob, deleteJob, createInvoice } from "../lib/db";
+import { sendJobReminderSMS, sendInvoiceEmail } from "../lib/notifications";
+import { supabase } from "../lib/supabase";
 import { getTerms } from "../lib/professions.js";
 import { useTranslation } from "../i18n/index.js";
 import {
@@ -153,6 +154,48 @@ export default function JobsPage({ profile }) {
     const client = clients.find(c => c.id === (job?.client_id ?? job?.client?.id));
     if (client?.phone && profile?.phone) {
       sendJobReminderSMS(job, client, profile);
+    }
+
+    // Job terminé → facture créée et envoyée automatiquement, sauf s'il en
+    // existe déjà une pour ce job (évite les doublons).
+    await autoCreateAndSendInvoice(data ?? job, client);
+  }
+
+  async function autoCreateAndSendInvoice(job, client) {
+    if (!job) return;
+    try {
+      const { data: existing } = await supabase
+        .from("invoices")
+        .select("id")
+        .eq("job_id", job.id)
+        .maybeSingle();
+      if (existing) return; // déjà facturé, on ne duplique pas
+
+      const { data: invoice, error: invErr } = await createInvoice(profile.id, {
+        client_id: job.client_id ?? job.client?.id,
+        job_id: job.id,
+        amount: parseFloat(job.amount) || 0,
+        due_date: null,
+        status: "unpaid",
+      });
+      if (invErr) throw invErr;
+
+      toast.success(t("jobs.invoiceAutoCreatedToast") || "Invoice created automatically");
+
+      // Premier envoi automatique au client, s'il a une adresse email
+      if (client?.email && invoice) {
+        const enrichedInvoice = { ...invoice, client, job };
+        const result = await sendInvoiceEmail(enrichedInvoice, profile);
+        if (result.success) {
+          await supabase
+            .from("invoices")
+            .update({ reminder_count: 1, last_reminder_sent_at: new Date().toISOString() })
+            .eq("id", invoice.id);
+        }
+      }
+    } catch (err) {
+      console.error("[Auto invoice creation failed]:", err);
+      toast.error(t("jobs.invoiceAutoCreateFailedToast") || "Job completed, but the invoice could not be created automatically — add it manually.");
     }
   }
 

@@ -67,7 +67,48 @@ export async function sendInvoiceEmail(invoice, profile) {
     bankName:      profile.bank_name,
     sortCode:      profile.sort_code,
     accountNumber: profile.account_number,
+    iban:          profile.iban,
+    bic:           profile.bic,
+    bankAccountHolder: profile.bank_account_holder,
     invoiceNotes:  profile.invoice_notes,
+    currencyCode:  profile.currency ?? "EUR",
+  });
+}
+
+/**
+ * Sends a quote to the client by email, with a link to view and sign
+ * it online (no account needed on their end).
+ *
+ * @param {object} quote    - quote row (needs .public_token — see migration
+ *                             003_quote_public_signing.sql)
+ * @param {object} client   - client row (must have .email)
+ * @param {object} profile  - tradesperson profile
+ */
+export async function sendQuoteEmail(quote, client, profile) {
+  if (!client?.email) {
+    return { success: false, error: "Client has no email address" };
+  }
+  if (!quote?.public_token) {
+    return { success: false, error: "Quote is missing its public link — try refreshing the page" };
+  }
+
+  const quoteUrl = `${window.location.origin}/quote/${quote.public_token}`;
+
+  return invoke("send-quote-email", {
+    to:          client.email,
+    clientName:  client.name,
+    tradeName:   profile.name,
+    tradeEmail:  profile.email,
+    tradePhone:  profile.phone,
+    quoteNumber: quote.quote_number,
+    total:       quote.total,
+    validUntil:  quote.valid_until
+      ? new Date(quote.valid_until).toLocaleDateString("en-GB", {
+          day: "numeric", month: "long", year: "numeric",
+        })
+      : null,
+    quoteUrl,
+    currencyCode: profile.currency ?? "EUR",
   });
 }
 
@@ -216,5 +257,32 @@ export async function sendOverdueSMS(invoice, profile) {
       amount:        invoice.amount,
       clientName:    invoice.client?.name ?? "your client",
     },
+  });
+}
+
+export async function sendQuoteEmail(quote, client, profile) {
+  if (!client?.email) {
+    return { success: false, error: "Client has no email address" };
+  }
+  if (!quote?.public_token) {
+    return { success: false, error: "Quote is missing its public link — try refreshing the page" };
+  }
+
+  const quoteUrl = `${window.location.origin}/quote/${quote.public_token}`;
+
+  return invoke("send-quote-email", {
+    to:          client.email,
+    clientName:  client.name,
+    tradeName:   profile.name,
+    tradeEmail:  profile.email,
+    tradePhone:  profile.phone,
+    quoteNumber: quote.quote_number,
+    total:       quote.total,
+    validUntil:  quote.valid_until
+      ? new Date(quote.valid_until).toLocaleDateString("en-GB", {
+          day: "numeric", month: "long", year: "numeric",
+        })
+      : null,
+    quoteUrl,
   });
 }

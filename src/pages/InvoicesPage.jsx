@@ -6,6 +6,7 @@ import {
   getInvoices, createInvoice, markInvoicePaid, deleteInvoice,
 } from "../lib/db";
 import { createPaymentLink } from "../lib/stripe";
+import { supabase } from "../lib/supabase";
 import { sendInvoiceEmail, sendInvoicePaidSMS } from "../lib/notifications";
 import { useTranslation } from "../i18n/index.js";
 import {
@@ -163,6 +164,25 @@ export default function InvoicesPage({ profile, onUpgradeClick }) {
       if (error) throw error;
       setInvoices(prev => prev.map(i => i.id===tempId ? data : i));
       toast.success(t("invoices.createdToast"));
+
+      // Envoi automatique dès la création, si le client a un email —
+      // plus besoin de cliquer "Envoyer" séparément.
+      const client = clients.find(c => c.id === form.client_id);
+      if (client?.email && data) {
+        const job = jobs.find(j => j.id === form.job_id);
+        const enrichedInvoice = { ...data, client, job };
+        const result = await sendInvoiceEmail(enrichedInvoice, profile);
+        if (result.success) {
+          const { data: updated } = await supabase
+            .from("invoices")
+            .update({ reminder_count: 1, last_reminder_sent_at: new Date().toISOString() })
+            .eq("id", data.id)
+            .select()
+            .single();
+          if (updated) setInvoices(prev => prev.map(i => i.id === data.id ? { ...updated, client, job } : i));
+          toast.success(t("invoices.emailedToast", { email: client.email }));
+        }
+      }
     } catch {
       setInvoices(prev => prev.filter(i => i.id!==tempId));
       toast.error(t("invoices.createFailed") || "Failed to create invoice. Please try again.");

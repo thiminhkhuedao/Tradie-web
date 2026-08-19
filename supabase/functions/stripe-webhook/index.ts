@@ -198,7 +198,7 @@ Deno.serve(async (req) => {
           },
         });
 
-        console.log(`✓ Payment recorded: £${grossAmount} (platform fee: £${platformFee})`);
+        console.log(`✓ Payment recorded: £${grossAmount} (Stripe fee: £${stripeFee}, net: £${netAmount})`);
         break;
       }
 

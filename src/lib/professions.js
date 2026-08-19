@@ -153,7 +153,8 @@ export const ALL_PROFESSIONS = Object.values(VERTICALS).flatMap(v =>
 // professions never crash the UI).
 export function getVerticalForProfession(profession) {
   if (!profession) return VERTICALS.other;
-  const match = ALL_PROFESSIONS.find(p => p.profession === profession);
+  const needle = profession.trim().toLowerCase();
+  const match = ALL_PROFESSIONS.find(p => p.profession.trim().toLowerCase() === needle);
   return match ? VERTICALS[match.vertical] : VERTICALS.other;
 }
 

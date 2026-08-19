@@ -1,7 +1,6 @@
 -- ══════════════════════════════════════════════════════
 -- Vimen PAY — Payments Layer Schema
 -- Run in Supabase SQL Editor AFTER 001_schema.sql
--- This is the revenue engine: 2% on every invoice paid
 -- ══════════════════════════════════════════════════════
 
 -- ── PAYMENT TRANSACTIONS ─────────────────────────────
@@ -20,7 +19,6 @@ create table if not exists payment_transactions (
   -- Money (all in pence internally, displayed as pounds)
   gross_amount          numeric(12,2) not null,   -- what client paid, e.g. 550.00
   stripe_fee            numeric(12,2) not null,   -- Stripe's cut, e.g. 7.90 (1.4% + 20p)
-  platform_fee          numeric(12,2) not null,   -- Vimen's 2%, e.g. 11.00
   net_amount            numeric(12,2) not null,   -- what tradesperson receives
 
   -- Status
@@ -68,18 +66,24 @@ create table if not exists payouts (
 create index if not exists po_profile_idx on payouts(profile_id);
 
 -- Link transactions to their payout
-alter table payment_transactions
-  add constraint fk_payout foreign key (payout_id)
-  references payouts(id) on delete set null;
+do $$
+begin
+  if not exists (
+    select 1 from pg_constraint where conname = 'fk_payout'
+  ) then
+    alter table payment_transactions
+      add constraint fk_payout foreign key (payout_id)
+      references payouts(id) on delete set null;
+  end if;
+end $$;
 
--- ── PLATFORM REVENUE SUMMARY (materialised view) ──────
--- Used for the admin/founder dashboard to see total platform earnings
+-- ── PAYMENT VOLUME SUMMARY (view) ─────────────────────
+-- Used for the admin/founder dashboard to see total payment volume
 create or replace view platform_revenue_summary as
 select
   date_trunc('month', paid_at) as month,
   count(*)                      as transaction_count,
   sum(gross_amount)             as gross_volume,
-  sum(platform_fee)             as platform_revenue,
   sum(stripe_fee)               as stripe_fees,
   sum(net_amount)               as tradesperson_earnings,
   avg(gross_amount)             as avg_transaction_value
@@ -92,23 +96,26 @@ order by 1 desc;
 alter table payment_transactions enable row level security;
 alter table payouts              enable row level security;
 
+drop policy if exists "pt_own" on payment_transactions;
 create policy "pt_own"     on payment_transactions for all using (profile_id = my_profile_id());
+drop policy if exists "po_own" on payouts;
 create policy "po_own"     on payouts              for all using (profile_id = my_profile_id());
 
--- ── HELPER: calculate Vimen Pay fees ─────────────────
--- gross_amount in pounds → returns {stripe_fee, platform_fee, net_amount}
+-- ── HELPER: calculate Stripe fee ─────────────────────
+-- gross_amount in pounds → returns {stripe_fee, net_amount}
 create or replace function calculate_fees(gross_amount numeric)
-returns table(stripe_fee numeric, platform_fee numeric, net_amount numeric)
+returns table(stripe_fee numeric, net_amount numeric)
 language sql immutable as $$
   select
     round(gross_amount * 0.014 + 0.20, 2)  as stripe_fee,      -- 1.4% + 20p (UK Stripe rate)
-    round(gross_amount * 0.020, 2)          as platform_fee,    -- Vimen's 2%
-    round(gross_amount - (gross_amount * 0.014 + 0.20) - (gross_amount * 0.020), 2) as net_amount
+    round(gross_amount - (gross_amount * 0.014 + 0.20), 2) as net_amount
 $$;
 
 -- ── AUTO updated_at ───────────────────────────────────
+drop trigger if exists trg_pt_updated on payment_transactions;
 create trigger trg_pt_updated before update on payment_transactions
   for each row execute function set_updated_at();
+drop trigger if exists trg_po_updated on payouts;
 create trigger trg_po_updated before update on payouts
   for each row execute function set_updated_at();
 
@@ -149,6 +156,7 @@ create index if not exists quotes_profile_idx on quotes(profile_id);
 create index if not exists quotes_status_idx  on quotes(status);
 
 alter table quotes enable row level security;
+drop policy if exists "quotes_own" on quotes;
 create policy "quotes_own" on quotes for all using (profile_id = my_profile_id());
 
 -- ── MATERIALS ORDERS ─────────────────────────────────
@@ -162,7 +170,7 @@ create table if not exists materials_orders (
   -- Items: [{ name, sku, quantity, unit_price, total }]
   items          jsonb not null default '[]',
   subtotal       numeric(12,2) default 0,
-  platform_margin numeric(12,2) default 0,  -- 5-12% Vimen margin
+  platform_margin numeric(12,2) default 0,  -- Vimen margin on materials (separate from payments)
   total          numeric(12,2) default 0,
   status         text not null default 'pending',
   -- pending | confirmed | shipped | delivered | cancelled
@@ -172,6 +180,7 @@ create table if not exists materials_orders (
 );
 create index if not exists mo_profile_idx on materials_orders(profile_id);
 alter table materials_orders enable row level security;
+drop policy if exists "mo_own" on materials_orders;
 create policy "mo_own" on materials_orders for all using (profile_id = my_profile_id());
 
 -- ── CERTIFICATIONS ────────────────────────────────────
@@ -189,9 +198,11 @@ create table if not exists certifications (
 );
 create index if not exists cert_profile_idx on certifications(profile_id);
 alter table certifications enable row level security;
+drop policy if exists "certs_own" on certifications;
 create policy "certs_own" on certifications for all using (profile_id = my_profile_id());
 
 -- Public: homeowners can view certifications of a contractor via their slug
+drop policy if exists "certs_public_read" on certifications;
 create policy "certs_public_read" on certifications
   for select using (
     profile_id in (select id from profiles where booking_slug is not null)
@@ -219,8 +230,11 @@ create table if not exists reviews (
 );
 create index if not exists rev_profile_idx on reviews(profile_id);
 alter table reviews enable row level security;
+drop policy if exists "reviews_own" on reviews;
 create policy "reviews_own"    on reviews for all    using (profile_id = my_profile_id());
+drop policy if exists "reviews_public" on reviews;
 create policy "reviews_public" on reviews for select using (verified = true);
+drop policy if exists "reviews_insert" on reviews;
 create policy "reviews_insert" on reviews for insert with check (true);
 
 -- ── REFERRALS ─────────────────────────────────────────
@@ -239,6 +253,7 @@ create table if not exists referrals (
 );
 create index if not exists ref_referrer_idx on referrals(referrer_id);
 alter table referrals enable row level security;
+drop policy if exists "ref_own" on referrals;
 create policy "ref_own" on referrals for all using (referrer_id = my_profile_id());
 
 -- ── REVIEW REQUEST TRACKING ───────────────────────────
@@ -257,9 +272,11 @@ create table if not exists review_requests (
   status      text not null default 'sent' -- sent | opened | reviewed | skipped
 );
 alter table review_requests enable row level security;
+drop policy if exists "rr_own" on review_requests;
 create policy "rr_own" on review_requests for all using (profile_id = my_profile_id());
 
 -- Auto update triggers
+drop trigger if exists trg_quotes_updated on quotes;
 create trigger trg_quotes_updated before update on quotes
   for each row execute function set_updated_at();
 

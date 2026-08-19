@@ -22,12 +22,19 @@ Deno.serve(async (req) => {
       bankName,
       sortCode,
       accountNumber,
+      iban,
+      bic,
+      bankAccountHolder,
       invoiceNotes,
+      currencyCode = "EUR", // devise du profil (voir lib/currency.js) — plus de £ codé en dur
       reminder = false, // true when sent by the automatic overdue-reminder cron
     } = await req.json();
 
-    const fmtGBP = (n: number) =>
-      `€${Number(n).toLocaleString("en-GB", { minimumFractionDigits: 2 })}`;
+    const CURRENCY_SYMBOLS: Record<string, string> = {
+      GBP: "£", EUR: "€", USD: "$", CAD: "C$", AUD: "A$", CHF: "CHF ",
+    };
+    const fmtMoney = (n: number) =>
+      `${CURRENCY_SYMBOLS[currencyCode] ?? CURRENCY_SYMBOLS.EUR}${Number(n).toLocaleString("en-GB", { minimumFractionDigits: 2 })}`;
 
     // ── Branded HTML email ────────────────────────────
     const html = `<!DOCTYPE html>
@@ -100,25 +107,29 @@ Deno.serve(async (req) => {
       <tbody>
         <tr>
           <td>${jobTitle || "Services rendered"}</td>
-          <td style="text-align:right;font-weight:700">${fmtGBP(amount)}</td>
+          <td style="text-align:right;font-weight:700">${fmtMoney(amount)}</td>
         </tr>
       </tbody>
     </table>
 
     <div class="total-row">
       <span class="total-lbl">Total due</span>
-      <span class="total-amt">${fmtGBP(amount)}</span>
+      <span class="total-amt">${fmtMoney(amount)}</span>
     </div>
 
-    ${paymentUrl ? `<a class="pay-btn" href="${paymentUrl}">Pay now — ${fmtGBP(amount)} →</a>` : ""}
+    ${paymentUrl ? `<a class="pay-btn" href="${paymentUrl}">Pay now — ${fmtMoney(amount)} →</a>` : ""}
 
+    ${(bankName || sortCode || accountNumber || iban || bic) ? `
     <div class="bank-box">
       <div style="font-weight:700;margin-bottom:10px">Bank transfer details</div>
-      ${bankName     ? `<div><b>Bank:</b> ${bankName}</div>` : ""}
-      ${sortCode     ? `<div><b>Sort code:</b> ${sortCode}</div>` : ""}
-      ${accountNumber? `<div><b>Account:</b> ${accountNumber}</div>` : ""}
+      ${bankAccountHolder ? `<div><b>Account holder:</b> ${bankAccountHolder}</div>` : ""}
+      ${iban          ? `<div><b>IBAN:</b> ${iban.replace(/\s+/g, "").replace(/(.{4})/g, "$1 ").trim()}</div>` : ""}
+      ${bic           ? `<div><b>BIC/SWIFT:</b> ${bic}</div>` : ""}
+      ${bankName      ? `<div><b>Bank:</b> ${bankName}</div>` : ""}
+      ${sortCode      ? `<div><b>Sort code:</b> ${sortCode}</div>` : ""}
+      ${accountNumber ? `<div><b>Account:</b> ${accountNumber}</div>` : ""}
       <div style="margin-top:8px"><b>Reference:</b> ${invoiceNumber}</div>
-    </div>
+    </div>` : ""}
 
     ${invoiceNotes ? `<p style="font-size:13px;color:#888;line-height:1.6">${invoiceNotes}</p>` : ""}
   </div>
@@ -142,7 +153,7 @@ Deno.serve(async (req) => {
       body: JSON.stringify({
         from:    `${tradeName} via ${FROM_NAME} <${FROM_EMAIL}>`,
         to:      [to],
-        subject: `${reminder ? "Reminder: " : ""}Invoice ${invoiceNumber} — ${fmtGBP(amount)} due${dueDate ? ` by ${dueDate}` : ""}`,
+        subject: `${reminder ? "Reminder: " : ""}Invoice ${invoiceNumber} — ${fmtMoney(amount)} due${dueDate ? ` by ${dueDate}` : ""}`,
         html,
       }),
     });

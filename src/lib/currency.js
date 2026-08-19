@@ -16,8 +16,8 @@ export const CURRENCY_SYMBOLS = {
   CHF: "CHF ",
 };
 
-export function formatCurrency(amount, currencyCode = "GBP") {
-  const symbol = CURRENCY_SYMBOLS[currencyCode] ?? CURRENCY_SYMBOLS.GBP;
+export function formatCurrency(amount, currencyCode = "EUR") {
+  const symbol = CURRENCY_SYMBOLS[currencyCode] ?? CURRENCY_SYMBOLS.EUR;
   const number = Number(amount || 0).toLocaleString("en-GB", {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,

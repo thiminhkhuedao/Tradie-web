@@ -347,7 +347,7 @@ export const getPayouts = (profileId) =>
 export const getPaymentStats = async (profileId) => {
   const { data, error } = await supabase
     .from("payment_transactions")
-    .select("gross_amount, platform_fee, stripe_fee, net_amount, status, paid_at")
+    .select("gross_amount, stripe_fee, net_amount, status, paid_at")
     .eq("profile_id", profileId)
     .eq("status", "completed");
   if (error) return { data: null, error };

@@ -10,6 +10,7 @@ const CLERK_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 async function bootstrap() {
   const { default: App } = await import("./App.jsx");
   const { default: PublicBookingPage } = await import("./pages/PublicBookingPage.jsx");
+  const { default: PublicQuotePage } = await import("./pages/PublicQuotePage.jsx");
 
   // Wrap the routes inside AppProvider here
   const routedApp = (
@@ -17,6 +18,7 @@ async function bootstrap() {
       <BrowserRouter>
         <Routes>
           <Route path="/b/:slug" element={<PublicBookingPage />} />
+          <Route path="/quote/:token" element={<PublicQuotePage />} />
           <Route path="*" element={<App useClerk={!!CLERK_KEY} />} />
         </Routes>
       </BrowserRouter>

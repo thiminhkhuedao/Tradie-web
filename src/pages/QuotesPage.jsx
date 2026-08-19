@@ -19,6 +19,7 @@ import {
   deleteQuote, 
   createJob 
 } from "../lib/db.js";
+import { sendQuoteEmail } from "../lib/notifications.js";
 
 const fmtDate = d => { try { return new Date(d).toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"}); } catch { return "—"; }};
 const iStyle  = { width:"100%",padding:"10px 12px",borderRadius:T.r.md,border:`1px solid ${T.borderMed}`,fontSize:14,background:T.surface,color:T.text,boxSizing:"border-box",fontFamily:"inherit" };
@@ -150,7 +151,31 @@ export default function QuotesPage({ state, dispatch, profile, refresh, isLoadin
     }
   }
 
-  // 4. SIGNATURE CLIENT
+  // 3.5 ENVOI PAR EMAIL AU CLIENT (avec lien de consultation/signature)
+  async function handleSendEmail(q) {
+    const client = getClient(q.client_id);
+    if (!client?.email) {
+      toast.error(tr("quotes.toast.clientNoEmail") || "Ce client n'a pas d'adresse email renseignée");
+      return;
+    }
+    setBusy(true);
+    try {
+      const result = await sendQuoteEmail(q, client, profile);
+      if (!result.success) throw new Error(result.error);
+
+      const { error } = await updateQuote(q.id, { status: "sent" });
+      if (error) throw error;
+
+      if (refresh) await refresh();
+      toast.success(tr("quotes.toast.quoteEmailSent", { name: client.name }) || `Devis envoyé à ${client.name}`);
+    } catch (err) {
+      toast.error(err?.message || tr("quotes.toast.errorSendingEmail") || "Échec de l'envoi, réessaie");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+
   async function handleSign() {
     if (!signName.trim()) { toast.error(tr("quotes.toast.enterClientName")); return; }
     setBusy(true);
@@ -331,6 +356,11 @@ export default function QuotesPage({ state, dispatch, profile, refresh, isLoadin
             <div style={{ maxHeight: "calc(85vh - 80px)", overflowY: "auto", paddingRight: 6 }}>
               <div style={{ display:"flex", gap:8, marginBottom:20, flexWrap:"wrap" }}>
                 {previewQ.status==="draft" && <Btn size="sm" disabled={busy} onClick={()=>{ markSent(previewQ.id); setModal(null); }}> {tr("quotes.preview.markAsSent")}</Btn>}
+                {["draft","sent","viewed"].includes(previewQ.status) && getClient(previewQ.client_id)?.email && (
+                  <Btn size="sm" variant="ghost" disabled={busy} onClick={()=>handleSendEmail(previewQ)}>
+                    {tr("quotes.preview.sendEmail") || "Envoyer par email"}
+                  </Btn>
+                )}
                 {["draft","sent","viewed"].includes(previewQ.status) && <Btn size="sm" variant="success" disabled={busy} onClick={()=>{ setSignName(""); setModal("sign"); }}> {tr("quotes.preview.clientSign")}</Btn>}
                 {previewQ.status==="accepted" && !previewQ.job_id && <Btn size="sm" disabled={busy} onClick={()=>{ convertToJob(previewQ); setModal(null); }}>{tr("quotes.preview.convertToJob")}</Btn>}
               </div>
@@ -464,6 +494,11 @@ export default function QuotesPage({ state, dispatch, profile, refresh, isLoadin
                     <div style={{ display:"flex", gap:6 }}>
                       <Btn size="sm" variant="ghost" onClick={()=>openPreview(q)} disabled={busy}>{tr("quotes.row.view")}</Btn>
                       {q.status==="draft" && <Btn size="sm" variant="ghost" onClick={()=>openEdit(q)} disabled={busy}>{tr("quotes.row.edit")}</Btn>}
+                      {["draft","sent","viewed"].includes(q.status) && getClient(q.client_id)?.email && (
+                        <Btn size="sm" variant="ghost" onClick={()=>handleSendEmail(q)} disabled={busy}>
+                          {tr("quotes.row.email") || "Email"}
+                        </Btn>
+                      )}
                       {q.status==="accepted" && !q.job_id && <Btn size="sm" variant="success" onClick={()=>convertToJob(q)} disabled={busy}>{tr("quotes.row.toJob")}</Btn>}
                       <Btn size="sm" variant="danger" onClick={()=>setDelId(q.id)} disabled={busy}>✕</Btn>
                     </div>

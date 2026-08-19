@@ -9,7 +9,7 @@ import {
   MetricCard, SectionTitle, Empty,
 } from "../components/UI";
 import { formatCurrency } from "../lib/currency.js";
-import { getStripeConnectUrl } from "../lib/db.js";
+import { getStripeConnectUrl, updateProfile } from "../lib/db.js";
 
 /* ── HELPERS & UTILITIES ─────────────────────────────── */
 
@@ -73,6 +73,23 @@ const StructuredError = ({ what, why, action, onRetry }) => (
   </div>
 );
 
+// Validation IBAN légère (mod-97) — juste pour attraper les fautes de frappe,
+// pas une vérification bancaire complète.
+const isValidIban = (raw) => {
+  const iban = (raw || "").replace(/\s+/g, "").toUpperCase();
+  if (!/^[A-Z]{2}\d{2}[A-Z0-9]{10,30}$/.test(iban)) return false;
+  const rearranged = iban.slice(4) + iban.slice(0, 4);
+  const numeric = rearranged.replace(/[A-Z]/g, (ch) => (ch.charCodeAt(0) - 55).toString());
+  let remainder = numeric;
+  while (remainder.length > 2) {
+    const chunk = remainder.slice(0, 9);
+    remainder = (parseInt(chunk, 10) % 97) + remainder.slice(chunk.length);
+  }
+  return parseInt(remainder, 10) % 97 === 1;
+};
+
+const formatIbanDisplay = (raw) => (raw || "").replace(/\s+/g, "").replace(/(.{4})/g, "$1 ").trim();
+
 /* ══════════════════════════════════════════════════════
    MAIN COMPONENT
 ══════════════════════════════════════════════════════ */
@@ -97,6 +114,48 @@ export default function PaymentsPage({ profile, state, dispatch, refresh }) {
   // Local states for async management and error handling
   const [isLoading, setIsLoading] = useState(false);
   const [pageError, setPageError] = useState(null);
+
+  // Formulaire RIB (IBAN/BIC) — alternative à Stripe pour les clients qui
+  // préfèrent payer par virement.
+  const [bankForm, setBankForm] = useState({
+    bank_account_holder: profile?.bank_account_holder ?? profile?.name ?? "",
+    iban: profile?.iban ?? "",
+    bic: profile?.bic ?? "",
+  });
+  const [isSavingBank, setIsSavingBank] = useState(false);
+
+  useEffect(() => {
+    setBankForm({
+      bank_account_holder: profile?.bank_account_holder ?? profile?.name ?? "",
+      iban: profile?.iban ?? "",
+      bic: profile?.bic ?? "",
+    });
+  }, [profile?.bank_account_holder, profile?.iban, profile?.bic, profile?.name]);
+
+  const handleSaveBankDetails = async () => {
+    const cleanIban = bankForm.iban.replace(/\s+/g, "").toUpperCase();
+    if (cleanIban && !isValidIban(cleanIban)) {
+      toast.error(tr("payments.bankTransfer.invalidIban") || "Cet IBAN ne semble pas valide, vérifie-le.");
+      return;
+    }
+    setIsSavingBank(true);
+    try {
+      const targetId = profile?.id || profile?.clerk_id;
+      const { error } = await updateProfile(targetId, {
+        bank_account_holder: bankForm.bank_account_holder,
+        iban: cleanIban,
+        bic: bankForm.bic.trim().toUpperCase(),
+      });
+      if (error) throw error;
+      if (refresh) await refresh();
+      toast.success(tr("payments.bankTransfer.saved") || "Coordonnées bancaires enregistrées");
+    } catch (err) {
+      toast.error(tr("payments.bankTransfer.saveFailed") || "Échec de l'enregistrement, réessaie");
+      console.error("[Bank details save error]:", err);
+    } finally {
+      setIsSavingBank(false);
+    }
+  };
 
   // Pull from state with Fallback
   const transactions = state?.payment_transactions ?? [];
@@ -519,6 +578,90 @@ export default function PaymentsPage({ profile, state, dispatch, refresh }) {
                 </Btn>
               </div>
             )}
+          </Card>
+
+          <Card>
+            <SectionTitle>{tr("payments.bankTransfer.title") || "Coordonnées bancaires (RIB)"}</SectionTitle>
+            <div style={{ fontSize: 13, color: T.muted, marginBottom: 18, lineHeight: 1.6 }}>
+              {tr("payments.bankTransfer.desc") ||
+                "Pas de compte Stripe ? Renseigne ton IBAN pour que tes clients puissent te payer par virement bancaire. Ces informations apparaîtront automatiquement sur tes factures envoyées par email."}
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              <div>
+                <label style={{ fontSize: 12, fontWeight: 600, color: T.muted, display: "block", marginBottom: 4 }}>
+                  {tr("payments.bankTransfer.holderLabel") || "Titulaire du compte"}
+                </label>
+                <input
+                  type="text"
+                  value={bankForm.bank_account_holder}
+                  onChange={(e) => setBankForm((f) => ({ ...f, bank_account_holder: e.target.value }))}
+                  placeholder={tr("payments.bankTransfer.holderPlaceholder") || "ex. Jean Dupont"}
+                  style={{
+                    width: "100%", padding: "10px 12px", borderRadius: T.r.md,
+                    border: `1px solid ${T.border}`, fontSize: 14, boxSizing: "border-box",
+                  }}
+                />
+              </div>
+
+              <div>
+                <label style={{ fontSize: 12, fontWeight: 600, color: T.muted, display: "block", marginBottom: 4 }}>
+                  IBAN
+                </label>
+                <input
+                  type="text"
+                  value={bankForm.iban}
+                  onChange={(e) => setBankForm((f) => ({ ...f, iban: e.target.value }))}
+                  placeholder="FR76 3000 6000 0112 3456 7890 189"
+                  style={{
+                    width: "100%", padding: "10px 12px", borderRadius: T.r.md,
+                    border: `1px solid ${T.border}`, fontSize: 14, fontFamily: "monospace",
+                    letterSpacing: 0.5, boxSizing: "border-box",
+                  }}
+                />
+              </div>
+
+              <div>
+                <label style={{ fontSize: 12, fontWeight: 600, color: T.muted, display: "block", marginBottom: 4 }}>
+                  BIC / SWIFT
+                </label>
+                <input
+                  type="text"
+                  value={bankForm.bic}
+                  onChange={(e) => setBankForm((f) => ({ ...f, bic: e.target.value }))}
+                  placeholder="AGRIFRPP123"
+                  style={{
+                    width: "100%", padding: "10px 12px", borderRadius: T.r.md,
+                    border: `1px solid ${T.border}`, fontSize: 14, fontFamily: "monospace",
+                    letterSpacing: 0.5, boxSizing: "border-box", maxWidth: 220,
+                  }}
+                />
+              </div>
+
+              {profile?.iban && (
+                <div style={{
+                  display: "flex", alignItems: "center", justifyContent: "space-between",
+                  background: T.surface2, borderRadius: T.r.md, padding: "10px 14px", marginTop: 4,
+                }}>
+                  <div style={{ fontSize: 13, fontFamily: "monospace" }}>
+                    {formatIbanDisplay(profile.iban)}
+                  </div>
+                  <Btn
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => { copyToClipboard(profile.iban.replace(/\s+/g, "")); toast.success(tr("payments.copied") || "Copié"); }}
+                  >
+                    {tr("actions.copy") || "Copier"}
+                  </Btn>
+                </div>
+              )}
+
+              <div>
+                <Btn onClick={handleSaveBankDetails} disabled={isSavingBank}>
+                  {isSavingBank ? (tr("actions.loading") || "Enregistrement...") : (tr("actions.save") || "Enregistrer")}
+                </Btn>
+              </div>
+            </div>
           </Card>
 
           <Card>

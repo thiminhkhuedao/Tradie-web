@@ -2,7 +2,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { toast } from "react-hot-toast";
 import { T } from "../styles/tokens";
-import { getBookingRequests, updateBookingStatus, submitBookingRequest } from "../lib/db";
+import { getBookingRequests, updateBookingStatus, submitBookingRequest, createClient, createJob } from "../lib/db";
 import { supabase } from "../lib/supabase";
 import { sendNewBookingSMS } from "../lib/notifications";
 import { getTerms, getVerticalColor, getVerticalForProfession } from "../lib/professions.js";
@@ -96,6 +96,70 @@ export default function BookingPage({ profile }) {
     }
     setBookings(prev => prev.map(b => b.id === id ? data : b));
     toast.success(status === "accepted" ? t("booking.acceptedToast") : t("booking.declinedToast"));
+
+    // Acceptée → on crée automatiquement le job correspondant, pré-rempli
+    // avec les infos de la demande (client trouvé ou créé, date souhaitée...)
+    if (status === "accepted") {
+      try {
+        await createJobFromBooking(data, profile.id);
+        toast.success(t("booking.jobCreatedToast") || "Job created automatically");
+      } catch (err) {
+        console.error("[Auto job creation failed]:", err);
+        toast.error(t("booking.jobCreateFailedToast") || "Booking accepted, but the job could not be created automatically — add it manually.");
+      }
+    }
+  }
+
+  // Retrouve un client existant par email/téléphone, ou en crée un nouveau,
+  // puis crée le job lié à cette demande de réservation.
+  async function createJobFromBooking(booking, profileId) {
+    // Évite un doublon si "accepter" est cliqué deux fois (double-clic, retry réseau)
+    const { data: existingJob } = await supabase
+      .from("jobs")
+      .select("id")
+      .eq("booking_request_id", booking.id)
+      .maybeSingle();
+    if (existingJob) return existingJob;
+
+    let clientId = null;
+    if (booking.customer_email || booking.customer_phone) {
+      const orFilters = [
+        booking.customer_email ? `email.eq.${booking.customer_email}` : null,
+        booking.customer_phone ? `phone.eq.${booking.customer_phone}` : null,
+      ].filter(Boolean).join(",");
+      const { data: existingClient } = await supabase
+        .from("clients")
+        .select("id")
+        .eq("profile_id", profileId)
+        .or(orFilters)
+        .limit(1)
+        .maybeSingle();
+      if (existingClient) clientId = existingClient.id;
+    }
+
+    if (!clientId) {
+      const { data: newClient, error: clientErr } = await createClient(profileId, {
+        name: booking.customer_name,
+        email: booking.customer_email || "",
+        phone: booking.customer_phone || "",
+      });
+      if (clientErr) throw clientErr;
+      clientId = newClient.id;
+    }
+
+    const { data: job, error: jobErr } = await createJob(profileId, {
+      client_id: clientId,
+      title: booking.notes?.slice(0, 80) || t("booking.autoJobTitle") || "New booking",
+      date: booking.preferred_date || new Date().toISOString().slice(0, 10),
+      time: "09:00",
+      duration: 1,
+      amount: 0,
+      notes: booking.notes || "",
+      status: "scheduled",
+      booking_request_id: booking.id,
+    });
+    if (jobErr) throw jobErr;
+    return job;
   }
 
   async function submitPreview(e) {

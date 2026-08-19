@@ -3678,5 +3678,48 @@ referrals: {
   "reminderFrequency": "Fréquence des rappels",
   "reminderMaxCount": "Nombre max de rappels",
   "days": "jours"
-}
+},
+
+publicQuote: {
+    loading: "Chargement de votre devis...",
+    notFound: {
+      title: "Devis introuvable",
+      generic: "Ce devis n'a pas pu être trouvé.",
+    },
+    status: {
+      draft: "Brouillon",
+      awaitingReview: "En attente de votre réponse",
+      accepted: "Accepté",
+      declined: "Refusé",
+      expired: "Expiré",
+    },
+    from: "De la part de {{name}}",
+    preparedFor: "Préparé pour",
+    table: {
+      description: "Description",
+      qty: "Qté",
+      total: "Total",
+    },
+    totals: {
+      subtotal: "Sous-total",
+      vat: "TVA ({{rate}} %)",
+      total: "Total",
+    },
+    validUntil: "Valable jusqu'au {{date}}",
+    expiredOn: "Ce devis a expiré le {{date}}",
+    acceptedBy: "Accepté par {{name}} le {{date}}",
+    expiredNotice: "Ce devis a expiré. Contactez {{name}} pour obtenir un devis à jour.",
+    accept: {
+      title: "Accepter ce devis",
+      namePlaceholder: "Votre nom complet",
+      agreement: "J'accepte les conditions de ce devis et confirme vouloir procéder pour {{amount}}.",
+      signBtn: "Signer et accepter le devis",
+      signing: "Signature en cours...",
+      errorGeneric: "Une erreur est survenue, veuillez réessayer.",
+    },
+    success: {
+      title: "Devis accepté",
+      sub: "{{name}} a été notifié et vous recontactera prochainement.",
+    },
+  },
 }
