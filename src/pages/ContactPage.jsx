@@ -37,7 +37,7 @@ export default function ContactPage({ onSignIn, onSignUp }) {
     
     // Basic validation
     if (!form.name.trim() || !form.email.trim() || !form.message.trim()) {
-      setStatus("error");
+      setStatus("invalid");
       return;
     }
 
@@ -175,13 +175,23 @@ export default function ContactPage({ onSignIn, onSignUp }) {
                 />
               </div>
 
+              {status === "invalid" && (
+                <p
+                  id="contact-error"
+                  role="alert"
+                  style={{ fontSize: 13, color: T.red || "#dc2626", marginBottom: 16, marginTop: 0 }}
+                >
+                  {t("contactPage.invalid", "Please fill in all fields.")}
+                </p>
+              )}
+
               {status === "error" && (
                 <p
                   id="contact-error"
                   role="alert"
                   style={{ fontSize: 13, color: T.red || "#dc2626", marginBottom: 16, marginTop: 0 }}
                 >
-                  {t("contactPage.error")}
+                  {t("contactPage.error", "Something went wrong sending your message. Please try again or email us directly.")}
                 </p>
               )}
 

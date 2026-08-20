@@ -4,10 +4,24 @@
 
 import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import { useParams } from "react-router-dom";
+import { useUser } from "@clerk/clerk-react";
 import { useTranslation } from "../i18n/index.js";
 import { supabase } from "../lib/supabase";
 import { getTerms, getVerticalColor, getVerticalForProfession } from "../lib/professions.js";
 import { formatCurrency } from "../lib/currency.js";
+
+// Le formulaire public est aussi accessible sans ClerkProvider (mode démo,
+// voir main.jsx). useUser() plante s'il n'y a pas de <ClerkProvider> au-dessus,
+// donc on l'appelle défensivement pour ne jamais casser la page pour un vrai
+// client anonyme.
+function useOptionalClerkUser() {
+  try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    return useUser();
+  } catch {
+    return { user: null, isLoaded: true };
+  }
+}
 
 // ── CONSTANTS & STYLES ─────────────────────────────────
 const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -487,12 +501,15 @@ function ImageUpload({ value, onChange, label, hint }) {
 export default function PublicBookingPage() {
   const { t: tr } = useTranslation();
   const { slug } = useParams();
+  const { user } = useOptionalClerkUser();
 
   const [profile, setProfile] = useState(null);
   const [services, setServices] = useState([]);
   const [availability, setAvailability] = useState([]);
   const [blocked, setBlocked] = useState([]);
   const [status, setStatus] = useState("loading");
+  const [isOwner, setIsOwner] = useState(false);
+  const [linkCopied, setLinkCopied] = useState(false);
 
   const [step, setStep] = useState(1);
   const [selSvc, setSelSvc] = useState(null);
@@ -557,6 +574,41 @@ export default function PublicBookingPage() {
     };
   }, [slug]);
 
+  // Détecte si le visiteur connecté est le pro propriétaire de cette page
+  // (ex: il teste/prévisualise son propre lien de réservation).
+  useEffect(() => {
+    let isCancelled = false;
+
+    if (!user) {
+      setIsOwner(false);
+      return;
+    }
+
+    (async () => {
+      const { data } = await supabase
+        .from("profiles")
+        .select("booking_slug")
+        .eq("clerk_id", user.id)
+        .single();
+
+      if (!isCancelled) setIsOwner(data?.booking_slug === slug);
+    })();
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [user, slug]);
+
+  const handleCopyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      setLinkCopied(true);
+      setTimeout(() => setLinkCopied(false), 2000);
+    } catch {
+      // Presse-papiers indisponible (permissions navigateur) — pas bloquant.
+    }
+  };
+
   const handleSlotSelect = (date, time) => {
     setSelDate(date);
     setSelTime(time);
@@ -564,6 +616,7 @@ export default function PublicBookingPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (isOwner) return; // On ne prend pas de rdv avec soi-même.
     if (!form.customer_name || !form.customer_email) return;
     if (!selDate || !selTime) {
       alert("Please select a date and time");
@@ -667,6 +720,48 @@ export default function PublicBookingPage() {
       </div>
 
       <div style={{ maxWidth: 720, margin: "0 auto", padding: "28px 20px 80px" }}>
+        {/* Owner preview notice */}
+        {isOwner && (
+          <div
+            style={{
+              background: "#FEF3C7",
+              border: "1px solid #F59E0B",
+              borderRadius: THEME.radius.lg,
+              padding: "12px 16px",
+              marginBottom: 20,
+              fontSize: 13,
+              color: "#92400E",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              gap: 12,
+              flexWrap: "wrap",
+            }}
+          >
+            <span>
+              This is a preview of the booking page your clients see. You can't submit a request to yourself — share the link below with clients instead.
+            </span>
+            <button
+              type="button"
+              onClick={handleCopyLink}
+              style={{
+                flexShrink: 0,
+                padding: "6px 12px",
+                borderRadius: THEME.radius.sm,
+                border: "1px solid #F59E0B",
+                background: "transparent",
+                color: "#92400E",
+                fontWeight: 700,
+                fontSize: 12,
+                cursor: "pointer",
+                fontFamily: "inherit",
+              }}
+            >
+              {linkCopied ? "Copied!" : "Copy link"}
+            </button>
+          </div>
+        )}
+
         {/* Profile Card Header */}
         <div style={{ background: THEME.surface, borderRadius: THEME.radius.xl, border: `1px solid ${THEME.border}`, padding: "22px 26px", marginBottom: 20, boxShadow: THEME.shadow, display: "flex", gap: 16, alignItems: "center" }}>
           <Avatar name={profile.name} size={56} />
@@ -884,8 +979,25 @@ export default function PublicBookingPage() {
               <button type="button" onClick={() => setStep(2)} style={{ flex: 1, padding: "13px", borderRadius: THEME.radius.lg, border: `1px solid ${THEME.border}`, background: THEME.surface, fontWeight: 600, fontSize: 14, cursor: "pointer", fontFamily: "inherit" }}>
                 &larr; Back
               </button>
-              <button type="submit" disabled={sending} style={{ flex: 2, padding: "13px", borderRadius: THEME.radius.lg, border: "none", background: THEME.brand, color: "#fff", fontWeight: 800, fontSize: 15, cursor: sending ? "not-allowed" : "pointer", opacity: sending ? 0.7 : 1, fontFamily: "inherit" }}>
-                {sending ? "Sending request..." : "Request Booking"}
+              <button
+                type="submit"
+                disabled={sending || isOwner}
+                title={isOwner ? "You can't book with yourself" : undefined}
+                style={{
+                  flex: 2,
+                  padding: "13px",
+                  borderRadius: THEME.radius.lg,
+                  border: "none",
+                  background: THEME.brand,
+                  color: "#fff",
+                  fontWeight: 800,
+                  fontSize: 15,
+                  cursor: sending || isOwner ? "not-allowed" : "pointer",
+                  opacity: sending || isOwner ? 0.5 : 1,
+                  fontFamily: "inherit",
+                }}
+              >
+                {isOwner ? "This is your own page" : sending ? "Sending request..." : "Request Booking"}
               </button>
             </div>
           </form>

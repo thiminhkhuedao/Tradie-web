@@ -2456,7 +2456,7 @@ invoices: {
   markPaidFailed: "Failed to mark as paid. Please try again.",
   noClientEmail: "This client has no email address.",
   emailedToast: "Invoice emailed to {{email}}",
-  emailFailedToast: "Email failed to send. {{error}}",
+  emailFailedToast: "Email failed to send. Please try again.",
   paymentLinkCreated: "Payment link created!",
   paymentLinkFailed: "Failed to create payment link. Check your Stripe connection.",
   bankDetailsCopied: "Bank details copied to clipboard!",
@@ -3148,6 +3148,12 @@ referrals: {
     copyFailedManual: "Failed to copy. Please copy the link manually.",
     emailRequired: "Please enter an email address",
     referralSent: "Invite sent to {{email}}",
+    saveFailed: "Failed to save referral. Please try again.",
+    sendingInvite: "Sending invite...",
+    applyingReward: "Applying reward...",
+    rewardSuccess: "Reward applied!",
+    userNotFound: "This person hasn't signed up yet.",
+    rewardFailed: "Failed to apply reward. Please try again.",
   },
 
   modal: {
@@ -3158,6 +3164,8 @@ referrals: {
     giftNote: "Reward: You both get 2 months free Pro subscription when they create an account and complete their first job.",
     cancel: "Cancel",
     send: "Send Invitation",
+    namePlaceholder: "e.g., John Smith",
+    emailPlaceholder: "e.g., john@example.com",
   },
 
   metrics: {
@@ -3394,6 +3402,9 @@ settings: {
     "proFeatPrioritySlot": "Advanced availability controls",
     "proFeatAnalytics": "Detailed booking analytics",
     "proFeatSupport": "Priority support",
+    "reminderFrequency": "Reminder frequency",
+    "reminderMaxCount": "Max reminders count",
+    "days": "days",
 },
 
 nav: {
@@ -3655,21 +3666,6 @@ reviews: {
     description: "Link your Google Business Profile to redirect satisfied clients directly to your Google review page.",
     openBtn: "Open Google Business"
   }
-},
-
-referrals: {
-  modal: {
-    namePlaceholder: "e.g., John Smith",
-    emailPlaceholder: "e.g., john@example.com"
-  }
-},
-
-// Inside your translation object
-"settings": {
-  // ... existing keys ...
-  "reminderFrequency": "Reminder frequency",
-  "reminderMaxCount": "Max reminders count",
-  "days": "days"
 },
 
 publicQuote: {

@@ -3205,6 +3205,12 @@ referrals: {
     copyFailedManual: "Échec de la copie. Veuillez copier le lien manuellement.",
     emailRequired: "Veuillez saisir une adresse e-mail",
     referralSent: "Invitation envoyée à {{email}}",
+    saveFailed: "Échec de l'enregistrement du parrainage. Réessaie.",
+    sendingInvite: "Envoi de l'invitation...",
+    applyingReward: "Application de la récompense...",
+    rewardSuccess: "Récompense appliquée !",
+    userNotFound: "Cette personne ne s'est pas encore inscrite.",
+    rewardFailed: "Échec de l'application de la récompense. Réessaie.",
   },
 
   modal: {
@@ -3215,6 +3221,8 @@ referrals: {
     giftNote: "Récompense : Vous bénéficiez tous les deux de 2 mois d'abonnement Pro gratuits lorsqu'il crée un compte et réalise son premier chantier.",
     cancel: "Annuler",
     send: "Envoyer l'invitation",
+    namePlaceholder: "ex. Jean Dupont",
+    emailPlaceholder: "ex. jean@exemple.com",
   },
 
   metrics: {
@@ -3463,6 +3471,9 @@ settings: {
     proFeatPrioritySlot: "Contrôle avancé des créneaux & disponibilités",
     proFeatAnalytics: "Analyses des demandes et réservations",
     proFeatSupport: "Support prioritaire",
+    reminderFrequency: "Fréquence des rappels",
+    reminderMaxCount: "Nombre max de rappels",
+    days: "jours",
 },
 
 nav: {
@@ -3568,7 +3579,7 @@ invoices: {
   markedPaidToast: "Facture marquée comme payée !",
   markPaidFailed: "Échec de la mise à jour. Veuillez réessayer.",
   noClientEmail: "Ce client n'a pas d'adresse e-mail.",
-  emailedToast: "Facture envoyée à {email}",
+  emailedToast: "Facture envoyée à {{email}}",
   emailFailedToast: "Échec de l'envoi de l'e-mail.",
   paymentLinkCreated: "Lien de paiement Stripe créé !",
   paymentLinkFailed: "Échec de la création du lien Stripe. Vérifiez votre connexion.",
@@ -3663,21 +3674,6 @@ reviews: {
     description: "Liez votre fiche Google Business Profile pour rediriger directement les clients satisfaits vers votre page d'avis Google.",
     openBtn: "Ouvrir Google Business"
   }
-},
-
-referrals: {
-  modal: {
-    namePlaceholder: "e.g., John Smith",
-    emailPlaceholder: "e.g., john@example.com"
-  }
-},
-
-// Inside your translation object
-"settings": {
-  // ... existing keys ...
-  "reminderFrequency": "Fréquence des rappels",
-  "reminderMaxCount": "Nombre max de rappels",
-  "days": "jours"
 },
 
 publicQuote: {

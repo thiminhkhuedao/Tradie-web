@@ -259,30 +259,3 @@ export async function sendOverdueSMS(invoice, profile) {
     },
   });
 }
-
-export async function sendQuoteEmail(quote, client, profile) {
-  if (!client?.email) {
-    return { success: false, error: "Client has no email address" };
-  }
-  if (!quote?.public_token) {
-    return { success: false, error: "Quote is missing its public link — try refreshing the page" };
-  }
-
-  const quoteUrl = `${window.location.origin}/quote/${quote.public_token}`;
-
-  return invoke("send-quote-email", {
-    to:          client.email,
-    clientName:  client.name,
-    tradeName:   profile.name,
-    tradeEmail:  profile.email,
-    tradePhone:  profile.phone,
-    quoteNumber: quote.quote_number,
-    total:       quote.total,
-    validUntil:  quote.valid_until
-      ? new Date(quote.valid_until).toLocaleDateString("en-GB", {
-          day: "numeric", month: "long", year: "numeric",
-        })
-      : null,
-    quoteUrl,
-  });
-}

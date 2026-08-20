@@ -13,6 +13,16 @@ async function bootstrap() {
   const { default: PublicBookingPage } = await import("./pages/PublicBookingPage.jsx");
   const { default: PublicQuotePage } = await import("./pages/PublicQuotePage.jsx");
 
+  // Chargé seulement si Clerk est configuré — nécessaire pour la route
+  // /sso-callback qui finalise la connexion Google (et tout autre OAuth).
+  let AuthenticateWithRedirectCallback = null;
+  let ClerkProvider = null;
+  if (CLERK_KEY) {
+    const clerkReact = await import("@clerk/clerk-react");
+    ClerkProvider = clerkReact.ClerkProvider;
+    AuthenticateWithRedirectCallback = clerkReact.AuthenticateWithRedirectCallback;
+  }
+
   // Wrap the routes inside AppProvider here — ErrorBoundary en tout premier
   // pour attraper n'importe quel crash de rendu, n'importe où dans l'app,
   // et afficher un message générique plutôt qu'une page blanche.
@@ -23,6 +33,9 @@ async function bootstrap() {
           <Routes>
             <Route path="/b/:slug" element={<PublicBookingPage />} />
             <Route path="/quote/:token" element={<PublicQuotePage />} />
+            {AuthenticateWithRedirectCallback && (
+              <Route path="/sso-callback" element={<AuthenticateWithRedirectCallback />} />
+            )}
             <Route path="*" element={<App useClerk={!!CLERK_KEY} />} />
           </Routes>
         </BrowserRouter>
@@ -32,8 +45,7 @@ async function bootstrap() {
 
   const root = ReactDOM.createRoot(document.getElementById("root"));
 
-  if (CLERK_KEY) {
-    const { ClerkProvider } = await import("@clerk/clerk-react");
+  if (CLERK_KEY && ClerkProvider) {
     root.render(
       <React.StrictMode>
         <ClerkProvider publishableKey={CLERK_KEY}>

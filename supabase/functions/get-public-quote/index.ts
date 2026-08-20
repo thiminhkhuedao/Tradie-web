@@ -9,6 +9,7 @@
 // Renvoie :      { quote } ou { error }
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { checkRateLimit } from "../_shared/rateLimit.ts";
 
 const CORS = {
   "Access-Control-Allow-Origin": "*",
@@ -18,6 +19,13 @@ const CORS = {
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: CORS });
+
+  // 30 lectures / heure / IP — généreux pour un client qui recharge la
+  // page plusieurs fois, mais empêche de scanner des tokens au hasard.
+  const rl = await checkRateLimit(req, "get-public-quote", 30, 3600);
+  if (!rl.allowed) {
+    return new Response(JSON.stringify({ error: "Trop de tentatives. Réessaie plus tard." }), { status: 429, headers: CORS });
+  }
 
   try {
     const { token } = await req.json();

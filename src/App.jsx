@@ -96,6 +96,17 @@ function recordFailedAttempt() {
 }
 function resetAttempts() { loginAttempts.count = 0; loginAttempts.lockedUntil = null; }
 
+function GoogleIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 0 1-1.8 2.72v2.26h2.9c1.7-1.56 2.7-3.87 2.7-6.62z"/>
+      <path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.9-2.26c-.8.54-1.84.86-3.06.86-2.35 0-4.34-1.59-5.05-3.72H.94v2.33A9 9 0 0 0 9 18z"/>
+      <path fill="#FBBC05" d="M3.95 10.7A5.4 5.4 0 0 1 3.66 9c0-.59.1-1.17.29-1.7V4.97H.94A9 9 0 0 0 0 9c0 1.45.35 2.83.94 4.03z"/>
+      <path fill="#EA4335" d="M9 3.58c1.32 0 2.51.46 3.44 1.35l2.58-2.58C13.46.89 11.43 0 9 0A9 9 0 0 0 .94 4.97L3.95 7.3C4.66 5.17 6.65 3.58 9 3.58z"/>
+    </svg>
+  );
+}
+
 function AuthPage({ initialMode = "login" }) {
   const [mode,     setMode]     = useState(initialMode);
   const [email,    setEmail]    = useState("");
@@ -108,13 +119,32 @@ function AuthPage({ initialMode = "login" }) {
   const [step,     setStep]     = useState("form");
   const [code,     setCode]     = useState("");
   const [error,    setError]    = useState("");
+  const [resetCode, setResetCode] = useState("");
+  const [newPass,   setNewPass]   = useState("");
 
   const { signIn, setActive: setActiveSignIn } = useSignIn();
   const { signUp, setActive: setActiveSignUp } = useSignUp();
   const { t, lang, setLanguage, languages } = useTranslation();
 
   const strength = getPasswordStrength(pass);
+  const resetStrength = getPasswordStrength(newPass);
   const inp = { width:"100%", padding:"11px 14px", borderRadius:8, border:`1px solid ${T.borderMed}`, fontSize:15, background:T.surface, color:T.text, boxSizing:"border-box", fontFamily:"inherit", marginBottom:0 };
+
+  async function handleGoogleAuth() {
+    setError("");
+    try {
+      // signIn.authenticateWithRedirect gère aussi bien la connexion que
+      // l'inscription — Clerk bascule automatiquement vers signUp si ce
+      // compte Google n'existe pas encore.
+      await signIn.authenticateWithRedirect({
+        strategy: "oauth_google",
+        redirectUrl: "/sso-callback",
+        redirectUrlComplete: "/",
+      });
+    } catch (err) {
+      setError(err?.errors?.[0]?.longMessage || err?.message || "Google sign-in failed");
+    }
+  }
 
   async function submit(e) {
     e.preventDefault();
@@ -152,6 +182,119 @@ function AuthPage({ initialMode = "login" }) {
     } catch (err) { setError(err?.errors?.[0]?.longMessage || err?.message || "Invalid code"); }
     setLoading(false);
   }
+
+  async function requestPasswordReset(e) {
+    e.preventDefault();
+    setError("");
+    if (!email.trim()) { setError(t("auth.forgot.emailRequired") || "Enter your email first."); return; }
+    setLoading(true);
+    try {
+      await signIn.create({ identifier: email.trim(), strategy: "reset_password_email_code" });
+      setStep("forgot-verify");
+    } catch (err) {
+      setError(err?.errors?.[0]?.longMessage || err?.message || "Something went wrong");
+    }
+    setLoading(false);
+  }
+
+  async function submitPasswordReset(e) {
+    e.preventDefault();
+    setError("");
+    if (resetStrength.score < 2) { setError(t("auth.error.weakPassword") || "Password is too weak — use at least 8 characters with a mix of letters and numbers."); return; }
+    setLoading(true);
+    try {
+      // Étape 1 : vérifie le code seul → statut "needs_new_password"
+      const firstFactor = await signIn.attemptFirstFactor({
+        strategy: "reset_password_email_code",
+        code: resetCode,
+      });
+      if (firstFactor.status !== "needs_new_password") {
+        setError(`Unexpected status: ${firstFactor.status}. Please try again.`);
+        setLoading(false);
+        return;
+      }
+
+      // Étape 2 : fixe le nouveau mot de passe — signOutOfOtherSessions
+      // n'existe QUE sur resetPassword(), pas sur attemptFirstFactor().
+      const result = await signIn.resetPassword({
+        password: newPass,
+        signOutOfOtherSessions: true,
+      });
+      if (result.status === "complete") {
+        resetAttempts();
+        await setActiveSignIn({ session: result.createdSessionId });
+        window.location.reload();
+      } else {
+        setError(`Unexpected status: ${result.status}. Please try again.`);
+      }
+    } catch (err) {
+      setError(err?.errors?.[0]?.longMessage || err?.message || "Invalid or expired code");
+    }
+    setLoading(false);
+  }
+
+  if (step === "forgot") return (
+    <div style={{ minHeight:"100vh", background:T.bg, display:"flex", alignItems:"center", justifyContent:"center", padding:20 }}>
+      <div style={{ width:420, maxWidth:"100%", background:T.surface, borderRadius:T.r.xl, padding:"52px 48px", boxShadow:T.shadow.xl }}>
+        <h3 style={{ fontSize:22, fontWeight:800, marginBottom:8, letterSpacing:-0.5, textAlign:"center" }}>{t("auth.forgot.title") || "Reset your password"}</h3>
+        <p style={{ fontSize:14, color:T.muted, marginBottom:28, textAlign:"center", lineHeight:1.6 }}>
+          {t("auth.forgot.subtitle") || "Enter your email and we'll send you a reset code."}
+        </p>
+        <form onSubmit={requestPasswordReset} style={{ display:"flex", flexDirection:"column", gap:14 }}>
+          <input style={inp} type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="you@example.com" autoFocus/>
+          {error && <div style={{ fontSize:13, color:"#EF4444", background:"#FEF2F2", padding:"10px 14px", borderRadius:8 }}>{error}</div>}
+          <button type="submit" disabled={loading}
+            style={{ padding:"14px", borderRadius:8, background:T.brand, color:"#fff", border:"none", fontWeight:700, fontSize:15, cursor:loading?"not-allowed":"pointer", opacity:loading?0.6:1 }}>
+            {loading ? (t("auth.forgot.sending") || "Sending…") : (t("auth.forgot.submit") || "Send reset code")}
+          </button>
+          <button type="button" onClick={()=>{ setStep("form"); setError(""); }}
+            style={{ background:"none", border:"none", color:T.muted, fontSize:13, cursor:"pointer", textDecoration:"underline" }}>
+            {t("auth.verify.back") || "← Back to sign in"}
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+
+  if (step === "forgot-verify") return (
+    <div style={{ minHeight:"100vh", background:T.bg, display:"flex", alignItems:"center", justifyContent:"center", padding:20 }}>
+      <div style={{ width:420, maxWidth:"100%", background:T.surface, borderRadius:T.r.xl, padding:"52px 48px", boxShadow:T.shadow.xl }}>
+        <h3 style={{ fontSize:22, fontWeight:800, marginBottom:8, letterSpacing:-0.5, textAlign:"center" }}>{t("auth.forgot.verifyTitle") || "Check your email"}</h3>
+        <p style={{ fontSize:14, color:T.muted, marginBottom:28, textAlign:"center", lineHeight:1.6 }}>
+          {t("auth.forgot.verifySubtitle") || "Enter the code we sent to"} <strong>{email}</strong> {t("auth.forgot.andNewPassword") || "and choose a new password."}
+        </p>
+        <form onSubmit={submitPasswordReset} style={{ display:"flex", flexDirection:"column", gap:14 }}>
+          <input style={{ ...inp, fontSize:22, fontWeight:800, letterSpacing:6, textAlign:"center" }}
+            value={resetCode} onChange={e=>setResetCode(e.target.value.replace(/\D/g,"").slice(0,6))}
+            placeholder="000000" maxLength={6} autoFocus inputMode="numeric"/>
+
+          <div>
+            <input style={inp} type="password" value={newPass} onChange={e=>setNewPass(e.target.value)} placeholder={t("auth.forgot.newPasswordPlaceholder") || "New password"}/>
+            {newPass.length>0 && (
+              <div style={{ marginTop:8 }}>
+                <div style={{ display:"flex", gap:4, marginBottom:4 }}>
+                  {[1,2,3,4].map(i=>(
+                    <div key={i} style={{ flex:1, height:3, borderRadius:2, background:i<=resetStrength.score?resetStrength.color:T.border, transition:"background .2s" }}/>
+                  ))}
+                </div>
+                <div style={{ fontSize:12, color:resetStrength.color, fontWeight:600 }}>{resetStrength.label}</div>
+              </div>
+            )}
+          </div>
+
+          {error && <div style={{ fontSize:13, color:"#EF4444", background:"#FEF2F2", padding:"10px 14px", borderRadius:8 }}>{error}</div>}
+          <button type="submit" disabled={loading || resetCode.length!==6 || !newPass}
+            style={{ padding:"14px", borderRadius:8, background:T.brand, color:"#fff", border:"none", fontWeight:700, fontSize:15, cursor:(loading||resetCode.length!==6||!newPass)?"not-allowed":"pointer", opacity:(loading||resetCode.length!==6||!newPass)?0.6:1 }}>
+            {loading ? (t("auth.forgot.resetting") || "Resetting…") : (t("auth.forgot.submitNew") || "Set new password →")}
+          </button>
+          <button type="button" onClick={()=>{ setStep("form"); setError(""); setResetCode(""); setNewPass(""); }}
+            style={{ background:"none", border:"none", color:T.muted, fontSize:13, cursor:"pointer", textDecoration:"underline" }}>
+            {t("auth.verify.back") || "← Back to sign in"}
+          </button>
+        </form>
+      </div>
+    </div>
+  );
 
   if (step === "verify") return (
     <div style={{ minHeight:"100vh", background:T.bg, display:"flex", alignItems:"center", justifyContent:"center", padding:20, position:"relative" }}>
@@ -285,6 +428,28 @@ function AuthPage({ initialMode = "login" }) {
             {mode==="login" ? (t("auth.form.loginSub") || "Sign in to your Vimen account") : (t("auth.form.signupSub") || "Start for free — no card needed")}
           </p>
 
+          <button
+            type="button"
+            onClick={handleGoogleAuth}
+            disabled={loading}
+            style={{
+              width:"100%", padding:"11px 14px", borderRadius:8,
+              border:`1px solid ${T.borderMed}`, background:T.surface, color:T.text,
+              fontSize:14, fontWeight:600, cursor:loading?"not-allowed":"pointer",
+              display:"flex", alignItems:"center", justifyContent:"center", gap:10,
+              fontFamily:"inherit", marginBottom:16, opacity:loading?0.6:1,
+            }}
+          >
+            <GoogleIcon />
+            {t("auth.form.continueGoogle") || "Continue with Google"}
+          </button>
+
+          <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:16 }}>
+            <div style={{ flex:1, height:1, background:T.border }} />
+            <span style={{ fontSize:12, color:T.muted, fontWeight:600 }}>{t("auth.form.orDivider") || "OR"}</span>
+            <div style={{ flex:1, height:1, background:T.border }} />
+          </div>
+
           <form onSubmit={submit} style={{ display:"flex", flexDirection:"column", gap:12 }}>
             {mode==="signup" && <>
               <div>
@@ -326,6 +491,16 @@ function AuthPage({ initialMode = "login" }) {
                   {showPass ? (t("auth.form.hidePass") || "Hide") : (t("auth.form.showPass") || "Show")}
                 </button>
               </div>
+              {mode==="login" && (
+                <div style={{ textAlign:"right", marginTop:6 }}>
+                  <span
+                    onClick={()=>{ setStep("forgot"); setError(""); }}
+                    style={{ fontSize:12, color:T.muted, cursor:"pointer", textDecoration:"underline" }}
+                  >
+                    {t("auth.form.forgotPassword") || "Forgot password?"}
+                  </span>
+                </div>
+              )}
               {mode==="signup" && pass.length>0 && (
                 <div style={{ marginTop:8 }}>
                   <div style={{ display:"flex", gap:4, marginBottom:4 }}>

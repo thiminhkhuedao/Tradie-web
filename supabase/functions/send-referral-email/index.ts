@@ -12,6 +12,7 @@
 // (ex: mail.tradie.app) et l'utiliser comme adresse "from" ci-dessous.
 
 import { serve } from "https://deno.land/std@0.224.0/http/server.ts";
+import { checkRateLimit } from "../_shared/rateLimit.ts";
 
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
 const FROM_EMAIL = Deno.env.get("REFERRAL_FROM_EMAIL") || "Tradie <onboarding@resend.dev>";
@@ -53,6 +54,16 @@ function buildEmailHtml({ referredName, referrerName, referralUrl }: {
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response("ok", { headers: corsHeaders });
+  }
+
+  // 5 invitations par heure et par IP — un vrai utilisateur ne parraine
+  // pas 50 personnes d'un coup ; ça bloque le spam automatisé.
+  const rl = await checkRateLimit(req, "send-referral-email", 5, 3600);
+  if (!rl.allowed) {
+    return new Response(
+      JSON.stringify({ error: "Too many requests. Please try again later." }),
+      { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+    );
   }
 
   if (!RESEND_API_KEY) {

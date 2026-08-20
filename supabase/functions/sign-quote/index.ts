@@ -8,6 +8,7 @@
 // Renvoie :      { success: true, signedAt } ou { error }
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { checkRateLimit } from "../_shared/rateLimit.ts";
 
 const CORS = {
   "Access-Control-Allow-Origin": "*",
@@ -17,6 +18,13 @@ const CORS = {
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: CORS });
+
+  // 10 tentatives / heure / IP — un client légitime peut réessayer en cas
+  // de faute de frappe sur son nom, mais ça bloque le brute-force de tokens.
+  const rl = await checkRateLimit(req, "sign-quote", 10, 3600);
+  if (!rl.allowed) {
+    return new Response(JSON.stringify({ error: "Trop de tentatives. Réessaie plus tard." }), { status: 429, headers: CORS });
+  }
 
   try {
     const { token, signedBy } = await req.json();
