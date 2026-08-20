@@ -1,24 +1,27 @@
 /**
  * Supabase Edge Function: stripe-connect
  *
- * Was called from db.js (getStripeConnectUrl) but never actually
- * existed as a deployed function — every "Connect Stripe" click was
- * a silent 404. This creates it.
+ * SÉCURITÉ — IDOR corrigé (voir audit "Broken Access Control") :
+ * L'ancienne version faisait confiance à un `profileId` envoyé dans le
+ * body de la requête, sans vérifier qu'il appartenait bien à l'appelant.
+ * N'importe quel utilisateur connecté pouvait donc récupérer un lien
+ * d'onboarding Stripe pour N'IMPORTE QUEL profil et détourner les futurs
+ * paiements vers son propre compte bancaire.
+ *
+ * Fix : on ne fait plus jamais confiance à un ID fourni par le client
+ * pour déterminer l'identité. On dérive le profil de l'appelant à partir
+ * de son JWT (via un client Supabase scopé à son Authorization header,
+ * qui ne peut lire QUE sa propre ligne grâce au RLS `profiles_own`).
  *
  * Deploy:
  *   supabase functions deploy stripe-connect
  *
- * Set secrets (same Stripe key already used by the other functions):
- *   supabase secrets set STRIPE_SECRET_KEY=sk_live_...
+ * Secrets requis (déjà utilisés par les autres fonctions) :
+ *   STRIPE_SECRET_KEY
+ *   SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY / SUPABASE_ANON_KEY (par défaut)
  *
- * Called with: { profileId, returnUrl }
- * Returns:     { url }  — redirect the browser here to start onboarding
- *
- * Uses fetch() directly against Stripe's REST API instead of the
- * `stripe` npm SDK — see the comment at the top of
- * create-payment-link/index.ts and stripe-webhook/index.ts for why
- * (Deno.core.runMicrotasks() is not supported in Supabase's current
- * Edge Runtime, which breaks the SDK).
+ * Appelée avec : { returnUrl }  — PLUS de profileId, il est déduit du JWT
+ * Renvoie :      { url }
  */
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
@@ -65,28 +68,44 @@ Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: CORS });
 
   try {
-    const { profileId, returnUrl } = await req.json();
-    if (!profileId) throw new Error("profileId is required");
+    const authHeader = req.headers.get("Authorization");
+    if (!authHeader) {
+      return new Response(JSON.stringify({ error: "Non authentifié" }), { status: 401, headers: CORS });
+    }
 
-    const supabaseAdmin = createClient(
-      Deno.env.get("SUPABASE_URL") ?? "",
-      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
-    );
+    const { returnUrl } = await req.json();
 
-    const { data: profile, error: profileErr } = await supabaseAdmin
+    const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
+
+    // Client scopé au JWT de l'appelant : la policy RLS "profiles_own"
+    // garantit que .single() sans filtre ne peut renvoyer QUE SA PROPRE
+    // ligne, quoi qu'on demande explicitement. C'est ça qui remplace la
+    // confiance aveugle en un profileId fourni par le client.
+    const userClient = createClient(SUPABASE_URL, Deno.env.get("SUPABASE_ANON_KEY") ?? "", {
+      global: { headers: { Authorization: authHeader } },
+    });
+
+    const { data: myProfile, error: profileErr } = await userClient
       .from("profiles")
       .select("id, email, stripe_account_id")
-      .eq("id", profileId)
       .single();
-    if (profileErr) throw new Error(profileErr.message);
 
-    let accountId = profile.stripe_account_id;
+    if (profileErr || !myProfile) {
+      return new Response(JSON.stringify({ error: "Profil introuvable" }), { status: 403, headers: CORS });
+    }
+
+    const profileId = myProfile.id; // dérivé du JWT — jamais du body
+    let accountId = myProfile.stripe_account_id;
+
+    // Écriture (création du compte Stripe / mise à jour) : service_role,
+    // mais seulement maintenant qu'on a confirmé l'identité ci-dessus.
+    const supabaseAdmin = createClient(SUPABASE_URL, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "");
 
     // First time connecting — create a new Express connected account.
     if (!accountId) {
       const account = await stripeRequest("POST", "accounts", {
         type: "express",
-        email: profile.email || undefined,
+        email: myProfile.email || undefined,
         capabilities: {
           card_payments: { requested: true },
           transfers:     { requested: true },

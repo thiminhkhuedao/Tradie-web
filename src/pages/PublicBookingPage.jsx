@@ -414,7 +414,11 @@ function ImageUpload({ value, onChange, label, hint }) {
     setUploading(true);
 
     const ext = file.name.split(".").pop();
-    const path = `public/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+    // Doit rester sous "requests/" — c'est le seul chemin autorisé par la
+    // policy storage "booking_attachments_public_insert" (voir
+    // sql/009_scope_booking_attachments.sql). Un autre préfixe fera
+    // échouer l'upload avec une erreur RLS.
+    const path = `requests/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
 
     const { error } = await supabase.storage.from("booking-attachments").upload(path, file, { cacheControl: "3600" });
     setUploading(false);
