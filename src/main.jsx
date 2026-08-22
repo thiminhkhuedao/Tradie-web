@@ -2,11 +2,23 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import * as Sentry from "@sentry/react";
 import { AppProvider } from "../context/AppContext.jsx";
 import { ErrorBoundary } from "./components/ErrorBoundary.jsx";
 import "./styles/globals.css";
 
 const CLERK_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+
+// Initialisé en tout premier, avant même bootstrap() — pour capter aussi
+// les erreurs qui arriveraient pendant le chargement dynamique des pages
+// (import() plus bas), pas seulement les erreurs de rendu React.
+Sentry.init({
+  dsn: import.meta.env.VITE_SENTRY_DSN,
+  environment: import.meta.env.MODE,
+  integrations: [Sentry.browserTracingIntegration()],
+  tracesSampleRate: 0.1,
+  enabled: import.meta.env.PROD, // rien envoyé en dev local
+});
 
 async function bootstrap() {
   const { default: App } = await import("./App.jsx");
@@ -68,6 +80,11 @@ async function bootstrap() {
 bootstrap().catch((err) => {
   // Détail complet en console pour toi — jamais montré à l'utilisateur.
   console.error("[Vimen] Startup error:", err);
+
+  // Ces erreurs surviennent AVANT que React ne soit monté (ex: échec d'un
+  // import() dynamique) — l'ErrorBoundary React ne peut pas les attraper,
+  // donc on les envoie à Sentry explicitement ici.
+  Sentry.captureException(err);
 
   const fr = typeof navigator !== "undefined" && navigator.language?.toLowerCase().startsWith("fr");
   document.getElementById("root").innerHTML = `

@@ -61,9 +61,10 @@ const iStyle = {
 
 // ── Main component ─────────────────────────────────────
 export default function CertificationsPage({ state, dispatch, profile }) {
-  const { t }  = useTranslation();
+  const { t, lang }  = useTranslation();
+  const locale = lang === "fr" ? "fr-FR" : "en-GB";
   const fmt = n => formatCurrency(n, profile?.currency);
-  const terms  = getTerms(profile?.trade);
+  const terms  = getTerms(profile?.trade, t);
 
   const [modal,   setModal]   = useState(null);
   const [delId,   setDelId]   = useState(null);
@@ -253,7 +254,7 @@ export default function CertificationsPage({ state, dispatch, profile }) {
                     {t("certifications.activeSection",{count:active.length})}
                   </div>
                 </div>
-                {active.map(c => <CertRow key={c.id} cert={c} t={t} onEdit={()=>openEdit(c)} onDelete={()=>setDelId(c.id)}/>)}
+                {active.map(c => <CertRow key={c.id} cert={c} t={t} locale={locale} onEdit={()=>openEdit(c)} onDelete={()=>setDelId(c.id)}/>)}
               </div>
             )}
 
@@ -264,7 +265,7 @@ export default function CertificationsPage({ state, dispatch, profile }) {
                     {t("certifications.expiredSection",{count:expired.length})}
                   </div>
                 </div>
-                {expired.map(c => <CertRow key={c.id} cert={c} t={t} onEdit={()=>openEdit(c)} onDelete={()=>setDelId(c.id)}/>)}
+                {expired.map(c => <CertRow key={c.id} cert={c} t={t} locale={locale} onEdit={()=>openEdit(c)} onDelete={()=>setDelId(c.id)}/>)}
               </div>
             )}
           </>
@@ -275,7 +276,7 @@ export default function CertificationsPage({ state, dispatch, profile }) {
 }
 
 // ── Cert row ───────────────────────────────────────────
-function CertRow({ cert, t, onEdit, onDelete }) {
+function CertRow({ cert, t, locale, onEdit, onDelete }) {
   return (
     <div style={{ display:"flex", alignItems:"center", gap:14, padding:"14px 24px", borderBottom:`1px solid ${T.border}` }}>
       <div style={{ width:40, height:40, borderRadius:T.r.md, background:cert.status==="expired"?T.redBg:T.greenBg, display:"flex", alignItems:"center", justifyContent:"center", fontSize:13, fontWeight:700, color:cert.status==="expired"?T.red:T.green, flexShrink:0 }}>
@@ -286,7 +287,7 @@ function CertRow({ cert, t, onEdit, onDelete }) {
         <div style={{ fontSize:12, color:T.muted }}>
           {cert.issuing_body && <span>{cert.issuing_body}</span>}
           {cert.cert_number  && <span> · {cert.cert_number}</span>}
-          {cert.expiry_date  && <span> · {t("certifications.expiresLabel")} {new Date(cert.expiry_date).toLocaleDateString("en-GB",{month:"short",year:"numeric"})}</span>}
+          {cert.expiry_date  && <span> · {t("certifications.expiresLabel")} {new Date(cert.expiry_date).toLocaleDateString(locale,{month:"short",year:"numeric"})}</span>}
         </div>
       </div>
       <div style={{ display:"flex", alignItems:"center", gap:10 }}>

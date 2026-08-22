@@ -60,17 +60,19 @@ function useToasts() {
 }
 
 /* ── Auth page ──────────────────────────────────────── */
+// Labels et exemples traduits via auth.categories.<id>.label / .examples
+// dans en.js / fr.js — ne jamais mettre de texte en dur ici.
 const CATEGORIES = [
-  { id:"trades",    label:"Trades & Construction", examples:"Electrician, plumber, builder…",    vertical:"trades" },
-  { id:"beauty",    label:"Beauty & Wellness",     examples:"Hairdresser, nail tech, spa…",    vertical:"beauty" },
-  { id:"food",      label:"Food & Hospitality",    examples:"Baker, chef, caterer…",            vertical:"other" },
-  { id:"health",    label:"Health & Care",         examples:"Physio, nurse, psychologist…",    vertical:"professional" },
-  { id:"legal",     label:"Legal & Finance",       examples:"Lawyer, accountant, notary…",    vertical:"professional" },
-  { id:"education", label:"Education & Coaching",  examples:"Tutor, coach, trainer…",           vertical:"professional" },
-  { id:"creative",  label:"Creative & Design",     examples:"Photographer, designer…",          vertical:"other" },
-  { id:"tech",      label:"Tech & IT",             examples:"Developer, IT consultant…",        vertical:"professional" },
-  { id:"events",    label:"Events & Entertainment", examples:"DJ, decorator, planner…",         vertical:"other" },
-  { id:"home",      label:"Home & Garden",         examples:"Cleaner, gardener, handyman…",    vertical:"trades" },
+  { id:"trades",    vertical:"trades" },
+  { id:"beauty",    vertical:"beauty" },
+  { id:"food",      vertical:"other" },
+  { id:"health",    vertical:"professional" },
+  { id:"legal",     vertical:"professional" },
+  { id:"education", vertical:"professional" },
+  { id:"creative",  vertical:"other" },
+  { id:"tech",      vertical:"professional" },
+  { id:"events",    vertical:"other" },
+  { id:"home",      vertical:"trades" },
 ];
 
 function getPasswordStrength(password) {
@@ -102,9 +104,9 @@ async function checkRateLimitServer(action, identifier) {
     const data = await res.json();
     if (!data.allowed) {
       if (data.reason === "rate_limited_identifier" || data.reason === "rate_limited_ip") {
-        return "Too many attempts. Please wait a few minutes before trying again.";
+        return "rate_limited";
       }
-      return "Something went wrong. Please try again.";
+      return "generic";
     }
     return null;
   } catch {
@@ -176,11 +178,16 @@ function AuthPage({ initialMode = "login" }) {
       // donner d'indice — pas la peine de faire l'appel réseau au-delà.
       return;
     }
-    const rateLimitMsg = await checkRateLimitServer(mode === "signup" ? "signup" : "login", email.trim());
-    if (rateLimitMsg) { setError(rateLimitMsg); return; }
+    const rateLimitReason = await checkRateLimitServer(mode === "signup" ? "signup" : "login", email.trim());
+    if (rateLimitReason) {
+      setError(rateLimitReason === "rate_limited"
+        ? (t("auth.error.tooManyAttempts") || "Too many attempts. Please wait a few minutes before trying again.")
+        : (t("auth.error.genericRetry") || "Something went wrong. Please try again."));
+      return;
+    }
     if (mode==="signup" && strength.score < 2) { setError(t("auth.error.weakPassword") || "Password is too weak — use at least 8 characters with a mix of letters and numbers."); return; }
     if (mode==="signup" && !agreedToTerms) { setError(t("auth.error.mustAgreeTerms") || "Please accept the Privacy Policy to continue."); return; }
-    if (mode==="signup" && !captchaToken) { setError("Please complete the verification challenge."); return; }
+    if (mode==="signup" && !captchaToken) { setError(t("auth.error.captchaMissing") || "Please complete the verification challenge."); return; }
     setLoading(true);
     try {
       if (mode === "signup") {
@@ -492,8 +499,8 @@ function AuthPage({ initialMode = "login" }) {
                   {CATEGORIES.map(cat=>(
                     <button key={cat.id} type="button" onClick={()=>setCategory(cat)}
                       style={{ padding:"9px 11px", borderRadius:8, border:`1.5px solid ${category.id===cat.id?T.brand:T.border}`, background:category.id===cat.id?T.brandLight:"transparent", cursor:"pointer", textAlign:"left", fontFamily:"inherit", transition:"all .15s" }}>
-                      <div style={{ fontSize:12, fontWeight:700, color:category.id===cat.id?T.brand:T.text }}>{cat.label}</div>
-                      <div style={{ fontSize:10, color:T.muted, marginTop:2, lineHeight:1.3 }}>{cat.examples}</div>
+                      <div style={{ fontSize:12, fontWeight:700, color:category.id===cat.id?T.brand:T.text }}>{t(`auth.categories.${cat.id}.label`)}</div>
+                      <div style={{ fontSize:10, color:T.muted, marginTop:2, lineHeight:1.3 }}>{t(`auth.categories.${cat.id}.examples`)}</div>
                     </button>
                   ))}
                 </div>

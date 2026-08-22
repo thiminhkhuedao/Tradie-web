@@ -1,0 +1,11 @@
+{
+  "lastUpdated": "2026-08-22T10:00:00Z",
+  "components": [
+    { "name": "Application web", "status": "operational" },
+    { "name": "Application mobile", "status": "operational" },
+    { "name": "Réservations en ligne", "status": "operational" },
+    { "name": "Paiements (Stripe)", "status": "operational" },
+    { "name": "Emails (confirmations, rappels)", "status": "operational" }
+  ],
+  "incidents": []
+}

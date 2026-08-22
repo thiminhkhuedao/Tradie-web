@@ -1,13 +1,13 @@
 // src/components/Sidebar.jsx — Complete sidebar with all nav items
 import { T } from "../styles/tokens";
-import { getVerticalForProfession, getTerms } from "../lib/professions.js";
+import { getVerticalForProfession, getTerms, getProfessionLabel } from "../lib/professions.js";
 import { useTranslation } from "../i18n/index.js";
 
 const initials = n => (n||"?").split(" ").filter(Boolean).map(w=>w[0]).join("").toUpperCase().slice(0,2);
 
 export default function Sidebar({ page, setPage, profile, onSignOut, pendingBookings=0, pendingQuotes=0, mobileOpen=false, onCloseMobile=()=>{} }) {
   const { t } = useTranslation();
-  const terms = getTerms(profile?.trade);
+  const terms = getTerms(profile?.trade, t);
 
   const NAV_SECTIONS = [
     {
@@ -97,7 +97,7 @@ export default function Sidebar({ page, setPage, profile, onSignOut, pendingBook
           <div style={{ fontSize:20, fontWeight:900, color:T.brand, letterSpacing:-0.5 }}> Vimen</div>
           <div style={{ fontSize:11, color:T.muted, marginTop:2 }}>
             {profile?.trade
-              ? `${getVerticalForProfession(profile.trade).icon} ${profile.trade}`
+              ? `${getVerticalForProfession(profile.trade).icon} ${getProfessionLabel(profile.trade, t)}`
               : t("nav.tagline")}
           </div>
         </div>

@@ -10,16 +10,17 @@ import {
 import { ErrorBoundary } from "../components/ErrorBoundary";
 import { formatCurrency } from "../lib/currency.js";
 
-const fmtDate = d => { 
+const fmtDate = (d, locale) => { 
   try { 
-    return new Date(d).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }); 
+    return new Date(d).toLocaleDateString(locale, { day: "numeric", month: "short", year: "numeric" }); 
   } catch { 
     return ""; 
   }
 };
 
 export default function DashboardPage({ profile, setPage, state, dispatch, toast }) {
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
+  const locale = lang === "fr" ? "fr-FR" : "en-GB";
   const fmt = n => formatCurrency(n, profile?.currency);
   
   const [jobs, setJobs] = useState(state?.jobs || []);
@@ -150,7 +151,7 @@ export default function DashboardPage({ profile, setPage, state, dispatch, toast
                         {d && (
                           <div style={{ width: 44, height: 44, borderRadius: T.r.md, background: T.brandLight, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                             <span style={{ fontSize: 16, fontWeight: 800, color: T.brand, lineHeight: 1 }}>{d.getDate()}</span>
-                            <span style={{ fontSize: 9, fontWeight: 700, color: T.brand }}>{d.toLocaleString("en-GB", { month: "short" }).toUpperCase()}</span>
+                            <span style={{ fontSize: 9, fontWeight: 700, color: T.brand }}>{d.toLocaleString(locale, { month: "short" }).toUpperCase()}</span>
                           </div>
                         )}
                         <div style={{ flex: 1, minWidth: 0 }}>
@@ -178,7 +179,7 @@ export default function DashboardPage({ profile, setPage, state, dispatch, toast
                         <div style={{ width: 34, height: 34, borderRadius: "50%", background: T.greenBg, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, fontSize: 16 }}>✓</div>
                         <div style={{ flex: 1, minWidth: 0 }}>
                           <div style={{ fontSize: 14, fontWeight: 500, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{j.title}</div>
-                          <div style={{ fontSize: 12, color: T.muted }}>{cl?.name || j.client?.name || ""} · {fmtDate(j.date)}</div>
+                          <div style={{ fontSize: 12, color: T.muted }}>{cl?.name || j.client?.name || ""} · {fmtDate(j.date, locale)}</div>
                         </div>
                         <Badge color={inv?.status === "paid" ? "green" : "amber"}>{inv?.status ?? t("dashboard.noInvoice")}</Badge>
                       </div>

@@ -9,7 +9,7 @@ import {
   Field, FieldRow, Divider, Toggle,
 } from "../components/UI";
 import { CURRENCY_SYMBOLS } from "../lib/currency.js";
-import { VERTICALS, getVerticalForProfession, getProfileFields } from "../lib/professions.js";
+import { VERTICALS, getVerticalForProfession, getProfileFields, getVerticalLabel, getProfessionLabel } from "../lib/professions.js";
 import { useTranslation, LANGUAGES } from "../i18n/index.js";
 import { AppCtx } from "../lib/state.jsx";
 
@@ -315,15 +315,15 @@ export default function SettingsPage({ profile, setProfile, dispatch }) {
                   {Object.values(VERTICALS)
                     .filter(v => v.id !== "other")
                     .map(v => (
-                      <optgroup key={v.id} label={`${v.icon}  ${v.label}`}>
+                      <optgroup key={v.id} label={`${v.icon}  ${getVerticalLabel(v, t)}`}>
                         {v.professions.map(p => (
                           <option key={p} value={p}>
-                            {p}
+                            {getProfessionLabel(p, t)}
                           </option>
                         ))}
                       </optgroup>
                     ))}
-                  <option value="Other">Other</option>
+                  <option value="Other">{getProfessionLabel("Other", t)}</option>
                 </select>
               </Field>
             </FieldRow>
