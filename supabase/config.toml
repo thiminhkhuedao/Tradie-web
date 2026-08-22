@@ -385,6 +385,16 @@ deno_version = 2
 # [edge_runtime.secrets]
 # secret_key = "env(SECRET_VALUE)"
 
+# stripe-connect vérifie elle-même l'identité de l'appelant via un client
+# Supabase scopé au header Authorization + RLS (voir le commentaire en
+# haut du fichier index.ts de la fonction). Le contrôle JWT automatique
+# de la plateforme, lui, ne sait pas valider correctement les JWT tiers
+# émis par Clerk pour les Edge Functions (contrairement aux requêtes DB
+# classiques, qui fonctionnent bien) — on le désactive donc ici pour
+# laisser la fonction faire sa propre vérification.
+[functions.stripe-connect]
+verify_jwt = false
+
 [analytics]
 enabled = true
 port = 54327

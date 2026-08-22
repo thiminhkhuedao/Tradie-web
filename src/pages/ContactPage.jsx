@@ -3,6 +3,9 @@ import { T } from "../styles/tokens.js";
 import { useTranslation } from "../i18n/index.js";
 import { supabase } from "../lib/supabase.js";
 import PublicLayout from "../components/PublicLayout.jsx";
+import Honeypot, { isBotSubmission } from "../components/Honeypot.jsx";
+import Turnstile from "../components/Turnstile.jsx";
+import { checkRateLimit } from "../lib/security.js";
 
 const S = {
   wrap: {
@@ -29,19 +32,39 @@ export default function ContactPage({ onSignIn, onSignUp }) {
   const { t, lang, setLanguage, languages } = useTranslation();
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [status, setStatus] = useState("idle");
+  const [honeypot, setHoneypot] = useState("");
+  const [captchaToken, setCaptchaToken] = useState(null);
 
   const fld = k => e => setForm(p => ({ ...p, [k]: e.target.value }));
 
   async function submit(e) {
     e.preventDefault();
-    
+
+    // Bot détecté via le honeypot : rejet silencieux, pas d'appel réseau.
+    if (isBotSubmission(honeypot)) return;
+
     // Basic validation
     if (!form.name.trim() || !form.email.trim() || !form.message.trim()) {
       setStatus("invalid");
       return;
     }
 
+    if (!captchaToken) {
+      setStatus("captcha_missing");
+      return;
+    }
+
     setStatus("sending");
+
+    const rateLimitMsg = await checkRateLimit("contact_form", {
+      identifier: form.email.trim(),
+      turnstileToken: captchaToken,
+      honeypot,
+    });
+    if (rateLimitMsg) {
+      setStatus("error");
+      return;
+    }
 
     try {
       const { error } = await supabase.functions.invoke("send-contact-email", { body: form });
@@ -175,6 +198,12 @@ export default function ContactPage({ onSignIn, onSignUp }) {
                 />
               </div>
 
+              <Honeypot value={honeypot} onChange={setHoneypot} />
+
+              <div style={{ marginBottom: 18 }}>
+                <Turnstile onVerify={setCaptchaToken} onExpire={() => setCaptchaToken(null)} />
+              </div>
+
               {status === "invalid" && (
                 <p
                   id="contact-error"
@@ -182,6 +211,16 @@ export default function ContactPage({ onSignIn, onSignUp }) {
                   style={{ fontSize: 13, color: T.red || "#dc2626", marginBottom: 16, marginTop: 0 }}
                 >
                   {t("contactPage.invalid", "Please fill in all fields.")}
+                </p>
+              )}
+
+              {status === "captcha_missing" && (
+                <p
+                  id="contact-error"
+                  role="alert"
+                  style={{ fontSize: 13, color: T.red || "#dc2626", marginBottom: 16, marginTop: 0 }}
+                >
+                  {t("contactPage.captchaMissing", "Please complete the verification challenge.")}
                 </p>
               )}
 
@@ -197,7 +236,7 @@ export default function ContactPage({ onSignIn, onSignUp }) {
 
               <button
                 type="submit"
-                disabled={status === "sending"}
+                disabled={status === "sending" || !captchaToken}
                 style={{
                   width: "100%",
                   padding: "13px 0",
@@ -207,8 +246,8 @@ export default function ContactPage({ onSignIn, onSignUp }) {
                   color: "#fff",
                   fontSize: 15,
                   fontWeight: 700,
-                  cursor: status === "sending" ? "not-allowed" : "pointer",
-                  opacity: status === "sending" ? 0.6 : 1,
+                  cursor: (status === "sending" || !captchaToken) ? "not-allowed" : "pointer",
+                  opacity: (status === "sending" || !captchaToken) ? 0.6 : 1,
                   transition: "opacity 0.15s ease",
                 }}
               >

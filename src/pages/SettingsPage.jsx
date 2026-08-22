@@ -197,7 +197,7 @@ export default function SettingsPage({ profile, setProfile, dispatch }) {
       window.location.href = data.url;
     } catch (err) {
       toast.dismiss();
-      toast.error("Impossible de démarrer la connexion Stripe.");
+      toast.error(t("settings.stripeConnectError") || "Impossible de démarrer la connexion Stripe. Réessaie dans un instant ou contacte le support si ça persiste.");
       console.error("[Stripe Connect Error]:", err);
     }
   }

@@ -59,3 +59,10 @@ export const supabase = isSupabaseConfigured
       },
     })
   : createUnconfiguredStub();
+
+// DEBUG ONLY — expose le client dans la console pour pouvoir tester des
+// requêtes à la main (ex: vérifier une policy RLS). Jamais en prod : ce
+// bloc disparaît entièrement du bundle buildé par Vite en production.
+if (import.meta.env.DEV) {
+  window.supabase = supabase;
+}

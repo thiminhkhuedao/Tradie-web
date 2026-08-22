@@ -171,8 +171,7 @@ export default function InvoicesPage({ profile, onUpgradeClick }) {
       const client = clients.find(c => c.id === form.client_id);
       if (client?.email && data) {
         const job = jobs.find(j => j.id === form.job_id);
-        const enrichedInvoice = { ...data, client, job };
-        const result = await sendInvoiceEmail(enrichedInvoice, profile);
+        const result = await sendInvoiceEmail(data.id);
         if (result.success) {
           const { data: updated } = await supabase
             .from("invoices")
@@ -221,7 +220,7 @@ export default function InvoicesPage({ profile, onUpgradeClick }) {
     }
     setBusy(true);
     try {
-      const result = await sendInvoiceEmail(inv, profile);
+      const result = await sendInvoiceEmail(inv.id);
       if (result.success) {
         toast.success(t("invoices.emailedToast",{email:inv.client.email}));
       } else {

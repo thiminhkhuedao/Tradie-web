@@ -385,6 +385,21 @@ export const getStripeConnectUrl = async (
   const { data, error } = await supabase.functions.invoke("stripe-connect", {
     body: { profileId, returnUrl },
   });
+
+  if (error) {
+    // supabase.functions.invoke() ne met PAS le message JSON renvoyé par
+    // la fonction (ex: "Profil introuvable", erreur Stripe...) dans
+    // error.message — il faut aller le chercher dans error.context, sinon
+    // on ne voit jamais que "Edge Function returned a non-2xx status code".
+    try {
+      const body = await error.context?.json?.();
+      if (body?.error) error.message = body.error;
+    } catch {
+      // pas de JSON exploitable — on garde le message générique tel quel
+    }
+    console.error("[getStripeConnectUrl]", error.message, error);
+  }
+
   return { data, error };
 };
 

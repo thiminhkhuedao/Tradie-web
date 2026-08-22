@@ -185,8 +185,7 @@ export default function JobsPage({ profile }) {
 
       // Premier envoi automatique au client, s'il a une adresse email
       if (client?.email && invoice) {
-        const enrichedInvoice = { ...invoice, client, job };
-        const result = await sendInvoiceEmail(enrichedInvoice, profile);
+        const result = await sendInvoiceEmail(invoice.id);
         if (result.success) {
           await supabase
             .from("invoices")

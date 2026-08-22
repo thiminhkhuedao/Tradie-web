@@ -9,6 +9,9 @@ import { useTranslation } from "../i18n/index.js";
 import { supabase } from "../lib/supabase";
 import { getTerms, getVerticalColor, getVerticalForProfession } from "../lib/professions.js";
 import { formatCurrency } from "../lib/currency.js";
+import Honeypot, { isBotSubmission } from "../components/Honeypot.jsx";
+import Turnstile from "../components/Turnstile.jsx";
+import { checkRateLimit } from "../lib/security.js";
 
 // Le formulaire public est aussi accessible sans ClerkProvider (mode démo,
 // voir main.jsx). useUser() plante s'il n'y a pas de <ClerkProvider> au-dessus,
@@ -532,6 +535,9 @@ export default function PublicBookingPage() {
   const [clientImage, setClientImage] = useState(null);
   const [sending, setSending] = useState(false);
   const [done, setDone] = useState(false);
+  const [honeypot, setHoneypot] = useState("");
+  const [captchaToken, setCaptchaToken] = useState(null);
+  const [formError, setFormError] = useState("");
 
   const fmt = useCallback((n) => formatCurrency(n, profile?.currency), [profile?.currency]);
   const updateFormField = (key) => (e) => setForm((prev) => ({ ...prev, [key]: e.target.value }));
@@ -620,14 +626,31 @@ export default function PublicBookingPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setFormError("");
     if (isOwner) return; // On ne prend pas de rdv avec soi-même.
+    if (isBotSubmission(honeypot)) return; // Bot détecté, rejet silencieux.
     if (!form.customer_name || !form.customer_email) return;
     if (!selDate || !selTime) {
       alert("Please select a date and time");
       return;
     }
+    if (!captchaToken) {
+      setFormError("Please complete the verification challenge.");
+      return;
+    }
 
     setSending(true);
+
+    const rateLimitMsg = await checkRateLimit("booking_request", {
+      identifier: form.customer_email.trim(),
+      turnstileToken: captchaToken,
+      honeypot,
+    });
+    if (rateLimitMsg) {
+      setSending(false);
+      setFormError(rateLimitMsg);
+      return;
+    }
 
     const selectedService = services.find((s) => s.id === selSvc);
     const payload = {
@@ -979,13 +1002,23 @@ export default function PublicBookingPage() {
               <ImageUpload value={clientImage} onChange={setClientImage} label="Attach photo or file (optional)" hint="Show us the problem or area to help the professional prepare." />
             </div>
 
+            <Honeypot value={honeypot} onChange={setHoneypot} />
+
+            <div style={{ marginBottom: 16 }}>
+              <Turnstile onVerify={setCaptchaToken} onExpire={() => setCaptchaToken(null)} />
+            </div>
+
+            {formError && (
+              <div style={{ fontSize: 13, color: "#dc2626", marginBottom: 16 }}>{formError}</div>
+            )}
+
             <div style={{ display: "flex", gap: 10 }}>
               <button type="button" onClick={() => setStep(2)} style={{ flex: 1, padding: "13px", borderRadius: THEME.radius.lg, border: `1px solid ${THEME.border}`, background: THEME.surface, fontWeight: 600, fontSize: 14, cursor: "pointer", fontFamily: "inherit" }}>
                 &larr; Back
               </button>
               <button
                 type="submit"
-                disabled={sending || isOwner}
+                disabled={sending || isOwner || !captchaToken}
                 title={isOwner ? "You can't book with yourself" : undefined}
                 style={{
                   flex: 2,
@@ -996,8 +1029,8 @@ export default function PublicBookingPage() {
                   color: "#fff",
                   fontWeight: 800,
                   fontSize: 15,
-                  cursor: sending || isOwner ? "not-allowed" : "pointer",
-                  opacity: sending || isOwner ? 0.5 : 1,
+                  cursor: sending || isOwner || !captchaToken ? "not-allowed" : "pointer",
+                  opacity: sending || isOwner || !captchaToken ? 0.5 : 1,
                   fontFamily: "inherit",
                 }}
               >

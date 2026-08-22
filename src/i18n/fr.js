@@ -138,6 +138,18 @@ export default {
     },
     signUpTitle: "Créer un compte gratuit",
   signInTitle: "Se connecter à Vimen",
+  categories: {
+    trades:    { label: "Artisanat & BTP",              examples: "Électricien, plombier, maçon…" },
+    beauty:    { label: "Beauté & bien-être",            examples: "Coiffeur, prothésiste ongulaire, spa…" },
+    food:      { label: "Restauration & hôtellerie",     examples: "Boulanger, chef, traiteur…" },
+    health:    { label: "Santé & soins",                 examples: "Kiné, infirmier, psychologue…" },
+    legal:     { label: "Juridique & finance",           examples: "Avocat, comptable, notaire…" },
+    education: { label: "Éducation & coaching",          examples: "Prof particulier, coach, formateur…" },
+    creative:  { label: "Créatif & design",               examples: "Photographe, designer…" },
+    tech:      { label: "Tech & informatique",            examples: "Développeur, consultant IT…" },
+    events:    { label: "Événementiel",                   examples: "DJ, décorateur, organisateur…" },
+    home:      { label: "Maison & jardin",                examples: "Femme de ménage, jardinier, bricoleur…" },
+  },
   verify: {
     title: "Vérifiez vos e-mails",
     subtitle: "Nous avons envoyé un code à 6 chiffres à",
@@ -183,1281 +195,16 @@ export default {
   },
 
   // ── Navigation ───────────────────────────────────────
-  nav: {
-    dashboard:      "Tableau de bord",
-    jobs:           "Missions",
-    quotes:         "Devis",
-    clients:        "Clients",
-    invoices:       "Factures",
-    booking:        "Réservations",
-    payments:       "Vimen Pay",
-    marketplace:    "Marketplace",
-    reviews:        "Avis",
-    referrals:      "Parrainage",
-    certifications: "Certifications",
-    settings:       "Paramètres",
-    more:           "Plus",
-    // Section labels
-    core:           "Essentiel",
-    revenue:        "Revenus",
-    growthSection:  "Croissance",
-    account:        "Compte",
-    tagline:        "Réservation et facturation pour tous les métiers",
-  },
-
   // ── Dashboard ────────────────────────────────────────
-  dashboard: {
-    earned:           "Encaissé",
-    upcoming:         "{{jobs}} à venir",
-    clients:          "Clients",
-    thisMonth:        "Ce mois-ci",
-    unpaid:           "{{count}} impayée(s)",
-    total:            "Total",
-    bookingLive:      "Votre page de réservation est en ligne",
-    noUpcoming:       "Aucune {{jobs}} à venir",
-    noActivity:       "Aucun travail terminé pour l'instant",
-  greeting: "Bonjour, {{name}}",
-  thereFallback: "cher artisan",
-  newJob: "Nouveau job",
-  earnedThisMonth: "Gagné ce mois-ci",
-  invoicesCount: "{{count}} factures",
-  outstanding: "En attente",
-  unpaidCount: "{{count}} impayées",
-  upcomingJobs: "Jobs à venir",
-  scheduled: "Programmés",
-  totalClients: "Total clients",
-  inYourCrm: "Dans votre CRM",
-  newBookingRequests: "{{count}} nouvelle{{plural}} demande{{plural}} de réservation",
-  review: "Examiner",
-  viewAll: "Tout voir",
-  upcomingJobsTitle: "Mission à venir",
-  noUpcomingJobs: "Aucun job à venir",
-  addOne: "en ajouter un",
-  invoicesLink: "Factures",
-  recentActivity: "Activité récente",
-  noCompletedJobs: "Aucune mission terminé pour le moment",
-  noInvoice: "aucune facture",
-  bookingPageLive: "Votre page de réservation est en ligne",
-  copyLink: "Copier le lien",
-  linkCopied: "Lien copié !",
-  copyFailedManual: "Impossible de copier automatiquement. Veuillez sélectionner et copier le lien ci-dessus manuellement.",
-  viewPage: "Voir la page",
-  },
-
-  jobs: {
-    title:        "Missions",
-    new:          "Nouvelle mission",
-    scheduled:    "Planifiées ({{count}})",
-    completed:    "Terminées ({{count}})",
-    markDone:     "Marquer terminée",
-    noUpcoming:   "Aucune mission à venir",
-    noCompleted:  "Aucune mission terminée",
-    addFirst:     "Ajouter la première mission",
-    client:       "Client",
-    date:         "Date",
-    time:         "Heure",
-    duration:     "Durée (heures)",
-    amount:       "Montant (€)",
-    notes:        "Notes",
-    status: {
-      scheduled:  "Planifiée",
-      completed:  "Terminée",
-      cancelled:  "Annulée",
-    },
-    titleLabel:       "titre",
-    selectClient:     "Sélectionner un client…",
-    startTime:        "Heure de début",
-    durationShort:    "Heures",
-    amountShort:      "Montant",
-    notesPlaceholder: "Détails…",
-    deleteWarning:    "Cette action est irréversible.",
-    errorRequired:    "Client, titre et date sont obligatoires",
-    errorAdd:         "Échec de l'ajout",
-    errorUpdate:      "Échec de la mise à jour",
-    errorComplete:    "Échec de la complétion",
-    errorDelete:      "Échec de la suppression",
-    successAdd:       "Mission ajoutée",
-    successUpdate:    "Mission mise à jour",
-    successComplete:  "Marquée comme terminée",
-    successDelete:    "Mission supprimée",
-
-  },
-
-  marketplace: {
-    title: "Place de marché",
-    myListingsBtn: "Mes annonces",
-    browseBtn: "Parcourir",
-    postListingBtn: "+ Publier une annonce",
-    loading: "Chargement de la place de marché…",
-    searchPlaceholder: "Rechercher des annonces…",
-    allProfessions: "Tous les métiers",
-    urgentOnly: "Urgent uniquement",
-    urgent: "Urgent",
-    close: "Clôturer",
-
-    listingCount: "{{count}} annonce(s)",
-    viewsCount: "{{count}} vue(s)",
-    yourListings: "Vos annonces ({{count}})",
-    fromDate: "À partir du {{date}}",
-    photoAlt: "photo",
-
-    types: {
-      all: "Toutes les annonces",
-      demand: "Demandes",
-      sale: "Fonds de commerce",
-      recruitment: "Recrutement",
-      materials: "Matériel",
-    },
-
-    typeLabels: {
-      demand: "Demande",
-      sale: "À vendre",
-      recruitment: "Recrute",
-      materials: "Matériel",
-    },
-
-    status: {
-      active: "active",
-      closed: "clôturée",
-    },
-
-    time: {
-      today: "Aujourd'hui",
-      yesterday: "Hier",
-      daysAgo: "Il y a {{count}} jour(s)",
-      weeksAgo: "Il y a {{count}} semaine(s)",
-    },
-
-    stats: {
-      activeDemands: "Demandes actives",
-      businessesForSale: "Fonds de commerce à vendre",
-      recruitmentPosts: "Offres de recrutement",
-      materialsForSale: "Matériel à vendre",
-    },
-
-    emptyBrowse: "Aucune annonce ne correspond à vos filtres",
-    postFirstOne: "+ Publier la première",
-    emptyMine: "Vous n'avez encore rien publié",
-    postFirstListing: "+ Publier une première annonce",
-
-    deleteConfirm: {
-      title: "Supprimer l'annonce ?",
-      message: "Cette annonce sera définitivement supprimée.",
-      confirmLabel: "Supprimer",
-    },
-
-    card: {
-      budgetSuffixDemand: "budget",
-      budgetSuffixSale: "prix demandé",
-      revenueShort: "CA",
-    },
-
-    detail: {
-      contact: "Contact",
-      interestedBtn: "Je suis intéressé(e), me contacter",
-      call: "Appeler",
-      thisIsYourListing: "Ceci est votre annonce.",
-      fields: {
-        budget: "Budget",
-        startDate: "Date de début",
-        businessType: "Type d'activité",
-        askingPrice: "Prix demandé",
-        annualRevenue: "Chiffre d'affaires annuel",
-        employees: "Employés",
-        contract: "Contrat",
-        salaryRate: "Salaire / taux",
-        experience: "Expérience",
-        category: "Catégorie",
-        condition: "État",
-        price: "Prix",
-        quantity: "Quantité",
-      },
-    },
-
-    toast: {
-      listingClosed: "Annonce clôturée",
-      listingDeleted: "Annonce supprimée",
-      listingPosted: "Annonce publiée",
-      interestSent: "Intérêt envoyé ! L'auteur de l'annonce vous contactera.",
-      requiredTitleDescLocation: "Le titre, la description et la localisation sont obligatoires",
-      requiredContact: "Le nom et l'email de contact sont obligatoires",
-      failedPost: "Échec de la publication de l'annonce",
-      failedInterest: "Échec de l'envoi, réessayez",
-      requiredNameEmail: "Nom et email obligatoires",
-    },
-
-    post: {
-      modalTitle: "Publier une annonce",
-      step1Prompt: "Quel type d'annonce souhaitez-vous publier ?",
-      typeCards: {
-        demand: { label: "Demande", desc: "Vous cherchez un artisan ou un service" },
-        sale: { label: "À vendre", desc: "Vente d'une entreprise ou d'un fonds de commerce" },
-        recruitment: { label: "Recrutement", desc: "Recrutement de salariés ou sous-traitants" },
-        materials: { label: "Matériel", desc: "Vendre du matériel ou des outils entre particuliers" },
-      },
-      next: "Suivant",
-      back: "Retour",
-      step2Of3: "Étape 2 sur 3 : détails de l'annonce",
-      step3Of3: "Étape 3 sur 3 : vos coordonnées (visibles par les personnes intéressées)",
-      markUrgent: "Marquer comme urgent",
-      postBtn: "Publier l'annonce",
-      posting: "Publication…",
-
-      fields: {
-        titleLabel: "Titre *",
-        titlePlaceholders: {
-          demand: "ex. Recherche électricien à Rouen pour rénovation complète",
-          sale: "ex. Entreprise d'électricité à vendre, Normandie, CA 200k+",
-          recruitment: "ex. Recherche plombier qualifié, région de Rouen, sous-traitance",
-          materials: "ex. Câble twin & earth 100m neuf, non utilisé",
-        },
-        descriptionLabel: "Description *",
-        descriptionPlaceholder: "Décrivez le travail, ce que vous vendez, ou ce que vous recherchez…",
-        professionLabel: "Métier / Secteur",
-        locationLabel: "Localisation *",
-        locationPlaceholder: "ex. Rouen (76), Normandie",
-        budgetLabel: "Budget (£)",
-        startDateLabel: "Date de début souhaitée",
-        businessTypeLabel: "Type d'activité",
-        businessTypePlaceholder: "ex. Entreprise d'électricité",
-        askingPriceLabel: "Prix demandé (£)",
-        annualRevenueLabel: "Chiffre d'affaires annuel (£)",
-        employeesLabel: "Nombre d'employés",
-        contractTypeLabel: "Type de contrat",
-        salaryRangeLabel: "Salaire / taux journalier",
-        salaryRangePlaceholder: "ex. 200-250£/jour ou 35k-40k£",
-        experienceLabel: "Expérience requise",
-        experiencePlaceholder: "ex. 2 ans minimum, habilitation requise",
-        categoryLabel: "Catégorie",
-        conditionLabel: "État",
-        priceLabel: "Prix (£) *",
-        quantityLabel: "Quantité",
-        photosLabel: "Photos (facultatif, jusqu'à 3)",
-        photoUploadHint: "Déposez une photo ou touchez pour envoyer",
-        photoUploadHintOptional: "Ajouter une autre photo (facultatif)",
-        photoUploading: "Envoi en cours…",
-        photoUploadFailed: "Échec de l'envoi, veuillez réessayer",
-      },
-
-      contact: {
-        yourName: "Votre nom *",
-        email: "Email *",
-        phone: "Téléphone",
-        phonePlaceholder: "+33 6 12 34 56 78",
-        preferredMethod: "Moyen de contact préféré",
-        methodOptions: {
-          both: "Email + Téléphone",
-          email: "Email uniquement",
-          phone: "Téléphone uniquement",
-        },
-        privacyNote: "Votre annonce sera visible par tous les utilisateurs de la place de marché. Votre email ne sera pas affiché publiquement, les personnes intéressées vous enverront d'abord un message.",
-      },
-    },
-
-    interest: {
-      modalTitle: "Manifester son intérêt",
-      yourName: "Votre nom *",
-      email: "Email *",
-      phone: "Téléphone",
-      message: "Message",
-      messagePlaceholder: "Présentez-vous brièvement et indiquez vos disponibilités…",
-      sendBtn: "Envoyer",
-    },
-
-    contractTypes: {
-      Subcontracting: "Sous-traitance",
-      CDI: "CDI",
-      CDD: "CDD",
-      Interim: "Intérim",
-      Apprenticeship: "Apprentissage",
-      Other: "Autre",
-    },
-
-    materialCategories: {
-      Electrical: "Électricité",
-      Plumbing: "Plomberie",
-      General: "Général",
-      Safety: "Sécurité",
-      Tools: "Outils",
-      Other: "Autre",
-    },
-
-    materialConditions: {
-      new: "Neuf",
-      likeNew: "Comme neuf",
-      used: "Occasion",
-      forParts: "Pour pièces",
-    },
-  },
-
   // ── Quotes ───────────────────────────────────────────
-  quotes: {
-    title:          "Devis",
-    new:            "Nouveau devis",
-    totalQuoted:    "Total devisé",
-    accepted:       "Accepté",
-    conversion:     "Taux de conversion",
-    active:         "Actifs ({{count}})",
-    archived:       "Archivés ({{count}})",
-    noQuotes:       "Aucun devis pour l'instant",
-    create:         "Créer le devis",
-    sign:           "Signer",
-    convertToJob:   "Convertir en mission",
-    client:         "Client",
-    title_:         "Titre du devis",
-    validUntil:     "Valable jusqu'au",
-    addLine:        "Ajouter une ligne",
-    notes:          "Notes pour le client",
-    margin:         "Marge estimée",
-    subtotal:       "Sous-total",
-    vatRate:        "TVA",
-    total:          "Total",
-    labour:         "Main d'œuvre",
-    material:       "Matériau",
-    other:          "Autre",
-    signTitle:      "Signature électronique du client",
-    signSub:        "En saisissant son nom, le client confirme qu'il accepte ce devis.",
-    signCta:        "Signer et accepter le devis",
-    status: {
-      draft:      "Brouillon",
-      sent:       "Envoyé",
-      viewed:     "Consulté",
-      accepted:   "Accepté",
-      declined:   "Refusé",
-      converted:  "Converti",
-    },
-
-    newQuoteBtn: "Nouveau devis",
-
-    modal: {
-      newTitle: "Nouveau devis",
-      editTitle: "Modifier le devis",
-    },
-
-    fields: {
-      client: "Client",
-      validUntil: "Valable jusqu'au",
-      quoteTitle: "Titre du devis",
-      quoteTitlePlaceholder: "ex. Remplacement tableau électrique + borne de recharge",
-      notesForClient: "Notes pour le client",
-      notesPlaceholder: "Conditions de paiement, exclusions, conditions…",
-    },
-
-    lineItems: {
-      label: "Lignes du devis",
-      addLine: "+ Ajouter une ligne",
-      headers: {
-        description: "Description",
-        type: "Type",
-        qtyPrice: "Qté × Prix",
-        total: "Total",
-      },
-      descriptionPlaceholder: "Description",
-      qtyPlaceholder: "Qté",
-      unitPricePlaceholder: "£/unité",
-    },
-
-    lineTypes: {
-      labour: "main-d'œuvre",
-      material: "matériel",
-      other: "autre",
-    },
-
-    totals: {
-      subtotal: "Sous-total",
-      vat: "TVA",
-      total: "Total",
-      estMargin: "Marge estimée :",
-    },
-
-    actions: {
-      createQuote: "Créer le devis",
-      saveChanges: "Enregistrer les modifications",
-    },
-
-    toast: {
-      titleClientRequired: "Le titre et le client sont obligatoires",
-      quoteCreated: "Devis créé",
-      quoteUpdated: "Devis mis à jour",
-      markedAsSent: "Devis marqué comme envoyé",
-      enterClientName: "Merci de saisir le nom du client",
-      quoteSignedBy: "Devis signé par {{name}}",
-      convertedToJob: "Devis converti en mission",
-      quoteDeleted: "Devis supprimé",
-    },
-
-    preview: {
-      markAsSent: "Marquer comme envoyé",
-      clientSign: "Signature client",
-      convertToJob: "Convertir en mission",
-      signature: {
-        title: "Signature du client",
-        fullNameLabel: "Nom complet du client",
-        confirmText: "En saisissant son nom, le client confirme avoir lu et accepté ce devis.",
-        signBtn: "Signer et accepter le devis",
-      },
-      issued: "Émis le : {{date}}",
-      validUntil: "Valable jusqu'au : {{date}}",
-      preparedFor: "Préparé pour",
-      table: {
-        description: "Description",
-        type: "Type",
-        qty: "Qté",
-        unit: "Unité",
-        total: "Total",
-      },
-      vatLine: "TVA ({{rate}} %)",
-      acceptedBy: "Accepté par {{name}} le {{date}}",
-    },
-
-    deleteConfirm: {
-      title: "Supprimer le devis ?",
-      message: "Cette action est irréversible.",
-    },
-
-    stats: {
-      totalQuotedValue: "Valeur totale devisée",
-      quotesCount: "{{count}} devis",
-      acceptedValue: "Valeur acceptée",
-      won: "Gagné",
-      pending: "En attente",
-      awaitingResponse: "En attente de réponse",
-      conversionRate: "Taux de conversion",
-      acceptedOverTotal: "Acceptés / total",
-    },
-
-    tabs: {
-      active: "Actifs",
-      archived: "Archivés",
-    },
-
-    empty: "Aucun devis pour l'instant",
-    createFirst: "+ Créer le premier devis",
-
-    table: {
-      headers: {
-        quoteNumber: "N° devis",
-        client: "Client",
-        title: "Titre",
-        total: "Total",
-        margin: "Marge",
-        status: "Statut",
-      },
-    },
-
-    row: {
-      view: "Voir",
-      edit: "Modifier",
-      toJob: "Mission",
-    },
-  },
-
   // ── Invoices ─────────────────────────────────────────
-  invoices: {
-    title:        "Factures",
-    new:          "+ Nouvelle",
-    paid:         "Payées",
-    outstanding:  "En attente",
-    all:          "Toutes",
-    unpaid:       "Impayées",
-    overdue:      "En retard",
-    markPaid:     "Marquer payée",
-    email:        "Envoyer par e-mail",
-    paymentLink:  "Lien de paiement",
-
-    noInvoices:   "Aucune facture pour l'instant",
-    amount:       "Montant (€)",
-    dueDate:      "Date d'échéance",
-    linkedJob:    "Mission liée (facultatif)",
-    creating:     "Création…",
-    status: {
-      paid:     "Payée",
-      unpaid:   "Impayée",
-      overdue:  "En retard",
-    },
-
-    newInvoice: "Nouvelle facture",
-    createInvoiceTitle: "Créer une facture",
-    clientLabel: "Client",
-    selectClient: "Sélectionner un client…",
-    linkedJobLabel: "Job associé (optionnel)",
-    noneOption: "Aucun",
-    amountLabel: "Montant (£)",
-    dueDateLabel: "Date d'échéance",
-    selectClientAndAmount: "Sélectionnez un client et saisissez un montant",
-    createFailed: "Échec de la création de la facture",
-    createdToast: "Facture créée",
-    markPaidFailed: "Échec du marquage comme payée",
-    markedPaidToast: "Facture marquée comme payée",
-    noClientEmail: "Ce client n'a pas d'adresse email",
-    emailedToast: "Facture envoyée par email à {{email}}",
-    emailFailedToast: "Échec de l'envoi : {{error}}",
-    paymentLinkFailed: "Échec de la création du lien de paiement",
-    paymentLinkCreated: "Lien de paiement créé",
-    deleteFailed: "Échec de la suppression de la facture",
-    deletedToast: "Facture supprimée",
-    sending: "Envoi…",
-    sendEmail: "Envoyer par email",
-    createPaymentLink: "Créer un lien de paiement",
-    openPaymentLink: "Ouvrir le lien de paiement",
-    markAsPaid: "Marquer comme payée",
-    issuedLabel: "Émise le :",
-    dueLabel: "Échéance :",
-    billTo: "Facturé à",
-    descriptionCol: "Description",
-    amountCol: "Montant",
-    servicesRendered: "Prestations effectuées",
-    totalDue: "Total dû",
-    payOnline: "Payer en ligne :",
-    bankLabel: "Banque :",
-    sortCodeLabel: "Code guichet :",
-    accountLabel: "Compte :",
-    referenceLabel: "Référence :",
-    bankTransferTitle: "Ou payer par virement bancaire",
-    copyBankDetails: "Copier les coordonnées bancaires",
-    bankDetailsCopied: "Coordonnées bancaires copiées",
-    copyFailedManual: "Impossible de copier, copiez manuellement",
-    defaultPaymentTerms: "14 jours",
-    deleteConfirmTitle: "Supprimer cette facture ?",
-    deleteConfirmMessage: "Cette action est irréversible.",
-    totalPaid: "Total encaissé",
-    invoicesCount: "{{count}} factures",
-    outstandingLabel: "En attente",
-    unpaidCount: "{{count}} impayées",
-    totalInvoiced: "Total facturé",
-    allTime: "Depuis le début",
-    tabAll: "Toutes",
-    tabUnpaid: "Impayées",
-    tabPaid: "Payées",
-    loading: "Chargement des factures…",
-    noneYet: "Aucune facture pour le moment",
-    createFirst: "Créer la première facture",
-    colInvoice: "Facture",
-    colClient: "Client",
-    colIssued: "Émise",
-    colDue: "Échéance",
-    colAmount: "Montant",
-    colStatus: "Statut",
-    viewButton: "Voir",
-    paidButton: "Payée",
-  },
-
   // ── Clients ──────────────────────────────────────────
-  clients: {
-    title:      "Clients",
-    new:        "+ Nouveau client",
-    noClients:  "Aucun client pour l'instant",
-    name:       "Nom complet",
-    email:      "E-mail",
-    phone:      "Téléphone",
-    address:    "Adresse",
-    notes:      "Notes",
-    jobs:       "{{count}} mission(s)",
-    invoices:   "{{count}} facture(s)",
-    addClient: "Ajouter un client",
-    editClient: "Modifier le client",
-    fullNameCompany: "Nom complet / Entreprise",
-    emailLabel: "Email",
-    phoneLabel: "Téléphone",
-    addressLabel: "Adresse",
-    notesLabel: "Notes",
-    nameRequired: "Le nom est requis",
-    addFailed: "Échec de l'ajout du client",
-    addedToast: "Client ajouté",
-    updateFailed: "Échec de la mise à jour du client",
-    updatedToast: "Client mis à jour",
-    deleteFailed: "Échec de la suppression du client",
-    deletedToast: "Client supprimé",
-    deleteConfirmTitle: "Supprimer ce client ?",
-    deleteConfirmMessage: "La fiche client sera supprimée. Les jobs et factures resteront conservés.",
-    deleteClientButton: "Supprimer le client",
-    searchPlaceholder: "Rechercher des clients…",
-    loading: "Chargement des clients…",
-    noneYet: "Aucun client pour le moment",
-    addFirst: "Ajouter le premier client",
-    colClient: "Client",
-    colContact: "Contact",
-    colJobs: "Jobs",
-    colRevenue: "Revenus",
-    jobsAndEarned: "{{count}} jobs · {{earned}} gagnés",
-    jobHistory: "Historique des jobs",
-    noJobsYet: "Aucun job pour le moment",
-    invoicesTitle: "Factures",
-    noInvoicesYet: "Aucune facture pour le moment",
-    title: "Clients",
-    addClient: "Nouveau client",
-    searchPlaceholder: "Rechercher un client...",
-    noSearchResults: "Aucun client ne correspond à votre recherche.",
-    noClientsYet: "Aucun client enregistré pour l'instant.",
-    addFirstClient: "Ajouter votre premier client",
-    columnClient: "Client",
-    columnContact: "Contact",
-    columnAddress: "Adresse",
-    columnActions: "Actions",
-    addedOn: "Ajouté le {{date}}",
-    totalSpent: "Total dépensé : {{amount}}",
-    labelEmail: "E-mail",
-    labelPhone: "Téléphone",
-    labelAddress: "Adresse",
-    labelNotes: "Notes",
-    labelName: "Nom complet / Raison sociale",
-    jobsTitle: "Projets ({{count}})",
-    noJobsYet: "Aucun projet associé à ce client.",
-    invoicesTitle: "Factures",
-    noInvoicesYet: "Aucune facture transmise à ce client.",
-    addClientTitle: "Ajouter un client",
-    editClientTitle: "Modifier le client",
-    placeholderName: "ex. Claire Dupont",
-    placeholderEmail: "ex. claire@example.com",
-    placeholderPhone: "ex. 06 12 34 56 78",
-    placeholderAddress: "ex. 12 rue de la Paix, Paris",
-    placeholderNotes: "Code d'accès, consignes particulières...",
-    createClientButton: "Créer le client",
-    deleteConfirmTitle: "Supprimer le client",
-    deleteConfirmMessage: "Êtes-vous sûr de vouloir supprimer {{name}} ? Les projets et factures associés ne seront pas supprimés.",
-    nameRequired: "Veuillez saisir un nom de client.",
-    invalidEmail: "Veuillez saisir une adresse e-mail valide.",
-    updatedToast: "Client mis à jour avec succès",
-    createdToast: "Client créé avec succès",
-    deletedToast: "Client supprimé",
-    updateFailed: "Échec de la mise à jour du client",
-    createFailed: "Échec de la création du client",
-    deleteFailed: "Échec de la suppression du client",
-  },
-
   // ── Booking ──────────────────────────────────────────
-  booking: {
-    title:          "Réservations",
-    requests:       "Demandes",
-    preview:        "Aperçu",
-    pageSettings:   "Paramètres de la page",
-    sharePage:      "Partager la page",
-    pageLive:       "Votre page de réservation est en ligne",
-    newRequests:    "En attente ({{count}})",
-    accepted:       "Acceptées ({{count}})",
-    declined:       "Refusées ({{count}})",
-    noRequests:     "Aucune demande de réservation pour l'instant. Partagez votre page pour en recevoir.",
-    accept:         "Accepter",
-    decline:        "Refuser",
-    received:       "Reçue le {{date}}",
-    openPreview:    "Voir ma page en ligne",
-    opening:        "Ouverture…",
-    previewSub:     "Ceci ouvre votre vraie page de réservation, exactement ce que voient vos clients quand ils cliquent sur votre lien.",
-    slugLabel:      "Identifiant de votre page de réservation",
-    bioLabel:       "Présentation (visible par les clients)",
-    rateLabel:      "Tarif horaire (€)",
-    saveSettings:   "Enregistrer les paramètres",
-    fullyQualified: "Qualifié et certifié",
-    registered:     "Professionnel agréé",
-    qualifiedInsured:"Qualifiée et assurée",
-    noPayment:      "Sans engagement · Devis gratuit",
-    noPaymentProf:  "Sans engagement · Confidentiel",
-    noPaymentBeauty:"Sans engagement · Confirmation par message",
-    sendConsult:    "Envoyer la demande",
-    requestTitle:   "Demander un rendez-vous",
-    whichService:   "Quelle prestation ?",
-    regarding:      "Quel est l'objet de votre demande ?",
-    whatNeeded:     "De quoi avez-vous besoin ?",
-    preferredDate:  "Date souhaitée",
-    yourName:       "Votre nom",
-    requestSent:    "Demande envoyée !",
-    bookAnother:    "Faire une autre demande",
-    "copied": "Copié !",
-
-    loadingRequests: "Chargement des demandes…",
-    reviewsLabel: "avis",
-    responseLabel: "Réponse",
-    servicesTitle: "Prestations",
-    gdprCompliant: "Traitement des données clients conforme RGPD",
-    insuredVia: "Assuré(e) via",
-    vatRegistered: "Assujetti(e) à la TVA",
-    requestTitleTrades: "Demander une réservation",
-    requestTitleBeauty: "Demander un rendez-vous",
-    requestTitleProfessional: "Demander une consultation",
-    emailLabel: "Email",
-    phoneLabel: "Téléphone",
-    sendRequestGeneric: "Envoyer la demande de réservation",
-    sendRequestProfessional: "Envoyer la demande",
-    requestSentTitle: "Demande envoyée !",
-    requestSentSub: "{{name}} confirmera sous peu.",
-    urlSectionTitle: "URL de votre page de réservation",
-    copyLink: "Copier",
-    linkCopied: "Lien copié !",
-    copyFailedManual: "Impossible de copier automatiquement. Veuillez sélectionner et copier le lien ci-dessus manuellement.",
-    shareHint: "Partage ce lien où tu veux : dans ta bio Instagram, ton statut WhatsApp, sur ton véhicule, ou ton site. Les clients remplissent un formulaire de demande, et tu acceptes ou refuses depuis l'onglet Demandes ci-dessus.",
-    updateFailed: "Échec de la mise à jour de la réservation",
-    acceptedToast: "Réservation acceptée",
-    declinedToast: "Réservation refusée",
-    nameAndDateRequired: "Le nom et la date souhaitée sont requis",
-    submitFailed: "Échec de l'envoi de la demande",
-    submittedToast: "Demande de réservation envoyée !",
-    preferredDateLabel: "Date souhaitée :",
-    receivedLabel: "Reçue le",
-    status: {
-      pending: "en attente",
-      accepted: "acceptée",
-      declined: "refusée",
-    },
-    services: {
-      title: "Prestations",
-      subtitle: "Ajoutez les prestations que vous proposez, avec photos, prix et durées. Elles seront affichées aux visiteurs sur votre page de réservation publique.",
-      addService: "Ajouter une prestation",
-      editService: "Modifier la prestation",
-      loading: "Chargement des prestations…",
-      noneYet: "Aucune prestation ajoutée pour le moment",
-      addFirst: "Ajouter votre première prestation",
-      nameAndPriceRequired: "Le nom et le prix sont requis",
-      addFailed: "Échec de l'ajout de la prestation",
-      addedToast: "Prestation ajoutée",
-      updateFailed: "Échec de la mise à jour de la prestation",
-      updatedToast: "Prestation mise à jour",
-      deleteFailed: "Échec de la suppression de la prestation",
-      deletedToast: "Prestation supprimée",
-      reorderFailed: "Échec du réordonnancement des prestations",
-      minutesShort: "min",
-      hiddenLabel: "masquée",
-      nameLabel: "Nom de la prestation",
-      namePlaceholder: "ex. Coupe & couleur complète",
-      priceLabel: "Prix (£)",
-      durationLabel: "Durée (min)",
-      descriptionLabel: "Description",
-      descriptionPlaceholder: "Une courte description visible par les clients…",
-      photoLabel: "Photo",
-      uploadHint: "Déposez une image ou touchez pour envoyer",
-      uploading: "Envoi en cours…",
-      uploadFailed: "Échec de l'envoi. Veuillez réessayer",
-      deleteConfirmTitle: "Supprimer cette prestation ?",
-      deleteConfirmMessage: "Elle ne sera plus affichée sur votre page de réservation publique.",
-    },
-    availabilityTitle: "Disponibilités",
-    availabilitySub: "Définissez vos horaires de travail. Les clients ne verront que les créneaux des jours activés.",
-    availabilitySaved: "Disponibilités enregistrées avec succès",
-    availabilitySaveFailed: "Échec de l'enregistrement des disponibilités",
-    saveAvailability: "Enregistrer les disponibilités",
-    to: "à",
-    unavailable: "Indisponible",
-    reviewsCountLabel: "{{count}} avis",
-  },
-
   // ── Payments ─────────────────────────────────────────
-  payments: {
-    title:          "Vimen Pay",
-    payouts:        "Virements",
-    totalVolume:    "Volume total",
-    yourEarnings:   "Vos gains",
-    balance:        "Solde",
-    inTransit:      "En transit",
-    totalPaidOut:   "Total viré",
-    recentPayments: "Paiements récents",
-    noPayments:     "Aucun paiement pour l'instant",
-    feeTitle:       "Détail des frais : exemple 550 €",
-    invoiceAmount:  "Montant de la facture",
-    stripeFee:      "Frais Stripe (1,4 %+0,25 €)",
-    VimenFee:      "Vimen Pay (2 %)",
-    youReceive:     "Vous recevez",
-    connected:      "Vimen Pay actif",
-    autoPayouts:    "Virements automatiques",
-    autoPayoutsSub: "Vos gains sont virés automatiquement tous les 2 jours ouvrés sur votre compte bancaire.",
-    noPayouts:      "Aucun virement pour l'instant",
-    stripeConnect:  "Stripe Connect",
-    stripeConnectSub:"Recevez des paiements par carte sur vos factures",
-    openStripe:     "Ouvrir le tableau de bord Stripe",
-    feeStructure:   "Structure des frais",
-
-    tabs: {
-      overview: "Aperçu",
-      transactions: "Transactions ({{count}})",
-      payouts: "Versements",
-      account: "Compte",
-    },
-
-    status: {
-      completed: "terminé",
-      pending: "en attente",
-      processing: "en cours",
-      failed: "échoué",
-      refunded: "remboursé",
-      paid: "versé",
-      in_transit: "en transit",
-      connected: "Connecté",
-      active: "Actif",
-      notConnected: "Non connecté",
-    },
-
-    overview: {
-      notConnectedTitle: "Connectez votre compte Stripe pour accepter les paiements",
-      notConnectedDesc: "Les clients ne peuvent pas payer leurs factures en ligne tant que Stripe n'est pas connecté.",
-      connectStripeBtn: "Connecter Stripe",
-      connectedBanner: "Vimen Pay actif. Les clients peuvent payer leurs factures en ligne instantanément",
-      viewAll: "Tout voir",
-      recentPayments: "Paiements récents",
-      emptyPayments: "Aucun paiement pour l'instant. Envoyez des factures avec des liens de paiement",
-      ofGrossAmount: "sur {{amount}}",
-    },
-
-    metrics: {
-      totalVolume: "Volume total traité",
-      paymentsCount: "{{count}} paiement(s)",
-      yourEarnings: "Vos gains (après frais)",
-      ofGross: "{{pct}} du montant brut",
-      thisMonth: "Ce mois-ci",
-      availableBalance: "Solde disponible",
-      readyToPayOut: "Prêt à être versé",
-      inTransitToBank: "En transit vers la banque",
-      arrivingSoon: "Arrivée prochaine",
-      totalPaidOut: "Total versé",
-      payoutsCount: "{{count}} versement(s)",
-    },
-
-    feeInfo: {
-      title: "Comment fonctionnent les frais Vimen Pay",
-      intro: "Lorsqu'un client paie une facture en ligne, deux frais sont déduits avant que l'argent n'arrive sur votre compte :",
-      stripeLabel: "Stripe (1,4 % + 20p)",
-      stripeDesc: "Les frais de traitement des cartes, taux standard au Royaume-Uni.",
-      VimenLabel: "Vimen Pay (2 %)",
-      VimenDesc: "Ce qui permet de faire fonctionner et d'améliorer l'application.",
-    },
-
-    feeBreakdown: {
-      invoiceAmount: "Montant de la facture",
-      stripeFeeLine: "Frais Stripe (1,4 % + 20p)",
-      platformFeeLine: "Frais Vimen Pay (2 %)",
-      youReceive: "Vous recevez",
-    },
-
-    potential: {
-      title: "Votre potentiel de gains",
-      rowLabel: "Si vous traitez {{amount}}/an",
-      netSuffix: "net",
-      footnote: "Net après les frais Stripe (1,4 %+20p) et Vimen Pay (2 %).",
-    },
-
-    transactions: {
-      grossVolume: "Volume brut",
-      stripeFeesPaid: "Frais Stripe payés",
-      VimenPayFees: "Frais Vimen Pay",
-      netToYou: "Net pour vous",
-      empty: "Aucune transaction pour l'instant",
-    },
-
-    table: {
-      date: "Date",
-      client: "Client",
-      description: "Description",
-      gross: "Brut",
-      stripeFee: "Frais Stripe",
-      VimenFee: "Frais Vimen",
-      youReceive: "Vous recevez",
-      status: "Statut",
-      dateInitiated: "Date d'initiation",
-      arrivalDate: "Date d'arrivée",
-      amount: "Montant",
-      transactions: "Transactions",
-      bank: "Banque",
-    },
-
-    payoutsTab: {
-      availableForPayout: "Disponible pour versement",
-      estimated: "Estimé",
-      inTransit: "En transit",
-      expectedWithin2Days: "Attendu sous 2 jours",
-      totalPaidOut: "Total versé",
-      empty: "Aucun versement pour l'instant. Ils apparaîtront ici dès votre premier paiement traité",
-    },
-
-    payoutSchedule: {
-      title: "Versements automatiques",
-      // Affiché comme : "{description} <strong>{bank_last4}</strong>."
-      description: "Vimen Pay verse automatiquement vos gains tous les 2 jours ouvrés sur votre compte bancaire connecté. Les paiements traités avant 17h arrivent 2 jours ouvrés plus tard. Compte bancaire se terminant par",
-    },
-
-    connect: {
-      stripeAccountTitle: "Compte Stripe",
-      stripeConnect: "Stripe Connect",
-      connectedDesc: "Connecté. Les paiements peuvent être reçus",
-      notConnectedDesc: "Non connecté. Les clients ne peuvent pas encore payer en ligne",
-      connectedBody: "Votre compte Stripe est connecté et vérifié. Les versements arrivent automatiquement sur votre compte bancaire lié.",
-      openDashboard: "Ouvrir le tableau de bord Stripe",
-      notConnectedBody: "Connectez votre compte Stripe pour commencer à accepter les paiements par carte sur vos factures. Cela prend 5 minutes. Vous aurez besoin de vos coordonnées bancaires et d'une pièce d'identité.",
-      redirectingToast: "Redirection vers l'inscription Stripe Connect…",
-      connectAccountBtn: "Connecter un compte Stripe",
-    },
-
-    howItWorks: {
-      title: "Comment fonctionne Vimen Pay",
-      step1: { title: "Vous créez une facture", desc: "Comme d'habitude, pour tout travail effectué." },
-      step2: { title: "Ajoutez un lien de paiement", desc: "Cliquez sur « Créer un lien de paiement » sur n'importe quelle facture. Cela prend 2 secondes." },
-      step3: { title: "Le client paie en ligne", desc: "Il clique sur le lien, saisit sa carte, et c'est terminé. Fonctionne sur tous les appareils." },
-      step4: { title: "Vous êtes payé", desc: "L'argent arrive sur votre compte bancaire sous 2 jours ouvrés, automatiquement." },
-    },
-
-    feeSummary: {
-      title: "Détail des frais",
-      rows: {
-        stripe: { label: "Traitement Stripe", fee: "1,4 % + 20p", note: "Taux standard au Royaume-Uni" },
-        VimenPay: { label: "Vimen Pay", fee: "2,0 %", note: "Permet de faire fonctionner la plateforme" },
-        total: { label: "Total déduit", fee: "~3,4 %", note: "Sur une facture de 500£, cela fait 17£ de frais" },
-      },
-      bankTransferNote: "Facture payée par virement bancaire ? Aucun frais. Seuls les paiements par carte passent par Vimen Pay.",
-    },
-  },
-
   // ── Reviews ──────────────────────────────────────────
-  reviews: {
-    title:          "Avis",
-    addManually:    "Ajouter",
-    request:        "Demander",
-    averageRating:  "{{rating}} de moyenne",
-    verified:       "Vérifié",
-    onGoogle:       "Sur Google",
-    pending:        "En attente",
-    noReviews:      "Aucun avis pour l'instant",
-    requestFirst:   "Demandez votre premier avis",
-    connectGoogle:  "Connecter Google Business",
-    connectSub:     "Permettez aux clients d'accéder directement à votre profil Google",
-    sendRequest:    "Envoyer la demande par SMS",
-    requestTitle:   "Demander un avis",
-    requestSub:     "Sélectionnez une mission terminée. Nous enverrons un SMS au client avec un lien direct vers votre page Google.",
-    addTitle:       "Ajouter un avis",
-    clientName:     "Nom du client",
-    rating:         "Note",
-    reviewTitle:    "Titre",
-    reviewBody:     "Avis",
-    whatSaid:       "Qu'a dit le client ?",
-    addReview:      "Ajouter l'avis",
-    pushGoogle:     "Inviter le client à poster sur Google",
-
-    addManuallyBtn: "+ Ajouter manuellement",
-    requestReviewBtn: "Demander un avis",
-
-    requestModal: {
-      title: "Demander un avis",
-      intro: "Sélectionnez une mission terminée. Nous enverrons un SMS au client lui demandant de laisser un avis, avec un lien direct vers votre profil Google.",
-      completedJobLabel: "Mission terminée",
-      selectJobPlaceholder: "Sélectionner une mission…",
-      smsPreviewTitle: "Aperçu du SMS",
-      smsTemplate: "\"Bonjour {{clientName}}, j'espère que vous êtes satisfait(e) du {{jobTitle}}. Auriez-vous 60 secondes pour nous laisser un avis Google ? Cela nous aide vraiment. Cliquez ici : {{urlPreview}}… De la part de {{profileName}}\"",
-      cancel: "Annuler",
-      sendSmsBtn: "Envoyer le SMS",
-    },
-
-    manualModal: {
-      title: "Ajouter un avis manuellement",
-      intro: "Pour les avis laissés directement par les clients (WhatsApp, email, oral) que vous souhaitez enregistrer.",
-      clientNameLabel: "Nom du client",
-      ratingLabel: "Note",
-      reviewTitleLabel: "Titre de l'avis",
-      reviewTitlePlaceholder: "ex. Excellent travail, ponctuel et soigné",
-      reviewTextLabel: "Texte de l'avis",
-      reviewTextPlaceholder: "Qu'a dit le client ?",
-      addReviewBtn: "Ajouter l'avis",
-    },
-
-    toast: {
-      selectCompletedJob: "Sélectionnez une mission terminée",
-      clientNoPhone: "Ce client n'a pas de numéro de téléphone enregistré",
-      noGoogleUrlConfigured: "Ajoutez votre lien d'avis Google dans les Paramètres avant d'envoyer des demandes",
-      sendFailed: "Échec de l'envoi, veuillez réessayer",
-      requestSent: "SMS de demande d'avis envoyé à {{name}}",
-      nameRatingRequired: "Le nom et la note sont obligatoires",
-      reviewAdded: "Avis ajouté",
-      markedPushedToGoogle: "Marqué comme publié sur Google",
-    },
-
-    fallback: {
-      client: "client",
-      clientBracket: "[client]",
-      work: "travaux",
-    },
-
-    stats: {
-      reviewsCount: "{{count}} avis",
-    },
-
-    metrics: {
-      verifiedReviews: "Avis vérifiés",
-      onYourProfile: "Sur votre profil",
-      googleClicks: "Clics Google",
-      tappedGoogleLink: "Ont cliqué sur le lien Google",
-      jobsWithNoReview: "Missions sans avis",
-      couldRequestReview: "Un avis pourrait être demandé",
-    },
-
-    googleCta: {
-      title: "Connectez votre fiche Google Business",
-      description: "Collez votre lien d'avis Google pour que les SMS envoient les clients directement vers Google.",
-      openBtn: "Ouvrir Google Business",
-    },
-
-    list: {
-      empty: "Aucun avis pour l'instant",
-      requestFirst: "Demandez votre premier avis",
-      verifiedBadge: "Vérifié",
-      onGoogleBadge: "Sur Google",
-      askClientToPostBtn: "Demander au client de publier sur Google",
-    },
-  },
-
   // ── Certifications ───────────────────────────────────
-  certifications: {
-    title:        "Certifications",
-    add:          "Ajouter",
-    active:       "Actives ({{count}})",
-    expiring:     "Expirant bientôt ({{count}})",
-    expired:      "Expirées ({{count}})",
-    visibleNote:  "Les certifications actives sont visibles sur votre page de réservation",
-    expiryAlert:  "{{count}} certification(s) expirant bientôt",
-    noExpiry:     "Sans expiration",
-    certName:     "Nom de la certification *",
-    issuingBody:  "Organisme délivrant",
-    certNumber:   "Numéro de certification",
-    issueDate:    "Date d'obtention",
-    expiryDate:   "Date d'expiration",
-    saveChanges:  "Enregistrer les modifications",
-    quickAdd:     "Ajout rapide : certifications courantes",
-    status: {
-      active:   "Valide",
-      expiring: "Expire {{when}}",
-      expired:  "Expirée",
-    },
-
-    addCertificate: "Ajouter une certification",
-    addedToast: "Certification ajoutée !",
-    removedToast: "Certification supprimée",
-    nameRequired: "Le nom du/de la {{credential}} est requis",
-    egPrefix: "ex.",
-    enterName: "Saisir un nom",
-    removeConfirmTitle: "Supprimer la certification ?",
-    removeConfirmMessage: "Elle sera retirée de votre profil et de votre page de réservation.",
-    expiringSoonBanner: "{{count}} certification{{plural}} sur le point d'expirer",
-    monthsShort: "mois",
-    activeCerts: "Certifications actives",
-    expiringSoon: "Expirent bientôt",
-    expiredLabel: "Expirées",
-    visibleOnProfile: "Visibles sur le profil",
-    visibilityNote: "Toutes les {{credentialPlural}} actives sont visibles sur votre page de réservation publique. Les clients peuvent les vérifier avant de réserver.",
-    noneYet: "Aucune certification ajoutée pour le moment",
-    addFirst: "Ajouter votre première certification",
-    activeSection: "Actives ({{count}})",
-    expiredSection: "Expirées ({{count}})",
-    commonFor: "{{credentialPlural}} courantes pour {{trade}}",
-    expiresLabel: "Expire le",
-    expiresOn: "Expire le {{date}}",
-    valid: "Valide",
-    title: "Certifications & Licences",
-    add: "Ajouter une certification",
-    sectionTitle: "Qualifications ({{trade}})",
-    activeCount: "{{count}} actives",
-    expiringAlertTitle: "{{count}} certification(s) expirent bientôt",
-    noCertsMessage: "Aucune certification ajoutée. Affichez vos qualifications pour rassurer vos clients.",
-    addFirst: "Ajouter votre première certification",
-    expiredSection: "Expirées ({{count}})",
-    editTitle: "Modifier la certification",
-    addTitle: "Ajouter une certification",
-    nameLabel: "Nom de la certification",
-    namePlaceholder: "ex. CAP, Titre professionnel, Habilitation Elec",
-    issuingBodyLabel: "Organisme délivreur",
-    issuingBodyPlaceholder: "ex. AFPA, Chambre des Métiers",
-    certNumberLabel: "Numéro de certificat / licence",
-    certNumberPlaceholder: "ex. 1234567",
-    expiryDateLabel: "Date d'expiration",
-    notesLabel: "Remarques (Optionnel)",
-    notesPlaceholder: "Informations complémentaires...",
-    addCertButton: "Ajouter la certification",
-    deleteConfirmTitle: "Supprimer la certification",
-    deleteConfirmMessage: "Êtes-vous sûr de vouloir supprimer cette certification ? Cette action est irréversible.",
-    nameRequired: "Veuillez saisir un nom de certification.",
-    updatedToast: "Certification mise à jour",
-    addedToast: "Certification ajoutée",
-    deletedToast: "Certification supprimée",
-    badgeExpiredShort: "EXP",
-    badgeValidShort: "OK",
-    expiresLabel: "Expire le",
-    status: {
-      active: "Active",
-      expired: "Expirée",
-      expiring: "Expire dans {{when}}",
-    },
-  },
-
   // ── Referrals ────────────────────────────────────────
-  referrals: {
-    title:        "Parrainage",
-    refer:        "+ Parrainer",
-    rewarded:     "Récompensés",
-    monthsFree:   "Mois offerts",
-    totalSent:    "Total envoyés",
-    myLink:       "Votre lien de parrainage",
-    shareLink:    "Partager le lien",
-    sendInvite:   "Envoyer une invitation",
-    yourReferrals:"Vos filleuls ({{count}})",
-    noReferrals:  "Aucun parrainage pour l'instant",
-    referFirst:   "Parrainer votre premier artisan",
-    referTitle:   "Parrainer un artisan",
-    theirName:    "Son prénom (facultatif)",
-    theirEmail:   "Son e-mail *",
-    reward:       "+{{months}} mois Pro",
-    sending:      "Envoi…",
-    sendCta:      "Envoyer l'invitation",
-    linkSub:      "Partagez ce lien avec n'importe quel artisan. Quand il termine sa première mission sur Vimen, vous recevez tous les deux {{months}} mois Pro offerts.",
-    status: {
-      pending:   "En attente",
-      signed_up: "Inscrit",
-      qualified: "Qualifié",
-      rewarded:  "Récompensé",
-    },
-
-    referSomeoneBtn: "+ Parrainer quelqu'un",
-
-    modal: {
-      title: "Parrainer un artisan",
-      intro: "Vous connaissez quelqu'un qui bénéficierait de Vimen ? Partagez votre lien. Quand il est actif sur la plateforme, nous vous contacterons pour appliquer une récompense.",
-      theirNameLabel: "Son nom (facultatif)",
-      theirEmailLabel: "Son email *",
-      giftNote: "Il recevra une invitation personnelle. Une fois actif sur Vimen, nous contacterons les deux comptes pour appliquer la récompense.",
-      cancel: "Annuler",
-      send: "Envoyer le parrainage",
-    },
-
-    toast: {
-      linkCopied: "Lien de parrainage copié !",
-      copyFailedManual: "Impossible de copier automatiquement. Veuillez sélectionner et copier le lien manuellement.",
-      emailRequired: "L'email est obligatoire",
-      referralSent: "Parrainage envoyé à {{email}}",
-    },
-
-    metrics: {
-      successfulReferrals: "Parrainages réussis",
-      totalSent: "{{count}} envoyé(s) au total",
-      monthsProEarned: "Mois de Pro gagnés",
-      appliedToAccount: "Appliqués à votre compte",
-      pending: "En attente",
-      waitingToSignUp: "En attente d'inscription",
-      yourReferralCode: "Votre code de parrainage",
-      shareThisLink: "Partagez ce lien",
-    },
-
-    linkCard: {
-      title: "Votre lien de parrainage",
-      description: "Partagez ce lien où vous voulez : WhatsApp, groupes Facebook, forums de métiers. Toute personne qui s'inscrit via ce lien est automatiquement liée à vous.",
-      copied: "Copié !",
-      copyLink: "Copier le lien",
-    },
-
-    share: {
-      whatsapp: "WhatsApp",
-      facebook: "Facebook",
-      email: "Email",
-      whatsappMessage: "J'utilise Vimen pour gérer mon activité, c'est excellent pour la facturation et les paiements. Inscris-toi gratuitement ici : {{url}}",
-      emailSubject: "Essaie Vimen : l'appli gratuite pour les artisans",
-      emailBody: "Salut, j'utilise Vimen pour gérer mon activité et je pense que ça pourrait t'être utile. Inscris-toi gratuitement ici : {{url}}",
-    },
-
-    howItWorks: {
-      title: "Comment ça marche",
-      step1: { title: "Partagez votre lien", desc: "Envoyez votre lien de parrainage à un artisan que vous connaissez." },
-      step2: { title: "Il s'inscrit", desc: "Il crée un compte gratuit en utilisant votre lien." },
-      step3: { title: "Il commence à utiliser Vimen", desc: "Une fois actif sur la plateforme, le parrainage est comptabilisé." },
-      step4: { title: "Récompense pour les deux", desc: "Nous contactons les deux comptes pour appliquer la récompense. Sans limite de parrainages." },
-    },
-
-    statusDesc: {
-      pending: "Lien envoyé, en attente de son inscription",
-      signed_up: "Il s'est inscrit, doit terminer son premier chantier",
-      qualified: "Validé, récompense en cours de traitement",
-      rewarded: "2 mois de Pro appliqués à votre compte",
-    },
-
-    table: {
-      title: "Vos parrainages",
-      empty: "Aucun parrainage envoyé pour l'instant",
-      referFirst: "Parrainez votre premier artisan",
-      headers: {
-        name: "Nom",
-        email: "Email",
-        code: "Code",
-        status: "Statut",
-        reward: "Récompense",
-        sent: "Envoyé",
-      },
-      rewardMonths: "+{{count}} mois de Pro",
-    },
-  },
-
   // ── Settings ─────────────────────────────────────────
-  settings: {
-    title:            "Paramètres",
-    account:          "Compte",
-    payment:          "Paiement",
-    notifications:    "Alertes",
-    plan:             "Abonnement",
-    language:         "Langue",
-    fullName:         "Nom complet",
-    profession:       "Profession",
-    email:            "E-mail",
-    phone:            "Téléphone",
-    bio:              "Présentation (visible sur votre page de réservation)",
-    bioPlaceholder:   "Décrivez votre expérience…",
-    hourlyRate:       "Tarif horaire (€)",
-    bookingSlug:      "Identifiant de votre page de réservation",
-    googleReviewUrl:  "Lien d'avis Google",
-    googleReviewUrlPlaceholder: "https://g.page/r/.../review",
-    googleReviewUrlHint: "Utilisé quand vous demandez des avis à vos clients par SMS. Retrouvez ce lien dans votre profil Google Business.",
-    saveAccount:      "Enregistrer le compte",
-    bankDetails:      "Coordonnées bancaires",
-    bankName:         "Nom de la banque",
-    sortCode:         "Code banque",
-    accountNumber:    "Numéro de compte",
-    paymentTerms:     "Conditions de paiement",
-    invoiceNotes:     "Mentions légales (pied de facture)",
-    savePayment:      "Enregistrer les paramètres de paiement",
-    notifEmail:       "E-mail à chaque nouvelle demande de réservation",
-    notifEmailSub:    "via Resend",
-    notifSms:         "SMS quand une facture est payée",
-    notifSmsSub:      "via Twilio",
-    notifDigest:      "Résumé hebdomadaire des revenus",
-    notifDigestSub:   "via Resend",
-    notifOverdue:     "Rappel SMS pour factures en retard",
-    notifOverdueSub:  "via Twilio",
-    savePreferences:  "Enregistrer les préférences",
-    currentPlan:      "Abonnement actuel",
-    upgrade:          "Passer à Pro",
-    downgrade:        "Rétrograder",
-    currentPlanBadge: "Abonnement actuel",
-    mostPopular:      "LE PLUS CHOISI",
-    signOutConfirm:   "Se déconnecter ?",
-    languageTitle:    "Language / Langue",
-    languageSub:      "Choisissez votre langue préférée",
-    verticalDetails:  "Informations : {{vertical}}",
-    verticalSub:      "Champs spécifiques à votre profession, affichés sur votre page de réservation si renseignés.",
-    yourName:              "Votre nom",
-    invoiceDefaults:       "Paramètres de facturation",
-    invoiceNotesPlaceholder: "ex. TVA non applicable. Merci d'indiquer le numéro de facture en référence de paiement.",
-    notifTitle:            "Préférences de notification",
-    stripeDesc:            "Connectez Stripe pour que vos clients puissent payer leurs factures en ligne par carte. Votre clé secrète reste dans Supabase et ne touche jamais le navigateur.",
-    connectStripe:         "Connecter un compte Stripe",
-    termsImmediate:        "Immédiat",
-    terms7:                "7 jours",
-    terms14:               "14 jours",
-    terms30:               "30 jours",
-    renewsMonthly:         "renouvellement mensuel",
-    manageBilling:         "Gérer la facturation",
-    redirectingStripe:     "Redirection vers Stripe…",
-    errorSave:             "Échec de l'enregistrement, réessayez",
-    successSave:           "Paramètres enregistrés",
-    planFeat1:             "5 clients actifs",
-    planFeat2:             "10 factures/mois",
-    planFeat3:             "Page de réservation (personnalisée)",
-    planFeat4:             "Support par e-mail",
-    planFeat5:             "Clients illimités",
-    planFeat6:             "Factures illimitées",
-    planFeat7:             "URL de réservation personnalisée",
-    planFeat8:             "Rappels SMS",
-    planFeat9:             "Liens de paiement Stripe",
-    planFeat10:            "Relance impayés",
-    planFeat11:            "Support prioritaire",
-  },
-
   professions: {
     verticals: {
       trades:       { label: "Artisanat & BTP" },
@@ -1567,115 +314,7 @@ export default {
     },
   },
 
-  publicBooking: {
-    loading: "Chargement…",
-    brand: "Vimen",
-    poweredBy: "Via Vimen",
-    perHour: "/h",
-
-    notFound: {
-      title: "Page introuvable",
-      message: "Cette page de réservation n'existe pas, ou le lien est peut-être incorrect.",
-    },
-
-    badges: {
-      professional: "Professionnel enregistré",
-      beauty: "Qualifié(e) et assuré(e)",
-      default: "Entièrement qualifié(e)",
-    },
-
-    professionalExtra: {
-      gdprCompliant: "Traitement des données clients conforme au RGPD",
-    },
-
-    tradesExtra: {
-      insuredVia: "Assuré via {{provider}}",
-      vatRegistered: "Assujetti à la TVA",
-    },
-
-    beautyExtra: {
-      servicesTitle: "Prestations",
-      duration: "{{count}} min",
-    },
-
-    done: {
-      title: "Demande envoyée !",
-      message: "{{name}} confirmera sous peu.",
-    },
-
-    form: {
-      titlePrefix: "Demander",
-      aByVertical: {
-        trades:       "une réservation",
-        beauty:       "un rendez-vous",
-        professional: "une consultation",
-        other:        "une réservation",
-      },
-      yourName: "Votre nom",
-      email: "Email",
-      phone: "Téléphone",
-      preferredDate: "Date souhaitée",
-      detailsLabel: {
-        beauty: "Quelle prestation ?",
-        professional: "Sur quel sujet ?",
-        default: "De quoi avez-vous besoin ?",
-      },
-      detailsPlaceholder: {
-        beauty: "ex. Manucure gel, balayage…",
-        professional: "Décrivez brièvement ce dont vous aimeriez discuter…",
-        default: "Décrivez les travaux…",
-      },
-      sending: "Envoi…",
-      sendRequest: "Envoyer la demande",
-      sendBookingRequest: "Envoyer la demande de réservation",
-      footerNote: {
-        beauty: "Aucun paiement requis · Confirmé par message",
-        professional: "Aucun paiement requis · Confidentiel",
-        default: "Aucun paiement requis · Devis gratuit",
-      },
-    },
-
-    toast: {
-      missingNameEmail: "Merci de renseigner votre nom et votre email",
-      genericError: "Une erreur est survenue, veuillez réessayer",
-    },
-  },
-
-
-pricingPage: {
-  eyebrow: "Tarifs",
-  title: "Une tarification simple qui évolue avec vous",
-  sub: "Commencez gratuitement. Passez à Illimité quand vous êtes prêt pour plus.",
-  mostPopular: "Le plus choisi",
-  perMonth: "/mois",
-  feeNote: "Des frais de traitement de deux pour cent s'appliquent aux paiements effectués via Vimen Pay, quel que soit le forfait.",
-  free: {
-    name: "Gratuit",
-    sub: "Tout ce qu'il faut pour démarrer",
-    cta: "Essai gratuit",
-    feature1: "Jusqu'à cinq clients",
-    feature2: "Jusqu'à dix factures par mois",
-    feature3: "Une page de réservation",
-    feature4: "Support communautaire",
-  },
-  unlimited: {
-    name: "Illimité",
-    sub: "Pour les activités prêtes à grandir",
-    cta: "Essai gratuit",
-    feature1: "Clients illimités",
-    feature2: "Factures et devis illimités",
-    feature3: "Page de réservation personnalisée",
-    feature4: "Demandes d'avis automatiques",
-    feature5: "Programme de parrainage",
-    feature6: "Support prioritaire",
-  },
-  finalCta: {
-    title: "Commencez gratuitement, passez à un forfait supérieur quand vous êtes prêt",
-    cta: "Essai gratuit",
-  },
-},
-
-errors: {
+  errors: {
     sectionUnavailable: "Cette section est actuellement indisponible.",
     general: "Une erreur inattendue est survenue. Veuillez réessayer.",
     actionRequired: "Action requise",
@@ -1692,412 +331,113 @@ loading: {
   },
 
 
-  dashboard: {
-    welcomeBack: "Ravi de vous revoir{{name}}",
-    subtitle: "Voici un aperçu de votre activité.",
-    subtitleWithTrade: "Aperçu de votre activité en {{trade}}.",
-    metricRevenue: "Chiffre d'affaires",
-    metricPaidInvoicesCount: "{{count}} factures payées",
-    metricPending: "En attente de paiement",
-    metricUnpaidInvoicesCount: "{{count}} factures non payées",
-    metricActiveJobs: "Projets en cours",
-    metricTotalJobsCount: "{{count}} projets au total",
-    metricBookingRequests: "Demandes reçues",
-    metricPendingRequests: "En attente de réponse",
-    pendingRequestsTitle: "Demandes de réservation en attente",
-    noPendingRequests: "Aucune demande de réservation en attente.",
-    recentJobsTitle: "Projets récents",
-    noJobsYet: "Aucun projet créé pour l'instant.",
-    noInvoice: "Sans facture",
-    bookingPageLive: "Votre page de réservation est en ligne",
-    copyLink: "Copier le lien",
-    viewPage: "Voir la page",
-    linkCopied: "Lien de réservation copié dans le presse-papier !",
-    linkCopyFailed: "Échec de la copie du lien",
-  },
-
-  jobs: {
-    title: "Projets",
-    addJob: "Nouveau projet",
-    filterAll: "Tous ({{count}})",
-    filterScheduled: "Planifiés ({{count}})",
-    filterCompleted: "Terminés ({{count}})",
-    noJobsFound: "Aucun projet trouvé.",
-    colDate: "Date",
-    colClient: "Client",
-    colTitle: "Titre / Description",
-    colDuration: "Durée",
-    colAmount: "Montant",
-    colStatus: "Statut",
-    markDone: "Terminer",
-    status: {
-      scheduled: "Planifié",
-      completed: "Terminé",
-    },
-    createTitle: "Nouveau projet",
-    editTitle: "Modifier le projet",
-    labelClient: "Client",
-    selectClientPlaceholder: "-- Sélectionner un client --",
-    labelTitle: "Titre du projet / Résumé",
-    titlePlaceholder: "ex. Entretien chaudière et fuite d'eau",
-    labelDate: "Date",
-    labelDuration: "Durée (Heures)",
-    labelAmount: "Montant estimé",
-    labelNotes: "Notes / Détails de la mission",
-    notesPlaceholder: "Consignes particulières ou matériel nécessaire...",
-    submitCreate: "Créer le projet",
-    clientRequired: "Veuillez sélectionner un client.",
-    titleRequired: "Veuillez saisir un titre.",
-    createdSuccess: "Projet planifié avec succès",
-    createError: "Échec de la création du projet",
-    updatedSuccess: "Détails du projet mis à jour",
-    updateError: "Échec de la mise à jour du projet",
-    completedSuccess: "Projet marqué comme terminé",
-    completeError: "Échec de la validation du projet",
-    deleteConfirmTitle: "Supprimer le projet",
-    deleteConfirmMessage: "Êtes-vous sûr de vouloir supprimer ce projet ? Cette action est irréversible.",
-    deletedSuccess: "Projet supprimé",
-    deleteError: "Échec de la suppression du projet",
-  },
-
-
-  payments: {
-    title: "Paiements en ligne & Virements",
-    tabs: {
-      overview: "Aperçu",
-      transactions: "Transactions ({{count}})",
-      payouts: "Virements",
-      account: "Compte Stripe",
-    },
-    overview: {
-      notConnectedTitle: "Paiements en ligne Stripe non configurés",
-      notConnectedDesc: "Connectez votre compte bancaire à Stripe pour accepter les cartes bancaires en ligne.",
-      connectStripeBtn: "Connecter Stripe",
-      connectedBanner: "Votre compte Stripe est connecté et actif pour recevoir des règlements.",
-      recentPayments: "Paiements récents",
-      viewAll: "Tout afficher",
-      emptyPayments: "Aucun paiement récent enregistré.",
-      ofGrossAmount: "sur {{amount}} brut",
-    },
-    metrics: {
-      totalVolume: "Volume brut",
-      yourEarnings: "Volume net",
-      thisMonth: "Ce mois-ci",
-      availableBalance: "Solde disponible",
-      inTransitToBank: "En cours de virement",
-      totalPaidOut: "Total transféré",
-      paymentsCount: "{{count}} paiements",
-      payoutsCount: "{{count}} virements",
-      ofGross: "{{pct}} du brut",
-      readyToPayOut: "Prêt à être transféré",
-      arrivingSoon: "Arrivée sur la banque sous peu",
-    },
-    transactions: {
-      grossVolume: "Volume brut",
-      stripeFeesPaid: "Frais de traitement Stripe",
-      netToYou: "Chiffre net perçu",
-      empty: "Aucune transaction trouvée.",
-    },
-    table: {
-      date: "Date",
-      client: "Client",
-      description: "Description",
-      gross: "Montant brut",
-      stripeFee: "Frais Stripe",
-      youReceive: "Vous recevez",
-      status: "Statut",
-      dateInitiated: "Date d'initiation",
-      arrivalDate: "Date estimée",
-      amount: "Montant du virement",
-      transactions: "Articles",
-      bank: "Compte bancaire",
-    },
-    payoutsTab: {
-      availableForPayout: "Solde disponible",
-      estimated: "Solde estimé",
-      inTransit: "Virement en cours",
-      expectedWithin2Days: "Attendu sous 2 jours ouvrés",
-      totalPaidOut: "Total transféré",
-      empty: "Aucun virement enregistré.",
-    },
-    payoutSchedule: {
-      title: "Virements automatiques réguliers",
-      description: "Les virements sont effectués automatiquement chaque jour ouvré vers votre compte bancaire se terminant par",
-    },
-    connect: {
-      stripeAccountTitle: "Connexion Stripe Express",
-      stripeConnect: "Paiements Stripe",
-      connectedDesc: "Compte vérifié et virements activés",
-      notConnectedDesc: "Acceptez les cartes bancaires et réglements instantanés",
-      connectedBody: "Votre compte est actif. Vous pouvez gérer vos virements et documents fiscaux directement sur Stripe.",
-      notConnectedBody: "En connectant Stripe, vous permettez à vos clients de régler vos devis et factures par carte bancaire.",
-      openDashboard: "Ouvrir le tableau de bord Stripe",
-      connectAccountBtn: "Se connecter avec Stripe",
-      redirectingToast: "Redirection vers Stripe Express...",
-      redirectSuccess: "Redirection vers le portail de configuration...",
-    },
-    status: {
-      connected: "Connecté",
-      active: "Actif",
-      notConnected: "Non connecté",
-      completed: "Validé",
-      pending: "En attente",
-      processing: "Traitement",
-      failed: "Échoué",
-      refunded: "Remboursé",
-      paid: "Versé",
-      in_transit: "En transit",
-    },
-    howItWorks: {
-      title: "Comment fonctionnent les paiements en ligne",
-      step1: {
-        title: "1. Le client reçoit la facture",
-        desc: "Un lien de paiement sécurisé est automatiquement joint à la facture.",
-      },
-      step2: {
-        title: "2. Règlement sécurisé",
-        desc: "Le client paie immédiatement via Apple Pay, Google Pay ou carte bancaire.",
-      },
-      step3: {
-        title: "3. Mise à jour automatique",
-        desc: "La facture passe immédiatement en statut Payée.",
-      },
-      step4: {
-        title: "4. Virement sur votre banque",
-        desc: "Les fonds sont déposés sur votre compte sous 2 jours ouvrés.",
-      },
-    },
-  },
-
-
   pricingPage: {
-    nav: {
-      signIn: "Se connecter",
-      signUp: "Essai gratuit",
-    },
-    hero: {
-      title: "Tarifs simples et transparents",
-      subtitle: "Tout ce dont vous avez besoin pour gérer votre entreprise d'artisanat. Sans frais cachés ni engagement.",
-    },
-    billing: {
-      monthly: "Facturation mensuelle",
-      annual: "Facturation annuelle",
-      saveDiscount: "-20%",
-    },
-    popularBadge: "Le plus populaire",
-    monthAbbr: "mois",
-    plans: {
-      solo: {
-        name: "Indépendant",
-        tagline: "Idéal pour les artisans seuls qui démarrent leur activité.",
-        feat1: "Devis & Factures illimités",
-        feat2: "Gestion clients & Historique",
-        feat3: "Paiements par carte en ligne",
-        feat4: "Rappels SMS & E-mail",
-        feat5: "Planning de chantier de base",
-        cta: "Essayer gratuitement 14 jours",
-      },
-      pro: {
-        name: "Professionnel",
-        tagline: "Pour les artisans établis qui veulent tout automatiser.",
-        feat1: "Tout le forfait Indépendant",
-        feat2: "Page de réservation en ligne",
-        feat3: "Annonces sur la Marketplace",
-        feat4: "Relances de paiement automatiques",
-        feat5: "Suivi des certifications & Alertes",
-        feat6: "Support prioritaire",
-        cta: "Essayer gratuitement 14 jours",
-      },
-      team: {
-        name: "Équipe & Entreprise",
-        tagline: "Pour les entreprises du bâtiment avec sous-traitants et équipes.",
-        feat1: "Tout le forfait Professionnel",
-        feat2: "Jusqu'à 5 membres d'équipe",
-        feat3: "Accès sous-traitants dédiés",
-        feat4: "Rapports financiers avancés",
-        feat5: "Gestion multi-métiers",
-        feat6: "Gestionnaire de compte dédié",
-        cta: "Contacter l'équipe",
-      },
-    },
-    faq: {
-      title: "Foire aux questions",
-      q1: "Y a-t-il un essai gratuit ?",
-      a1: "Oui, vous pouvez tester Vimen gratuitement pendant 14 jours sans aucune restriction. Aucune carte bancaire requise.",
-      q2: "Puis-je changer de forfait à tout moment ?",
-      a2: "Absolument ! Vous pouvez faire évoluer, réduire ou annuler votre abonnement à tout moment depuis vos paramètres.",
-      q3: "Comment fonctionnent les paiements clients ?",
-      a3: "Grâce à notre intégration Stripe Express, vos clients règlent directement vos devis et factures en ligne par carte bancaire.",
-      q4: "Y a-t-il des commissions cachées ?",
-      a4: "Vimen ne prend aucune commission sur vos chantiers. Seuls les frais bancaires standard de Stripe s'appliquent.",
-    },
-    finalCta: {
-      title: "Prêt à simplifier la gestion de vos chantiers ?",
-      cta: "Commencer dès maintenant",
-    },
+  eyebrow: "Tarifs",
+  title: "Une tarification simple qui évolue avec vous",
+  sub: "Commencez gratuitement. Passez à Illimité quand vous êtes prêt pour plus.",
+  mostPopular: "Le plus choisi",
+  perMonth: "/mois",
+  feeNote: "Des frais de traitement de deux pour cent s'appliquent aux paiements effectués via Vimen Pay, quel que soit le forfait.",
+  free: {
+    name: "Gratuit",
+    sub: "Tout ce qu'il faut pour démarrer",
+    cta: "Essai gratuit",
+    feature1: "Jusqu'à cinq clients",
+    feature2: "Jusqu'à dix factures par mois",
+    feature3: "Une page de réservation",
+    feature4: "Support communautaire"
   },
-  home: {
-    nav: {
-      features: "Fonctionnalités",
-      pricing: "Tarifs",
-    },
-    footer: {
-      contact: "Contact",
-      copyright: "© 2026 Vimen. Tous droits réservés.",
-    },
+  unlimited: {
+    name: "Illimité",
+    sub: "Pour les activités prêtes à grandir",
+    cta: "Essai gratuit",
+    feature1: "Clients illimités",
+    feature2: "Factures et devis illimités",
+    feature3: "Page de réservation personnalisée",
+    feature4: "Demandes d'avis automatiques",
+    feature5: "Programme de parrainage",
+    feature6: "Support prioritaire"
   },
-
-  "pricingPage": {
-    "title": "Une tarification simple et transparente",
-    "subtitle": "Choisissez le forfait adapté à votre activité. Aucun frais caché.",
-    "monthly": "Mensuel",
-    "annual": "Annuel (-20%)",
-    "finalCta": {
-      "title": "Prêt à simplifier votre gestion au quotidien ?",
-      "cta": "Démarrer l'essai gratuit"
-    }
+  finalCta: {
+    title: "Prêt à simplifier la gestion de vos chantiers ?",
+    cta: "Commencer dès maintenant"
   },
-  "home": {
-    "nav": {
-      "features": "Fonctionnalités",
-      "pricing": "Tarifs"
-    },
-    "footer": {
-      "contact": "Contact",
-      "copyright": "© 2026 Vimen. Tous droits réservés."
-    }
-  },
-
-"pricingPage": {
-  "nav": {
-    "signIn": "Se connecter",
-    "signUp": "S'inscrire"
-  },
-  "hero": {
-    "title": "Une tarification simple et transparente",
-    "subtitle": "Choisissez le forfait idéal pour développer votre activité. Sans frais cachés."
-  },
-  "billing": {
-    "monthly": "Mensuel",
-    "annual": "Annuel",
-    "saveDiscount": "-20%"
-  },
-  "popularBadge": "Populaire",
-  "monthAbbr": "mois",
-  "plans": {
-    "solo": {
-      "name": "Solo",
-      "tagline": "Idéal pour les indépendants qui débutent.",
-      "feat1": "Jusqu'à 15 clients",
-      "feat2": "Factures et devis illimités",
-      "feat3": "Prise de rendez-vous en ligne",
-      "feat4": "Rappels automatiques par e-mail",
-      "feat5": "Support standard",
-      "cta": "Commencer gratuitement"
-    },
-    "pro": {
-      "name": "Pro",
-      "tagline": "Pour les professionnels en plein développement.",
-      "feat1": "Clients illimités",
-      "feat2": "Factures & Devis avec paiements en ligne",
-      "feat3": "Rappels SMS automatiques",
-      "feat4": "Gestion des avis Google",
-      "feat5": "Module de certification",
-      "feat6": "Support prioritaire",
-      "cta": "Essayer le Forfait Pro"
-    },
-    "team": {
-      "name": "Équipe",
-      "tagline": "Pour les petites équipes et entreprises.",
-      "feat1": "Tout ce qui est inclus dans Pro",
-      "feat2": "Jusqu'à 5 membres d'équipe",
-      "feat3": "Planning partagé",
-      "feat4": "Rapports d'activité avancés",
-      "feat5": "Export comptable en 1 clic",
-      "feat6": "Gestionnaire dédié",
-      "cta": "Contacter l'équipe"
-    }
-  },
-  "faq": {
-    "title": "Foire Aux Questions",
-    "q1": "Puis-je changer de forfait à tout moment ?",
-    "a1": "Oui, vous pouvez passer à un forfait supérieur ou inférieur à tout moment depuis vos paramètres.",
-    "q2": "Y a-t-il un engagement ?",
-    "a2": "Aucun engagement pour l'abonnement mensuel. Vous pouvez résilier en un clic.",
-    "q3": "Comment fonctionne l'essai gratuit ?",
-    "a3": "Vous bénéficiez de 14 jours d'essai complet sans carte bancaire requise.",
-    "q4": "Quels moyens de paiement acceptez-vous ?",
-    "a4": "Nous acceptons toutes les cartes bancaires principales (Visa, Mastercard, Carte Bleue)."
-  },
-  "finalCta": {
-    "title": "Prêt à automatiser votre gestion ?",
-    "cta": "Démarrer maintenant"
-  },
-    hero: {
-      title: "Des tarifs simples et transparents",
-      subtitle: "Tout ce dont vous avez besoin pour gérer vos réservations et vos clients. Commencez gratuitement et évoluez à votre rythme.",
-    },
-    billing: {
-      monthly: "Mensuel",
-      annual: "Annuel",
-      saveDiscount: "-20%",
-    },
-    popularBadge: "Le plus populaire",
-    monthAbbr: "mois",
-    plans: {
-      free: {
-        name: "Gratuit",
-        tagline: "Les outils essentiels pour lancer votre page de réservation.",
-        cta: "Commencer gratuitement",
-        feat1: "Gestion de services de base",
-        feat2: "Jusqu'à 2 certifications affichées",
-        feat3: "Lien de réservation public standard",
-        feat4: "Gestion du calendrier et des disponibilités",
-        feat5: "Messagerie directe avec vos clients",
-        feat6: "Support communautaire",
-      },
-      pro: {
-        name: "Pro",
-        tagline: "Tout ce qu'il faut pour développer votre activité en toute autonomie.",
-        cta: "Passer au plan Pro",
-        feat1: "Tout ce qui est inclus dans le plan Gratuit",
-        feat2: "Services et demandes personnalisées illimités",
-        feat3: "Certifications et badges illimités",
-        feat4: "Branding personnalisé & Slug sur-mesure",
-        feat5: "Contrôle avancé des créneaux & disponibilités",
-        feat6: "Analyses des réservations et revenus",
-        feat7: "Support client prioritaire",
-      },
-    },
-    faq: {
-      title: "Foire Aux Questions",
-      q1: "Puis-je commencer avec le plan Gratuit ?",
-      a1: "Oui, vous pouvez utiliser le plan Gratuit aussi longtemps que vous le souhaitez, sans aucune carte bancaire requise.",
-      q2: "Puis-je changer ou annuler mon abonnement à tout moment ?",
-      a2: "Absolument. Vous pouvez passer au niveau supérieur, rétrograder ou annuler votre abonnement directement depuis vos paramètres.",
-      q3: "Y a-t-il des frais cachés sur les transactions ?",
-      a3: "Aucun frais caché. Vous ne payez que le montant fixé pour votre abonnement si vous choisissez de passer au plan Pro.",
-      q4: "Quels moyens de paiement acceptez-vous ?",
-      a4: "Nous acceptons toutes les principales cartes bancaires via Stripe.",
-    },
-    finalCta: {
-      title: "Prêt à simplifier vos réservations ?",
-      cta: "Créer un compte gratuit",
-    },
-},
-
-// Add inside your src/i18n/fr.js object under the "home" key:
-home: {
   nav: {
-    features: "Fonctionnalités",
-    pricing: "Tarifs",
     signIn: "Se connecter",
-    startFree: "Commencer gratuitement",
-      about: "À propos",
-      faq: "FAQ",
-      contact: "Contact",
+    signUp: "Essai gratuit"
   },
   hero: {
+    title: "Tarifs simples et transparents",
+    subtitle: "Tout ce dont vous avez besoin pour gérer votre entreprise d'artisanat. Sans frais cachés ni engagement."
+  },
+  billing: {
+    monthly: "Facturation mensuelle",
+    annual: "Facturation annuelle",
+    saveDiscount: "-20%"
+  },
+  popularBadge: "Le plus populaire",
+  monthAbbr: "mois",
+  plans: {
+    solo: {
+      name: "Indépendant",
+      tagline: "Idéal pour les artisans seuls qui démarrent leur activité.",
+      feat1: "Devis & Factures illimités",
+      feat2: "Gestion clients & Historique",
+      feat3: "Paiements par carte en ligne",
+      feat4: "Rappels SMS & E-mail",
+      feat5: "Planning de chantier de base",
+      cta: "Essayer gratuitement 14 jours"
+    },
+    pro: {
+      name: "Professionnel",
+      tagline: "Pour les artisans établis qui veulent tout automatiser.",
+      feat1: "Tout le forfait Indépendant",
+      feat2: "Page de réservation en ligne",
+      feat3: "Annonces sur la Marketplace",
+      feat4: "Relances de paiement automatiques",
+      feat5: "Suivi des certifications & Alertes",
+      feat6: "Support prioritaire",
+      cta: "Essayer gratuitement 14 jours"
+    },
+    team: {
+      name: "Équipe & Entreprise",
+      tagline: "Pour les entreprises du bâtiment avec sous-traitants et équipes.",
+      feat1: "Tout le forfait Professionnel",
+      feat2: "Jusqu'à 5 membres d'équipe",
+      feat3: "Accès sous-traitants dédiés",
+      feat4: "Rapports financiers avancés",
+      feat5: "Gestion multi-métiers",
+      feat6: "Gestionnaire de compte dédié",
+      cta: "Contacter l'équipe"
+    }
+  },
+  faq: {
+    title: "Foire aux questions",
+    q1: "Y a-t-il un essai gratuit ?",
+    a1: "Oui, vous pouvez tester Vimen gratuitement pendant 14 jours sans aucune restriction. Aucune carte bancaire requise.",
+    q2: "Puis-je changer de forfait à tout moment ?",
+    a2: "Absolument ! Vous pouvez faire évoluer, réduire ou annuler votre abonnement à tout moment depuis vos paramètres.",
+    q3: "Comment fonctionnent les paiements clients ?",
+    a3: "Grâce à notre intégration Stripe Express, vos clients règlent directement vos devis et factures en ligne par carte bancaire.",
+    q4: "Y a-t-il des commissions cachées ?",
+    a4: "Vimen ne prend aucune commission sur vos chantiers. Seuls les frais bancaires standard de Stripe s'appliquent."
+  }
+},
+  // Add inside your src/i18n/fr.js object under the "home" key:
+home: {
+  nav: {
+    signIn: "Se connecter",
+    signUp: "S'inscrire",
+    features: "Fonctionnalités",
+    pricing: "Tarifs",
+    startFree: "Commencer gratuitement",
+    about: "À propos",
+    faq: "FAQ",
+    contact: "Contact"
+  },
+  hero: {
+    title: "Des tarifs simples et transparents",
+    subtitle: "Tout ce dont vous avez besoin pour gérer vos réservations et vos clients. Commencez gratuitement et évoluez à votre rythme.",
     titleLine1: "Gérez toute votre activité",
     titleLine2: "en pilote automatique.",
     sub: "Une plateforme unique pour les professionnels et artisans : réservations, devis, factures, paiements et clients.",
@@ -2106,8 +446,56 @@ home: {
     stats: {
       fee: "Frais de plateforme",
       setup: "Configuration rapide",
-      free: "Version gratuite à vie",
+      free: "Version gratuite à vie"
+    }
+  },
+  billing: {
+    monthly: "Mensuel",
+    annual: "Annuel",
+    saveDiscount: "-20%"
+  },
+  popularBadge: "Le plus populaire",
+  monthAbbr: "mois",
+  plans: {
+    free: {
+      name: "Gratuit",
+      tagline: "Les outils essentiels pour lancer votre page de réservation.",
+      cta: "Commencer gratuitement",
+      feat1: "Gestion de services de base",
+      feat2: "Jusqu'à 2 certifications affichées",
+      feat3: "Lien de réservation public standard",
+      feat4: "Gestion du calendrier et des disponibilités",
+      feat5: "Messagerie directe avec vos clients",
+      feat6: "Support communautaire"
     },
+    pro: {
+      name: "Pro",
+      tagline: "Tout ce qu'il faut pour développer votre activité en toute autonomie.",
+      cta: "Passer au plan Pro",
+      feat1: "Tout ce qui est inclus dans le plan Gratuit",
+      feat2: "Services et demandes personnalisées illimités",
+      feat3: "Certifications et badges illimités",
+      feat4: "Branding personnalisé & Slug sur-mesure",
+      feat5: "Contrôle avancé des créneaux & disponibilités",
+      feat6: "Analyses des réservations et revenus",
+      feat7: "Support client prioritaire"
+    }
+  },
+  faq: {
+    title: "Foire Aux Questions",
+    q1: "Puis-je commencer avec le plan Gratuit ?",
+    a1: "Oui, vous pouvez utiliser le plan Gratuit aussi longtemps que vous le souhaitez, sans aucune carte bancaire requise.",
+    q2: "Puis-je changer ou annuler mon abonnement à tout moment ?",
+    a2: "Absolument. Vous pouvez passer au niveau supérieur, rétrograder ou annuler votre abonnement directement depuis vos paramètres.",
+    q3: "Y a-t-il des frais cachés sur les transactions ?",
+    a3: "Aucun frais caché. Vous ne payez que le montant fixé pour votre abonnement si vous choisissez de passer au plan Pro.",
+    q4: "Quels moyens de paiement acceptez-vous ?",
+    a4: "Nous acceptons toutes les principales cartes bancaires via Stripe."
+  },
+  finalCta: {
+    title: "Prêt à simplifier votre gestion au quotidien ?",
+    cta: "Démarrer l'essai gratuit",
+    sub: "Rejoignez des milliers de professionnels qui gagnent plus de 5 heures par semaine sur l'administratif."
   },
   features: {
     eyebrow: "TOUT CE DONT VOUS AVEZ BESOIN",
@@ -2124,8 +512,8 @@ home: {
         badge: "Confirmé",
         service1: "Entretien chaudière & inspection",
         service2: "Réparation radiateur",
-        cta: "Réserver un rendez-vous",
-      },
+        cta: "Réserver un rendez-vous"
+      }
     },
     quotes: {
       tabLabel: "Devis",
@@ -2139,8 +527,8 @@ home: {
         status: "Accepté",
         line1: "Main d'œuvre (4h)",
         line2: "Matériel et pièces",
-        totalLabel: "ESTIMATION TOTALE",
-      },
+        totalLabel: "ESTIMATION TOTALE"
+      }
     },
     invoices: {
       tabLabel: "Factures",
@@ -2155,8 +543,8 @@ home: {
         billTo: "Facturé à",
         client: "Sophie Martin",
         line: "Rénovation électrique",
-        totalLabel: "TOTAL PAYÉ",
-      },
+        totalLabel: "TOTAL PAYÉ"
+      }
     },
     payments: {
       tabLabel: "Paiements",
@@ -2170,9 +558,8 @@ home: {
         amount: "Montant brut",
         processing: "Frais de traitement",
         platform: "Frais de plateforme",
-        receive: "VIREMENT NET",
-      },
-
+        receive: "VIREMENT NET"
+      }
     },
     clients: {
       tabLabel: "Gestion Clients",
@@ -2186,8 +573,8 @@ home: {
         client1: "Alexandre Bernard",
         client2: "David Robert",
         client3: "Élodie Richard",
-        jobsLabel: "interventions",
-      },
+        jobsLabel: "interventions"
+      }
     },
     growth: {
       tabLabel: "Avis & Croissance",
@@ -2200,129 +587,116 @@ home: {
         reviewsLabel: "Note Moyenne Google",
         reviewsCount: "Basé sur 128 avis vérifiés",
         referralTitle: "Lien de parrainage actif",
-        referralDesc: "Lien de partage : vimen.app/r/jean-plomberie",
-      },
-    },
+        referralDesc: "Lien de partage : vimen.app/r/jean-plomberie"
+      }
+    }
   },
   pricingTeaser: {
     eyebrow: "TARIFICATION TRANSPARENTE",
     title: "Des forfaits simples qui évoluent avec vous",
     sub: "Sans engagement, sans frais cachés. Modifiez ou résiliez votre abonnement à tout moment.",
-    cta: "Voir tous les tarifs et forfaits",
-  },
-  finalCta: {
-    title: "Prêt à simplifier votre gestion au quotidien ?",
-    sub: "Rejoignez des milliers de professionnels qui gagnent plus de 5 heures par semaine sur l'administratif.",
-    cta: "Démarrer l'essai gratuit",
+    cta: "Voir tous les tarifs et forfaits"
   },
   footer: {
     contact: "Contact",
-    copyright: "© 2026 Vimen. Tous droits réservés.",
-  },
+    copyright: "© 2026 Vimen. Tous droits réservés."
+  }
 },
 
-
-nav: {
-  booking: "Réservations",
-  certifications: "Certifications",
-},
-settings: {
-  account: "Coordonnées",
-  email: "Adresse e-mail",
-  phone: "Numéro de téléphone",
-},
 
 booking: {
-  // Navigation & Tabs
+  autoJobTitle: "Nouveau chantier",
+  jobCreatedToast: "Chantier créé automatiquement",
+  jobCreateFailedToast: "Réservation acceptée, mais le chantier n'a pas pu être créé automatiquement — ajoutez-le manuellement.",
+  copyError: "Impossible de copier le lien",
+  title: "Réservations",
   requests: "Demandes",
   preview: "Aperçu public",
   pageSettings: "Paramètres de la page",
-
-  // Toasts & Alerts
+  sharePage: "Partager la page",
+  pageLive: "Votre page de réservation est en ligne",
+  newRequests: "Nouvelles demandes ({{count}})",
+  accepted: "Réservations acceptées ({{count}})",
+  declined: "Demandes refusées ({{count}})",
+  noRequests: "Aucune demande de réservation pour le moment.",
+  accept: "Accepter",
+  decline: "Refuser",
+  received: "Reçue le {{date}}",
+  openPreview: "Voir ma page en ligne",
+  opening: "Ouverture…",
+  previewSub: "Ceci ouvre votre vraie page de réservation, exactement ce que voient vos clients quand ils cliquent sur votre lien.",
+  slugLabel: "Identifiant de votre page de réservation",
+  bioLabel: "Présentation (visible par les clients)",
+  rateLabel: "Tarif horaire (€)",
+  saveSettings: "Enregistrer les paramètres",
+  fullyQualified: "Pleinement Qualifié & Assuré",
+  registered: "Professionnel Agréé",
+  qualifiedInsured: "Qualifié & Assuré",
+  noPayment: "Aucun paiement requis maintenant · Demande de devis gratuit",
+  noPaymentProf: "Aucun paiement requis maintenant · Demande confidentielle",
+  noPaymentBeauty: "Aucun paiement requis maintenant · Confirmation directe",
+  sendConsult: "Envoyer la demande",
+  requestTitle: "Demander un rendez-vous",
+  whichService: "Par quelle prestation êtes-vous intéressé(e) ?",
+  regarding: "Quel est l'objet de votre consultation ?",
+  whatNeeded: "Quels sont les travaux à réaliser ?",
+  preferredDate: "Date souhaitée",
+  yourName: "Votre nom",
+  requestSent: "Demande envoyée !",
+  bookAnother: "Envoyer une autre demande",
+  copied: "Copié !",
+  loadingRequests: "Chargement des demandes...",
+  reviewsLabel: "avis",
+  responseLabel: "DÉLAI DE RÉPONSE",
+  servicesTitle: "Prestations & Tarifs",
+  gdprCompliant: "Conforme RGPD & Enregistré",
+  insuredVia: "Assuré via",
+  vatRegistered: "Assujetti à la TVA",
+  requestTitleTrades: "Demander un devis / réservation",
+  requestTitleBeauty: "Prendre un rendez-vous",
+  requestTitleProfessional: "Demander une consultation",
+  emailLabel: "Adresse e-mail",
+  phoneLabel: "Numéro de téléphone",
+  sendRequestGeneric: "Envoyer la demande",
+  sendRequestProfessional: "Demander une consultation",
+  requestSentTitle: "Demande envoyée !",
+  requestSentSub: "Merci ! {{name}} examinera votre demande et vous recontactera rapidement.",
+  urlSectionTitle: "Votre lien de réservation",
+  copyLink: "Copier le lien",
+  linkCopied: "Lien de réservation copié dans le presse-papier !",
+  copyFailedManual: "Impossible de copier automatiquement. Veuillez sélectionner et copier le lien ci-dessus manuellement.",
+  shareHint: "Partagez ce lien sur vos réseaux sociaux, cartes de visite ou envoyez-le directement à vos clients pour qu'ils puissent réserver vos services ou demander un devis en ligne.",
   updateFailed: "Échec de la mise à jour de la réservation",
   acceptedToast: "Réservation acceptée",
   declinedToast: "Réservation refusée",
   nameAndDateRequired: "Veuillez entrer votre nom et la date souhaitée",
   submitFailed: "Échec de l'envoi de la demande",
   submittedToast: "Demande de réservation envoyée avec succès !",
-  availabilitySaved: "Disponibilités enregistrées avec succès",
-  linkCopied: "Lien de réservation copié dans le presse-papier !",
-
-  // Empty & Loading States
-  loadingRequests: "Chargement des demandes...",
-  noRequests: "Aucune demande de réservation pour le moment.",
-
-  // Request Headers & Badges
-  newRequests: "Nouvelles demandes ({{count}})",
-  accepted: "Réservations acceptées ({{count}})",
-  declined: "Demandes refusées ({{count}})",
-  accept: "Accepter",
-  decline: "Refuser",
-
-  // Status Labels
+  preferredDateLabel: "Date souhaitée :",
+  receivedLabel: "Reçue le",
   status: {
     pending: "En attente",
     accepted: "Acceptée",
-    declined: "Refusée",
+    declined: "Refusée"
   },
-
-  // Booking Card Labels
-  preferredDateLabel: "Date souhaitée :",
-  receivedLabel: "Reçue le",
-
-  // Public Preview Badges & Labels
-  registered: "Professionnel Agréé",
-  qualifiedInsured: "Qualifié & Assuré",
-  fullyQualified: "Pleinement Qualifié & Assuré",
-  reviewsLabel: "avis",
-  responseLabel: "DÉLAI DE RÉPONSE",
-  gdprCompliant: "Conforme RGPD & Enregistré",
-  insuredVia: "Assuré via",
-  vatRegistered: "Assujetti à la TVA",
-  servicesTitle: "Prestations & Tarifs",
-
-  // Preview Form - Headings
-  requestTitleBeauty: "Prendre un rendez-vous",
-  requestTitleProfessional: "Demander une consultation",
-  requestTitleTrades: "Demander un devis / réservation",
-
-  // Preview Form - Input Fields
-  yourName: "Votre nom",
-  emailLabel: "Adresse e-mail",
-  phoneLabel: "Numéro de téléphone",
-  preferredDate: "Date souhaitée",
-  whichService: "Par quelle prestation êtes-vous intéressé(e) ?",
-  regarding: "Quel est l'objet de votre consultation ?",
-  whatNeeded: "Quels sont les travaux à réaliser ?",
-
-  // Preview Form - Submit Buttons & Footers
-  sendRequestProfessional: "Demander une consultation",
-  sendRequestGeneric: "Envoyer la demande",
-  noPaymentBeauty: "Aucun paiement requis maintenant · Confirmation directe",
-  noPaymentProf: "Aucun paiement requis maintenant · Demande confidentielle",
-  noPayment: "Aucun paiement requis maintenant · Demande de devis gratuit",
-
-  // Preview Form - Success Screen
-  requestSentTitle: "Demande envoyée !",
-  requestSentSub: "Merci ! {{name}} examinera votre demande et vous recontactera rapidement.",
-  bookAnother: "Envoyer une autre demande",
-
-  // Settings Section
-  urlSectionTitle: "Votre lien de réservation",
-  copyLink: "Copier le lien",
-  shareHint: "Partagez ce lien sur vos réseaux sociaux, cartes de visite ou envoyez-le directement à vos clients pour qu'ils puissent réserver vos services ou demander un devis en ligne.",
   services: {
     title: "Services & Prestations",
     subtitle: "Définissez les prestations que vous proposez. Les clients pourront les sélectionner lors d'une demande de devis ou de réservation.",
     addService: "Ajouter un service",
-    addFirst: "Ajouter votre premier service",
     editService: "Modifier le service",
     loading: "Chargement des services...",
     noneYet: "Aucun service configuré pour l'instant",
-    hiddenLabel: "Masqué",
+    addFirst: "Ajouter votre premier service",
+    nameAndPriceRequired: "Le nom et le prix du service sont obligatoires",
+    addFailed: "Échec de la création du service",
+    addedToast: "Service ajouté avec succès",
+    updateFailed: "Échec de la mise à jour du service",
+    updatedToast: "Service mis à jour avec succès",
+    deleteFailed: "Échec de la suppression du service",
+    deletedToast: "Service supprimé avec succès",
+    reorderFailed: "Échec du réordonnancement des services",
     minutesShort: "min",
-
-    // Libellés du formulaire et placeholders
+    hiddenLabel: "Masqué",
     nameLabel: "Nom de la prestation",
     namePlaceholder: "ex. Entretien de chaudière, Remplacement de tableau électrique",
     priceLabel: "Prix (€)",
@@ -2333,86 +707,109 @@ booking: {
     uploadHint: "PNG ou JPG, 5 Mo max",
     uploading: "Téléversement de l'image...",
     uploadFailed: "Échec du téléversement de l'image",
-
-    // Modal de suppression
     deleteConfirmTitle: "Supprimer le service",
-    deleteConfirmMessage: "Êtes-vous sûr de vouloir supprimer ce service ? Cette action est irréversible.",
-
-    // Notifications Toast
-    nameAndPriceRequired: "Le nom et le prix du service sont obligatoires",
-    addFailed: "Échec de la création du service",
-    addedToast: "Service ajouté avec succès",
-    updateFailed: "Échec de la mise à jour du service",
-    updatedToast: "Service mis à jour avec succès",
-    deleteFailed: "Échec de la suppression du service",
-    deletedToast: "Service supprimé avec succès",
-    reorderFailed: "Échec du réordonnancement des services",
-  }
+    deleteConfirmMessage: "Êtes-vous sûr de vouloir supprimer ce service ? Cette action est irréversible."
+  },
+  availabilityTitle: "Disponibilités",
+  availabilitySub: "Définissez vos horaires de travail. Les clients ne verront que les créneaux des jours activés.",
+  availabilitySaved: "Disponibilités enregistrées avec succès",
+  availabilitySaveFailed: "Échec de l'enregistrement des disponibilités",
+  saveAvailability: "Enregistrer les disponibilités",
+  to: "à",
+  unavailable: "Indisponible",
+  reviewsCountLabel: "{{count}} avis"
 },
 
 
 certifications: {
-  // Page Title & Primary Actions
+  title: "Certifications & Licences",
   add: "Ajouter",
-  addFirst: "Ajouter votre première certification",
-
-  // Toasts & Notifications
-  nameRequired: "Veuillez saisir un nom pour ce document : {{credential}}",
-  addedToast: "Certification ajoutée avec succès",
-  removedToast: "Certification supprimée",
-  errorAdd: "Échec de l'ajout de la certification",
-  errorUpdate: "Échec de la mise à jour de la certification",
-
-  // Modals & Form Labels
-  addCertificate: "Ajouter la certification",
-  saveChanges: "Enregistrer les modifications",
+  active: "Actives ({{count}})",
+  expiring: "Expirant bientôt ({{count}})",
+  expired: "Expirées ({{count}})",
+  visibleNote: "Les certifications actives sont visibles sur votre page de réservation",
+  expiryAlert: "{{count}} certification(s) expirant bientôt",
+  noExpiry: "Sans expiration",
   certName: "Nom du diplôme / de la certification",
-  enterName: "ex. CAP / BEP Installation Électrique",
   issuingBody: "Organisme / Autorité délivrante",
   certNumber: "N° de diplôme / Numéro d'agrément",
   issueDate: "Date d'obtention",
   expiryDate: "Date d'expiration (optionnel)",
-
-  // Delete Confirmation Modal
-  removeConfirmTitle: "Supprimer la certification ?",
-  removeConfirmMessage: "Êtes-vous sûr de vouloir supprimer cette certification ? Vous pourrez annuler cette action juste après.",
-
-  // Status Badges & Alerts
-  noExpiry: "Sans expiration",
-  expiresLabel: "Expire le",
-  monthsShort: "mois",
-  expiringSoonBanner: "Vous avez {{count}} certification{{plural}} qui expire{{plural}} bientôt",
+  saveChanges: "Enregistrer les modifications",
+  quickAdd: "Ajout rapide : certifications courantes",
   status: {
     active: "Valide",
     expired: "Expirée",
-    expiring: "Expire dans {{when}}",
+    expiring: "Expire dans {{when}}"
   },
-
-  // Overview / Stats Cards
+  addCertificate: "Ajouter la certification",
+  addedToast: "Certification ajoutée avec succès",
+  removedToast: "Certification supprimée",
+  nameRequired: "Veuillez saisir un nom pour ce document : {{credential}}",
+  egPrefix: "ex.",
+  enterName: "ex. CAP / BEP Installation Électrique",
+  removeConfirmTitle: "Supprimer la certification ?",
+  removeConfirmMessage: "Êtes-vous sûr de vouloir supprimer cette certification ? Vous pourrez annuler cette action juste après.",
+  expiringSoonBanner: "Vous avez {{count}} certification{{plural}} qui expire{{plural}} bientôt",
+  monthsShort: "mois",
   activeCerts: "Certifications valides",
   expiringSoon: "Expiration proche",
   expiredLabel: "Expirées",
   visibleOnProfile: "Visibles sur le profil",
-
-  // Section Headers & Notes
   visibilityNote: "Vos {{credentialPlural}} valides sont automatiquement affichés sur votre page de réservation publique pour rassurer vos clients.",
   noneYet: "Aucune certification ajoutée pour le moment.",
+  addFirst: "Ajouter votre première certification",
   activeSection: "Certifications valides ({{count}})",
   expiredSection: "Certifications expirées ({{count}})",
+  commonFor: "{{credentialPlural}} courantes pour {{trade}}",
+  expiresLabel: "Expire le",
+  expiresOn: "Expire le {{date}}",
+  valid: "Valide",
+  sectionTitle: "Qualifications ({{trade}})",
+  activeCount: "{{count}} actives",
+  expiringAlertTitle: "{{count}} certification(s) expirent bientôt",
+  noCertsMessage: "Aucune certification ajoutée. Affichez vos qualifications pour rassurer vos clients.",
+  editTitle: "Modifier la certification",
+  addTitle: "Ajouter une certification",
+  nameLabel: "Nom de la certification",
+  namePlaceholder: "ex. CAP, Titre professionnel, Habilitation Elec",
+  issuingBodyLabel: "Organisme délivreur",
+  issuingBodyPlaceholder: "ex. AFPA, Chambre des Métiers",
+  certNumberLabel: "Numéro de certificat / licence",
+  certNumberPlaceholder: "ex. 1234567",
+  expiryDateLabel: "Date d'expiration",
+  notesLabel: "Remarques (Optionnel)",
+  notesPlaceholder: "Informations complémentaires...",
+  addCertButton: "Ajouter la certification",
+  deleteConfirmTitle: "Supprimer la certification",
+  deleteConfirmMessage: "Êtes-vous sûr de vouloir supprimer cette certification ? Cette action est irréversible.",
+  updatedToast: "Certification mise à jour",
+  deletedToast: "Certification supprimée",
+  badgeExpiredShort: "EXP",
+  badgeValidShort: "OK",
+  errorAdd: "Échec de l'ajout de la certification",
+  errorUpdate: "Échec de la mise à jour de la certification"
 },
 
 // Add inside your fr.js export object
-nav: {
-  clients: "Clients",
-},
-
 clients: {
-  // Action Buttons & Modals
+  title: "Clients",
+  new: "+ Nouveau client",
+  noClients: "Aucun client pour l'instant",
+  name: "Nom complet",
+  email: "E-mail",
+  phone: "Téléphone",
+  address: "Adresse",
+  notes: "Notes",
+  jobs: "{{count}} mission(s)",
+  invoices: "{{count}} facture(s)",
   addClient: "Ajouter un client",
   editClient: "Modifier le client",
-  addFirst: "Ajouter votre premier client",
-
-  // Toasts & Notifications
+  fullNameCompany: "Nom complet ou Entreprise",
+  emailLabel: "Adresse e-mail",
+  phoneLabel: "Numéro de téléphone",
+  addressLabel: "Adresse",
+  notesLabel: "Notes / Détails internes",
   nameRequired: "Veuillez entrer le nom du client ou de la société",
   addFailed: "Échec de la création du client",
   addedToast: "Client créé avec succès",
@@ -2420,44 +817,64 @@ clients: {
   updatedToast: "Client mis à jour avec succès",
   deleteFailed: "Échec de la suppression du client",
   deletedToast: "Client supprimé avec succès",
-
-  // Form Field Labels
-  fullNameCompany: "Nom complet ou Entreprise",
-  emailLabel: "Adresse e-mail",
-  phoneLabel: "Numéro de téléphone",
-  addressLabel: "Adresse",
-  notesLabel: "Notes / Détails internes",
-
-  // Confirm Delete Modal
   deleteConfirmTitle: "Supprimer le client",
   deleteConfirmMessage: "Êtes-vous sûr de vouloir supprimer ce client ? Cette action est irréversible.",
   deleteClientButton: "Supprimer définitivement",
-
-  // Search & List Table Headers
   searchPlaceholder: "Rechercher par nom ou par e-mail...",
   loading: "Chargement des clients...",
   noneYet: "Aucun client trouvé.",
+  addFirst: "Ajouter votre premier client",
   colClient: "Client",
   colContact: "Contact",
   colJobs: "Missions",
   colRevenue: "Total payé",
-
-  // Client Detail Panel
   jobsAndEarned: "{{count}} mission(s) · {{earned}} encaissés",
   jobHistory: "Historique des missions",
   noJobsYet: "Aucun historique de mission pour ce client.",
   invoicesTitle: "Factures",
   noInvoicesYet: "Aucune facture générée pour ce client.",
+  noSearchResults: "Aucun client ne correspond à votre recherche.",
+  noClientsYet: "Aucun client enregistré pour l'instant.",
+  addFirstClient: "Ajouter votre premier client",
+  columnClient: "Client",
+  columnContact: "Contact",
+  columnAddress: "Adresse",
+  columnActions: "Actions",
+  addedOn: "Ajouté le {{date}}",
+  totalSpent: "Total dépensé : {{amount}}",
+  labelEmail: "E-mail",
+  labelPhone: "Téléphone",
+  labelAddress: "Adresse",
+  labelNotes: "Notes",
+  labelName: "Nom complet / Raison sociale",
+  jobsTitle: "Projets ({{count}})",
+  addClientTitle: "Ajouter un client",
+  editClientTitle: "Modifier le client",
+  placeholderName: "ex. Claire Dupont",
+  placeholderEmail: "ex. claire@example.com",
+  placeholderPhone: "ex. 06 12 34 56 78",
+  placeholderAddress: "ex. 12 rue de la Paix, Paris",
+  placeholderNotes: "Code d'accès, consignes particulières...",
+  createClientButton: "Créer le client",
+  invalidEmail: "Veuillez saisir une adresse e-mail valide.",
+  createdToast: "Client créé avec succès",
+  createFailed: "Échec de la création du client"
 },
 
 // Add inside your fr.js export object
 dashboard: {
-  // Greeting & Primary Action
+  earned: "Encaissé",
+  upcoming: "{{jobs}} à venir",
+  clients: "Clients",
+  thisMonth: "Ce mois-ci",
+  unpaid: "{{count}} impayée(s)",
+  total: "Total",
+  bookingLive: "Votre page de réservation est en ligne",
+  noUpcoming: "Aucune {{jobs}} à venir",
+  noActivity: "Aucun travail terminé pour l'instant",
   greeting: "Ravi de vous revoir, {{name}}",
   thereFallback: "à vous",
   newJob: "Nouvelle mission",
-
-  // Metric Cards
   earnedThisMonth: "Gagné ce mois-ci",
   invoicesCount: "{{count}} facture(s) payée(s)",
   outstanding: "En attente de paiement",
@@ -2466,168 +883,109 @@ dashboard: {
   scheduled: "Planifiées",
   totalClients: "Total clients",
   inYourCrm: "Dans votre CRM",
-
-  // Booking Requests Banner
   newBookingRequests: "Vous avez {{count}} nouvelle(s) demande(s) de réservation",
   review: "Examiner",
-
-  // Upcoming Jobs Section
-  upcomingJobsTitle: "Prochaines missions",
   viewAll: "Voir tout",
+  upcomingJobsTitle: "Prochaines missions",
   noUpcomingJobs: "Aucune mission planifiée.",
   addOne: "En ajouter une",
-
-  // Recent Activity Section
-  recentActivity: "Activité récente",
   invoicesLink: "Factures",
+  recentActivity: "Activité récente",
   noCompletedJobs: "Aucune mission terminée pour le moment.",
   noInvoice: "Pas de facture",
-
-  // Public Booking Link Bar
   bookingPageLive: "Votre page de réservation est en ligne",
   copyLink: "Copier le lien",
   linkCopied: "Lien de la page de réservation copié dans le presse-papier !",
   copyFailedManual: "Échec de la copie. Veuillez copier l'URL manuellement.",
   viewPage: "Voir la page",
+  welcomeBack: "Ravi de vous revoir{{name}}",
+  subtitle: "Voici un aperçu de votre activité.",
+  subtitleWithTrade: "Aperçu de votre activité en {{trade}}.",
+  metricRevenue: "Chiffre d'affaires",
+  metricPaidInvoicesCount: "{{count}} factures payées",
+  metricPending: "En attente de paiement",
+  metricUnpaidInvoicesCount: "{{count}} factures non payées",
+  metricActiveJobs: "Projets en cours",
+  metricTotalJobsCount: "{{count}} projets au total",
+  metricBookingRequests: "Demandes reçues",
+  metricPendingRequests: "En attente de réponse",
+  pendingRequestsTitle: "Demandes de réservation en attente",
+  noPendingRequests: "Aucune demande de réservation en attente.",
+  recentJobsTitle: "Projets récents",
+  noJobsYet: "Aucun projet créé pour l'instant.",
+  linkCopyFailed: "Échec de la copie du lien"
 },
 // Add inside your en.js export object
-nav: {
-  invoices: "Invoices",
-},
-
-invoices: {
-  // Primary Actions & Modals
-  newInvoice: "New Invoice",
-  createInvoiceTitle: "Create Invoice",
-  selectClient: "Select a client...",
-  noneOption: "None / Standalone Invoice",
-  viewButton: "View",
-  paidButton: "Paid",
-
-  // Toasts & Notifications
-  loadError: "Failed to load invoices. Please try again.",
-  loadErrorTitle: "Could not load invoices",
-  createdToast: "Invoice created successfully",
-  createFailed: "Failed to create invoice. Please try again.",
-  markedPaidToast: "Invoice marked as paid!",
-  markPaidFailed: "Failed to mark as paid. Please try again.",
-  noClientEmail: "This client has no email address.",
-  emailedToast: "Invoice emailed to {{email}}",
-  emailFailedToast: "Email failed to send. {{error}}",
-  paymentLinkCreated: "Payment link created!",
-  paymentLinkFailed: "Failed to create payment link. Check your Stripe connection.",
-  bankDetailsCopied: "Bank details copied to clipboard!",
-  copyFailedManual: "Could not copy. Please copy manually.",
-  deletedToast: "Invoice deleted successfully",
-  deleteFailed: "Failed to delete invoice.",
-
-  // Validation Errors
-  errorSelectClient: "Please select a client.",
-  errorAmount: "Please enter a valid amount.",
-
-  // Form Field Labels
-  clientLabel: "Client",
-  linkedJobLabel: "Linked Job (optional)",
-  amountLabel: "Amount (€)",
-  dueDateLabel: "Due Date",
-
-  // Action Bar in Invoice Preview
-  sending: "Sending...",
-  sendEmail: "Send Email",
-  creating: "Creating...",
-  createPaymentLink: "Stripe Payment Link",
-  openPaymentLink: "Open Stripe Link",
-  markAsPaid: "Mark Paid",
-  copyBankDetails: "Copy Bank Info",
-
-  // Invoice Document / Preview Labels
-  issuedLabel: "Issued",
-  dueLabel: "Due",
-  billTo: "Bill To",
-  descriptionCol: "Description",
-  amountCol: "Amount",
-  servicesRendered: "Services Rendered",
-  totalDue: "Total Due",
-  payOnline: "Pay online via Stripe:",
-  bankTransferTitle: "Bank Transfer Details",
-  bankLabel: "Bank:",
-  sortCodeLabel: "Sort Code / BIC:",
-  accountLabel: "Account / IBAN:",
-  referenceLabel: "Reference:",
-  defaultPaymentTerms: "Payment due upon receipt.",
-
-  // Delete Confirmation
-  deleteConfirmTitle: "Delete Invoice?",
-  deleteConfirmMessage: "Are you sure you want to delete this invoice? This action cannot be undone.",
-
-  // Metric Cards
-  totalPaid: "Total Paid",
-  invoicesCount: "{{count}} invoice(s)",
-  outstandingLabel: "Outstanding",
-  unpaidCount: "{{count}} unpaid",
-  totalInvoiced: "Total Invoiced",
-  allTime: "All time",
-
-  // Tabs & Table Headers
-  tabAll: "All",
-  tabUnpaid: "Unpaid",
-  tabPaid: "Paid",
-  noneYet: "No invoices created yet.",
-  createFirst: "Create your first invoice",
-  colInvoice: "Invoice #",
-  colClient: "Client",
-  colIssued: "Issued",
-  colDue: "Due",
-  colAmount: "Amount",
-  colStatus: "Status",
-
-  // Status Badges
-  status: {
-    paid: "Paid",
-    unpaid: "Unpaid",
-    overdue: "Overdue",
-  },
-},
-
 jobs: {
-  // Field Labels & Placeholders
-  client: "Client",
-  selectClient: "Sélectionner un client...",
-  titleLabel: "Titre",
-  date: "Date",
-  startTime: "Heure de début",
-  duration: "Durée (heures)",
-  durationShort: "Durée",
-  amount: "Prix / Montant (€)",
-  amountShort: "Montant",
-  notes: "Notes",
-  notesPlaceholder: "Codes d'accès, matériel nécessaire, consignes particulières...",
-
-  // Toast / Error / Success Messages
-  errorRequired: "Veuillez sélectionner un client, un titre et une date.",
-  errorAdd: "Échec de la création de la mission",
-  successAdd: "Mission créée avec succès",
-  errorUpdate: "Échec de la mise à jour de la mission",
-  successUpdate: "Mission mise à jour avec succès",
-  errorComplete: "Échec de la finalisation de la mission",
-  successComplete: "Mission marquée comme terminée !",
-  errorDelete: "Échec de la suppression de la mission",
-  successDelete: "Mission supprimée avec succès",
-  deleteWarning: "Êtes-vous sûr de vouloir supprimer cette mission ? Cette action est irréversible.",
-
-  // Tabs & Empty States
+  title: "Projets",
+  new: "Nouvelle mission",
   scheduled: "Planifiées ({{count}})",
   completed: "Terminées ({{count}})",
+  markDone: "Terminer",
   noUpcoming: "Aucune mission planifiée.",
   noCompleted: "Aucune mission terminée pour le moment.",
   addFirst: "+ Ajouter votre première mission",
-
-  // Table Actions & Statuses
-  markDone: "Terminer",
+  client: "Client",
+  date: "Date",
+  time: "Heure",
+  duration: "Durée (heures)",
+  amount: "Prix / Montant (€)",
+  notes: "Notes",
   status: {
     scheduled: "Planifiée",
     completed: "Terminée",
+    cancelled: "Annulée"
   },
+  titleLabel: "Titre",
+  selectClient: "Sélectionner un client...",
+  startTime: "Heure de début",
+  durationShort: "Durée",
+  amountShort: "Montant",
+  notesPlaceholder: "Codes d'accès, matériel nécessaire, consignes particulières...",
+  deleteWarning: "Êtes-vous sûr de vouloir supprimer cette mission ? Cette action est irréversible.",
+  errorRequired: "Veuillez sélectionner un client, un titre et une date.",
+  errorAdd: "Échec de la création de la mission",
+  errorUpdate: "Échec de la mise à jour de la mission",
+  errorComplete: "Échec de la finalisation de la mission",
+  errorDelete: "Échec de la suppression de la mission",
+  successAdd: "Mission créée avec succès",
+  successUpdate: "Mission mise à jour avec succès",
+  successComplete: "Mission marquée comme terminée !",
+  successDelete: "Mission supprimée avec succès",
+  addJob: "Nouveau projet",
+  filterAll: "Tous ({{count}})",
+  filterScheduled: "Planifiés ({{count}})",
+  filterCompleted: "Terminés ({{count}})",
+  noJobsFound: "Aucun projet trouvé.",
+  colDate: "Date",
+  colClient: "Client",
+  colTitle: "Titre / Description",
+  colDuration: "Durée",
+  colAmount: "Montant",
+  colStatus: "Statut",
+  createTitle: "Nouveau projet",
+  editTitle: "Modifier le projet",
+  labelClient: "Client",
+  selectClientPlaceholder: "-- Sélectionner un client --",
+  labelTitle: "Titre du projet / Résumé",
+  titlePlaceholder: "ex. Entretien chaudière et fuite d'eau",
+  labelDate: "Date",
+  labelDuration: "Durée (Heures)",
+  labelAmount: "Montant estimé",
+  labelNotes: "Notes / Détails de la mission",
+  submitCreate: "Créer le projet",
+  clientRequired: "Veuillez sélectionner un client.",
+  titleRequired: "Veuillez saisir un titre.",
+  createdSuccess: "Projet planifié avec succès",
+  createError: "Échec de la création du projet",
+  updatedSuccess: "Détails du projet mis à jour",
+  updateError: "Échec de la mise à jour du projet",
+  completedSuccess: "Projet marqué comme terminé",
+  completeError: "Échec de la validation du projet",
+  deleteConfirmTitle: "Supprimer le projet",
+  deleteConfirmMessage: "Êtes-vous sûr de vouloir supprimer ce projet ? Cette action est irréversible.",
+  deletedSuccess: "Projet supprimé",
+  deleteError: "Échec de la suppression du projet"
 },
 
 marketplace: {
@@ -2635,68 +993,60 @@ marketplace: {
   myListingsBtn: "Mes annonces",
   browseBtn: "Parcourir les annonces",
   postListingBtn: "+ Publier une annonce",
+  loading: "Chargement des annonces...",
   searchPlaceholder: "Rechercher par titre, description, localisation...",
   allProfessions: "Tous les métiers",
   urgentOnly: "Urgentes uniquement",
-  listingCount: "{{count}} annonce(s)",
-  loading: "Chargement des annonces...",
-  emptyBrowse: "Aucune annonce ne correspond à vos critères.",
-  postFirstOne: "Publier la première annonce",
-  yourListings: "Vos annonces ({{count}})",
-  emptyMine: "Vous n'avez pas encore publié d'annonce.",
-  postFirstListing: "Publier votre première annonce",
   urgent: "URGENT",
   close: "Clôturer l'annonce",
+  listingCount: "{{count}} annonce(s)",
   viewsCount: "{{count}} vues",
+  yourListings: "Vos annonces ({{count}})",
   fromDate: "À partir du {{date}}",
   photoAlt: "Photo",
-
   types: {
     all: "Toutes",
     demand: "Demandes de sous-traitance",
     sale: "Cessions d'entreprise",
     recruitment: "Recrutement",
-    materials: "Matériaux & Équipement",
+    materials: "Matériaux & Équipement"
   },
-
+  typeLabels: {
+    demand: "Demande",
+    sale: "À vendre",
+    recruitment: "Recrute",
+    materials: "Matériel"
+  },
   status: {
     active: "Active",
-    closed: "Clôturée",
+    closed: "Clôturée"
   },
-
+  time: {
+    today: "Aujourd'hui",
+    yesterday: "Hier",
+    daysAgo: "Il y a {{count}} jour(s)",
+    weeksAgo: "Il y a {{count}} semaine(s)"
+  },
   stats: {
     activeDemands: "Demandes actives",
     businessesForSale: "Entreprises à céder",
     recruitmentPosts: "Offres d'emploi",
-    materialsForSale: "Matériaux & Équipements",
+    materialsForSale: "Matériaux & Équipements"
   },
-
-  toast: {
-    listingClosed: "Annonce clôturée avec succès",
-    listingDeleted: "Annonce supprimée avec succès",
-    listingPosted: "Annonce publiée avec succès",
-    interestSent: "Votre message d'intérêt a été envoyé",
-    requiredTitleDescLocation: "Veuillez renseigner le titre, la description et la localisation.",
-    requiredContact: "Veuillez renseigner votre nom et votre adresse e-mail.",
-    failedPost: "Échec de la publication de l'annonce. Veuillez réessayer.",
-    requiredInterestFields: "Veuillez renseigner votre nom, e-mail et votre message.",
-    failedInterest: "Échec de l'envoi du message. Veuillez réessayer.",
-    requiredInterestFields: "Veuillez renseigner votre nom, e-mail et votre message.",
-    failedInterest: "Échec de l'envoi du message. Veuillez réespérer.",
-  },
-
+  emptyBrowse: "Aucune annonce ne correspond à vos critères.",
+  postFirstOne: "Publier la première annonce",
+  emptyMine: "Vous n'avez pas encore publié d'annonce.",
+  postFirstListing: "Publier votre première annonce",
   deleteConfirm: {
     title: "Supprimer l'annonce ?",
     message: "Êtes-vous sûr de vouloir supprimer cette annonce ? Cette action est irréversible.",
-    confirmLabel: "Supprimer l'annonce",
+    confirmLabel: "Supprimer l'annonce"
   },
-
   card: {
     budgetSuffixDemand: "budget",
     budgetSuffixSale: "prix demandé",
-    revenueShort: "CA",
+    revenueShort: "CA"
   },
-
   detail: {
     contact: "Coordonnées de contact",
     interestedBtn: "Exprimer un intérêt",
@@ -2715,47 +1065,56 @@ marketplace: {
       category: "Catégorie",
       condition: "État",
       price: "Prix",
-      quantity: "Quantité",
-    },
+      quantity: "Quantité"
+    }
   },
-
+  toast: {
+    listingClosed: "Annonce clôturée avec succès",
+    listingDeleted: "Annonce supprimée avec succès",
+    listingPosted: "Annonce publiée avec succès",
+    interestSent: "Votre message d'intérêt a été envoyé",
+    requiredTitleDescLocation: "Veuillez renseigner le titre, la description et la localisation.",
+    requiredContact: "Veuillez renseigner votre nom et votre adresse e-mail.",
+    failedPost: "Échec de la publication de l'annonce. Veuillez réessayer.",
+    failedInterest: "Échec de l'envoi du message. Veuillez réespérer.",
+    requiredNameEmail: "Nom et email obligatoires",
+    requiredInterestFields: "Veuillez renseigner votre nom, e-mail et votre message."
+  },
   post: {
     modalTitle: "Publier une annonce sur la Marketplace",
     step1Prompt: "Sélectionnez le type d'annonce que vous souhaitez publier :",
+    typeCards: {
+      demand: {
+        label: "Demande de sous-traitance",
+        desc: "Recherche de sous-traitants ou renfort de main-d'œuvre pour un chantier"
+      },
+      sale: {
+        label: "Cession d'entreprise",
+        desc: "Vente d'entreprise du bâtiment, portefeuille client ou fonds de commerce"
+      },
+      recruitment: {
+        label: "Recrutement",
+        desc: "Embauche de collaborateurs (CDI, CDD, Intérim, Apprentissage)"
+      },
+      materials: {
+        label: "Matériaux & Équipement",
+        desc: "Vente ou échange de surplus de chantier, outillage ou machines"
+      }
+    },
     next: "Suivant",
     back: "Retour",
     step2Of3: "Étape 2 sur 3 : détails",
     step3Of3: "Étape 3 sur 3 : contact",
     markUrgent: "Marquer comme annonce urgente",
-    posting: "Publication en cours...",
     postBtn: "Publier l'annonce",
-
-    typeCards: {
-      demand: {
-        label: "Demande de sous-traitance",
-        desc: "Recherche de sous-traitants ou renfort de main-d'œuvre pour un chantier",
-      },
-      sale: {
-        label: "Cession d'entreprise",
-        desc: "Vente d'entreprise du bâtiment, portefeuille client ou fonds de commerce",
-      },
-      recruitment: {
-        label: "Recrutement",
-        desc: "Embauche de collaborateurs (CDI, CDD, Intérim, Apprentissage)",
-      },
-      materials: {
-        label: "Matériaux & Équipement",
-        desc: "Vente ou échange de surplus de chantier, outillage ou machines",
-      },
-    },
-
+    posting: "Publication en cours...",
     fields: {
       titleLabel: "Titre",
       titlePlaceholders: {
         demand: "ex. Rénovation électrique chantier, recherche 2 électriciens",
         sale: "ex. Vente entreprise de plomberie, établie depuis 12 ans",
         recruitment: "ex. Recrutement Technicien CVC Expérimenté",
-        materials: "ex. Lot d'échafaudages & électroportatif Makita",
+        materials: "ex. Lot d'échafaudages & électroportatif Makita"
       },
       descriptionLabel: "Description",
       descriptionPlaceholder: "Précisez votre besoin, votre offre, les compétences requises...",
@@ -2782,9 +1141,8 @@ marketplace: {
       photoUploadHint: "Ajouter la photo principale",
       photoUploadHintOptional: "Ajouter une photo supplémentaire (optionnel)",
       photoUploading: "Téléversement...",
-      photoUploadFailed: "Échec du téléversement",
+      photoUploadFailed: "Échec du téléversement"
     },
-
     contact: {
       yourName: "Votre nom / Nom de la société",
       email: "Adresse e-mail de contact",
@@ -2794,83 +1152,108 @@ marketplace: {
       methodOptions: {
         both: "E-mail et Téléphone",
         email: "E-mail uniquement",
-        phone: "Téléphone uniquement",
+        phone: "Téléphone uniquement"
       },
-      privacyNote: "Vos coordonnées ne seront partagées qu'avec les membres connectés à la plateforme.",
-    },
+      privacyNote: "Vos coordonnées ne seront partagées qu'avec les membres connectés à la plateforme."
+    }
   },
-
   interest: {
-    title: "Exprimer un intérêt",
-    prompt: "Envoyez un message direct à l'auteur de l'annonce pour discuter des modalités.",
+    modalTitle: "Manifester son intérêt",
+    yourName: "Votre nom *",
+    email: "Email *",
+    phone: "Téléphone",
+    message: "Message",
+    messagePlaceholder: "Présentez-vous brièvement et indiquez vos disponibilités…",
     sendBtn: "Envoyer le message",
+    title: "Exprimer un intérêt",
+    prompt: "Envoyez un message directement à l'auteur de l'annonce pour exprimer votre intérêt ou poser des questions.",
     sending: "Envoi en cours...",
     fields: {
       name: "Votre nom",
       email: "Adresse e-mail",
-      phone: "Numéro de téléphone",
-      message: "Message",
+      phone: "Numéro de téléphone (optionnel)",
+      message: "Message"
     },
     placeholders: {
       name: "ex. Jean Dupont",
       email: "jean@exemple.fr",
       phone: "06 12 34 56 78",
-      message: "Bonjour, je suis intéressé par votre annonce. Merci de me recontacter.",
-    },
+      message: "Bonjour, je suis intéressé par votre annonce. Est-elle toujours disponible ?"
+    }
   },
-
   contractTypes: {
     Subcontracting: "Sous-traitance",
     CDI: "CDI",
     CDD: "CDD",
     Interim: "Intérim",
     Apprenticeship: "Apprentissage / Alternance",
-    Other: "Autre",
+    Other: "Autre"
   },
-
   materialCategories: {
     Electrical: "Électricité",
     Plumbing: "Plomberie / Chauffage",
     General: "Gros œuvre / Général",
     Safety: "Sécurité & EPI",
     Tools: "Outillage & Matériel",
-    Other: "Autre",
+    Other: "Autre"
   },
-
   materialConditions: {
     new: "Neuf",
     likeNew: "Très bon état",
     used: "État d'usage",
-    forParts: "Pour pièces / À réparer",
-  },
-
-  interest: {
-    title: "Exprimer un intérêt",
-    prompt: "Envoyez un message directement à l'auteur de l'annonce pour exprimer votre intérêt ou poser des questions.",
-    sendBtn: "Envoyer le message",
-    sending: "Envoi en cours...",
-    fields: {
-      name: "Votre nom",
-      email: "Adresse e-mail",
-      phone: "Numéro de téléphone (optionnel)",
-      message: "Message",
-    },
-    placeholders: {
-      name: "ex. Jean Dupont",
-      email: "jean@exemple.fr",
-      phone: "06 12 34 56 78",
-      message: "Bonjour, je suis intéressé par votre annonce. Est-elle toujours disponible ?",
-    },
-  },
+    forParts: "Pour pièces / À réparer"
+  }
 },
 
 payments: {
+  errors: {
+    connectFailedWhat: "Impossible de démarrer la connexion Stripe",
+    connectFailedWhy: "Le service de paiement est temporairement indisponible",
+    connectFailedAction: "Vérifie ta connexion et réessaie",
+    syncFailedWhat: "Impossible de synchroniser le compte",
+    syncFailedWhy: "Le service de paiement est temporairement indisponible",
+    syncFailedAction: "Veuillez réessayer dans quelques instants",
+  },
+  copied: "Copié",
   title: "Paiements & Virements",
+  payouts: "Virements",
+  totalVolume: "Volume total",
+  yourEarnings: "Vos gains",
+  balance: "Solde",
+  inTransit: "En transit",
+  totalPaidOut: "Total viré",
+  recentPayments: "Paiements récents",
+  noPayments: "Aucun paiement pour l'instant",
+  feeTitle: "Détail des frais : exemple 550 €",
+  invoiceAmount: "Montant de la facture",
+  stripeFee: "Frais Stripe (1,4 %+0,25 €)",
+  VimenFee: "Vimen Pay (2 %)",
+  youReceive: "Vous recevez",
+  connected: "Vimen Pay actif",
+  autoPayouts: "Virements automatiques",
+  autoPayoutsSub: "Vos gains sont virés automatiquement tous les 2 jours ouvrés sur votre compte bancaire.",
+  noPayouts: "Aucun virement pour l'instant",
+  stripeConnect: "Stripe Connect",
+  stripeConnectSub: "Recevez des paiements par carte sur vos factures",
+  openStripe: "Ouvrir le tableau de bord Stripe",
+  feeStructure: "Structure des frais",
   tabs: {
     overview: "Aperçu",
     transactions: "Transactions ({{count}})",
     payouts: "Virements",
-    account: "Compte Stripe",
+    account: "Compte Stripe"
+  },
+  status: {
+    completed: "Terminé",
+    pending: "En attente",
+    processing: "En cours",
+    failed: "Échoué",
+    refunded: "Remboursé",
+    paid: "Payé",
+    in_transit: "En transit",
+    connected: "Connecté",
+    active: "Actif",
+    notConnected: "Non connecté"
   },
   overview: {
     notConnectedTitle: "Paiements Stripe non connectés",
@@ -2880,68 +1263,47 @@ payments: {
     viewAll: "Voir tout",
     recentPayments: "Paiements récents",
     emptyPayments: "Aucun paiement terminé pour le moment.",
-    ofGrossAmount: "sur {{amount}} brut",
+    ofGrossAmount: "sur {{amount}} brut"
   },
   metrics: {
     totalVolume: "Volume total",
+    paymentsCount: "{{count}} paiement(s)",
     yourEarnings: "Vos gains (Nets)",
+    ofGross: "{{pct}} du volume brut",
     thisMonth: "Ce mois-ci",
     availableBalance: "Solde disponible",
-    inTransitToBank: "En transit vers la banque",
-    totalPaidOut: "Total versé",
-    paymentsCount: "{{count}} paiement(s)",
-    ofGross: "{{pct}} du volume brut",
     readyToPayOut: "Prêt pour virement automatique",
+    inTransitToBank: "En transit vers la banque",
     arrivingSoon: "Arrivée sous 1 à 2 jours ouvrés",
-    payoutsCount: "{{count}} virement(s)",
+    totalPaidOut: "Total versé",
+    payoutsCount: "{{count}} virement(s)"
+  },
+  feeInfo: {
+    title: "Comment fonctionnent les frais Vimen Pay",
+    intro: "Lorsqu'un client paie une facture en ligne, deux frais sont déduits avant que l'argent n'arrive sur votre compte :",
+    stripeLabel: "Stripe (1,4 % + 20p)",
+    stripeDesc: "Les frais de traitement des cartes, taux standard au Royaume-Uni.",
+    VimenLabel: "Vimen Pay (2 %)",
+    VimenDesc: "Ce qui permet de faire fonctionner et d'améliorer l'application."
+  },
+  feeBreakdown: {
+    invoiceAmount: "Montant de la facture",
+    stripeFeeLine: "Frais Stripe (1,4 % + 20p)",
+    platformFeeLine: "Frais Vimen Pay (2 %)",
+    youReceive: "Vous recevez"
+  },
+  potential: {
+    title: "Votre potentiel de gains",
+    rowLabel: "Si vous traitez {{amount}}/an",
+    netSuffix: "net",
+    footnote: "Net après les frais Stripe (1,4 %+20p) et Vimen Pay (2 %)."
   },
   transactions: {
     grossVolume: "Volume brut",
     stripeFeesPaid: "Frais de traitement Stripe",
+    VimenPayFees: "Frais Vimen Pay",
     netToYou: "Net perçu",
-    empty: "Aucune transaction trouvée.",
-  },
-  payoutsTab: {
-    availableForPayout: "Solde disponible",
-    estimated: "Solde estimé",
-    inTransit: "En transit",
-    expectedWithin2Days: "Prévu sous 2 jours ouvrés",
-    totalPaidOut: "Total versé",
-    empty: "Aucun virement enregistré pour le moment.",
-  },
-  payoutSchedule: {
-    title: "Calendrier des virements automatiques",
-    description: "Les virements sont automatiquement transférés tous les 2 jours sur votre compte bancaire se terminant par",
-  },
-  connect: {
-    stripeAccountTitle: "Compte Stripe Connect",
-    stripeConnect: "Stripe Connect",
-    connectedDesc: "Votre compte est connecté et configuré pour traiter les paiements.",
-    notConnectedDesc: "Connectez-vous pour activer le paiement par carte sur vos factures.",
-    connectedBody: "Vos virements sont gérés via Stripe. Vous pouvez modifier vos coordonnées bancaires et consulter le détail des frais directement sur votre tableau de bord Stripe.",
-    openDashboard: "Ouvrir le tableau de bord Stripe",
-    notConnectedBody: "En connectant Stripe, vous permettez à vos clients de régler leurs devis et factures directement en ligne par carte bancaire. Les fonds sont automatiquement versés sur votre compte.",
-    connectAccountBtn: "Connecter le compte Stripe",
-    redirectingToast: "Redirection vers Stripe Connect...",
-  },
-  howItWorks: {
-    title: "Comment fonctionnent les paiements",
-    step1: {
-      title: "1. Envoyez une facture",
-      desc: "Transmettez vos devis ou factures avec un lien de paiement en ligne à votre client.",
-    },
-    step2: {
-      title: "2. Le client paie en ligne",
-      desc: "Votre client règle de manière sécurisée par carte bancaire via Stripe.",
-    },
-    step3: {
-      title: "3. Traitement des fonds",
-      desc: "Stripe sécurise le paiement et déduit automatiquement les frais de traitement.",
-    },
-    step4: {
-      title: "4. Virement sur votre compte",
-      desc: "Les fonds nets sont automatiquement versés sur votre compte bancaire relié.",
-    },
+    empty: "Aucune transaction trouvée."
   },
   table: {
     date: "Date",
@@ -2949,6 +1311,7 @@ payments: {
     description: "Description",
     gross: "Brut",
     stripeFee: "Frais",
+    VimenFee: "Frais Vimen",
     youReceive: "Net perçu",
     status: "Statut",
     dateInitiated: "Initiations",
@@ -2956,52 +1319,168 @@ payments: {
     amount: "Montant",
     transactions: "Transactions",
     bank: "Compte bancaire",
+    actions: "Actions"
   },
-  status: {
-    connected: "Connecté",
-    active: "Actif",
-    notConnected: "Non connecté",
-    completed: "Terminé",
-    pending: "En attente",
-    processing: "En cours",
-    failed: "Échoué",
-    refunded: "Remboursé",
-    paid: "Payé",
-    in_transit: "En transit",
+  payoutsTab: {
+    availableForPayout: "Solde disponible",
+    estimated: "Solde estimé",
+    inTransit: "En transit",
+    expectedWithin2Days: "Prévu sous 2 jours ouvrés",
+    totalPaidOut: "Total versé",
+    empty: "Aucun virement enregistré pour le moment."
   },
-
+  payoutSchedule: {
+    title: "Calendrier des virements automatiques",
+    description: "Les virements sont automatiquement transférés tous les 2 jours sur votre compte bancaire se terminant par"
+  },
+  connect: {
+    stripeAccountTitle: "Compte Stripe Connect",
+    stripeConnect: "Stripe Connect",
+    syncBtn: "Synchroniser",
+    syncSuccess: "Synchronisation effectuée",
+    connectedDesc: "Votre compte est connecté et configuré pour traiter les paiements.",
+    notConnectedDesc: "Connectez-vous pour activer le paiement par carte sur vos factures.",
+    connectedBody: "Vos virements sont gérés via Stripe. Vous pouvez modifier vos coordonnées bancaires et consulter le détail des frais directement sur votre tableau de bord Stripe.",
+    openDashboard: "Ouvrir le tableau de bord Stripe",
+    notConnectedBody: "En connectant Stripe, vous permettez à vos clients de régler leurs devis et factures directement en ligne par carte bancaire. Les fonds sont automatiquement versés sur votre compte.",
+    redirectingToast: "Redirection vers Stripe Connect...",
+    connectAccountBtn: "Connecter le compte Stripe",
+    redirectSuccess: "Redirection vers le portail de configuration..."
+  },
+  bankTransfer: {
+    title: "Coordonnées bancaires (RIB)",
+    desc: "Pas de compte Stripe ? Renseigne ton IBAN pour que tes clients puissent te payer par virement bancaire. Ces informations apparaîtront automatiquement sur tes factures envoyées par email.",
+    holderLabel: "Titulaire du compte",
+    holderPlaceholder: "ex. Jean Dupont",
+    invalidIban: "Cet IBAN ne semble pas valide, vérifie-le.",
+    saved: "Coordonnées bancaires enregistrées",
+    saveFailed: "Échec de l'enregistrement, réessaie"
+  },
+  howItWorks: {
+    title: "Comment fonctionnent les paiements",
+    step1: {
+      title: "1. Envoyez une facture",
+      desc: "Transmettez vos devis ou factures avec un lien de paiement en ligne à votre client."
+    },
+    step2: {
+      title: "2. Le client paie en ligne",
+      desc: "Votre client règle de manière sécurisée par carte bancaire via Stripe."
+    },
+    step3: {
+      title: "3. Traitement des fonds",
+      desc: "Stripe sécurise le paiement et déduit automatiquement les frais de traitement."
+    },
+    step4: {
+      title: "4. Virement sur votre compte",
+      desc: "Les fonds nets sont automatiquement versés sur votre compte bancaire relié."
+    }
+  },
+  feeSummary: {
+    title: "Détail des frais",
+    rows: {
+      stripe: {
+        label: "Traitement Stripe",
+        fee: "1,4 % + 20p",
+        note: "Taux standard au Royaume-Uni"
+      },
+      VimenPay: {
+        label: "Vimen Pay",
+        fee: "2,0 %",
+        note: "Permet de faire fonctionner la plateforme"
+      },
+      total: {
+        label: "Total déduit",
+        fee: "~3,4 %",
+        note: "Sur une facture de 500£, cela fait 17£ de frais"
+      }
+    },
+    bankTransferNote: "Facture payée par virement bancaire ? Aucun frais. Seuls les paiements par carte passent par Vimen Pay."
+  },
   pendingVolume: "En attente",
-pendingCount: "{{count}} en attente",
-
-connecting: "Connexion",
-errorWhat: "Impossible de se connecter à Stripe",
-errorWhy: "La demande de connexion a échoué ou a expiré.",
-errorAction: "Vérifiez votre connexion et réessayez. Si le problème persiste, contactez le support.",
-
-copiedToast: "Copié",
-copyFailedToast: "Impossible de copier",
+  pendingCount: "{{count}} en attente",
+  connecting: "Connexion",
+  errorWhat: "Impossible de se connecter à Stripe",
+  errorWhy: "La demande de connexion a échoué ou a expiré.",
+  errorAction: "Vérifiez votre connexion et réessayez. Si le problème persiste, contactez le support.",
+  copiedToast: "Copié",
+  copyFailedToast: "Impossible de copier"
 },
 
 publicBooking: {
   loading: "Chargement du profil...",
+  brand: "Vimen",
+  poweredBy: "Via Vimen",
+  perHour: "/h",
   notFound: "Page introuvable",
+  badges: {
+    professional: "Professionnel enregistré",
+    beauty: "Qualifié(e) et assuré(e)",
+    default: "Entièrement qualifié(e)"
+  },
+  professionalExtra: {
+    gdprCompliant: "Traitement des données clients conforme au RGPD"
+  },
+  tradesExtra: {
+    insuredVia: "Assuré via {{provider}}",
+    vatRegistered: "Assujetti à la TVA"
+  },
+  beautyExtra: {
+    servicesTitle: "Prestations",
+    duration: "{{count}} min"
+  },
+  done: {
+    title: "Demande envoyée !",
+    message: "{{name}} confirmera sous peu."
+  },
+  form: {
+    titlePrefix: "Demander",
+    aByVertical: {
+      trades: "une réservation",
+      beauty: "un rendez-vous",
+      professional: "une consultation",
+      other: "une réservation"
+    },
+    yourName: "Votre nom",
+    email: "Email",
+    phone: "Téléphone",
+    preferredDate: "Date souhaitée",
+    detailsLabel: {
+      beauty: "Quelle prestation ?",
+      professional: "Sur quel sujet ?",
+      default: "De quoi avez-vous besoin ?"
+    },
+    detailsPlaceholder: {
+      beauty: "ex. Manucure gel, balayage…",
+      professional: "Décrivez brièvement ce dont vous aimeriez discuter…",
+      default: "Décrivez les travaux…"
+    },
+    sending: "Envoi…",
+    sendRequest: "Envoyer la demande",
+    sendBookingRequest: "Envoyer la demande de réservation",
+    footerNote: {
+      beauty: "Aucun paiement requis · Confirmé par message",
+      professional: "Aucun paiement requis · Confidentiel",
+      default: "Aucun paiement requis · Devis gratuit"
+    }
+  },
+  toast: {
+    missingNameEmail: "Merci de renseigner votre nom et votre email",
+    genericError: "Une erreur est survenue, veuillez réessayer"
+  },
   notFoundDesc: "La page de réservation que vous recherchez n'existe pas ou a été supprimée.",
-  
   steps: {
     service: "Prestation",
     dateTime: "Date & heure",
-    yourDetails: "Vos coordonnées",
+    yourDetails: "Vos coordonnées"
   },
-
   step1: {
     title: "Choisissez une prestation",
     subtitle: "Sélectionnez ce que vous souhaitez réserver, ou choisissez « Autre demande ».",
     somethingElse: "Autre demande",
     somethingElseDesc: "Décrivez une demande sur mesure",
     selected: "Sélectionné",
-    continue: "Continuer",
+    continue: "Continuer"
   },
-
   step2: {
     title: "Choisissez une date & heure",
     subtitleService: "Créneaux affichés pour des séances de {{duration}} minutes.",
@@ -3009,9 +1488,8 @@ publicBooking: {
     noAvailability: "Ce professionnel n'a pas encore défini ses disponibilités.\nVeuillez le contacter directement pour convenir d'un rendez-vous.",
     noSlotsForDay: "Aucun créneau disponible pour cette journée.",
     back: "Retour",
-    continue: "Continuer",
+    continue: "Continuer"
   },
-
   step3: {
     change: "Modifier",
     customRequestTitle: "Votre demande sur mesure",
@@ -3022,56 +1500,114 @@ publicBooking: {
     refImageOptional: "(optionnel)",
     refImageHint: "Téléversez une photo ou une image d'inspiration.",
     refImageHintService: "Une photo ou un exemple de ce que vous souhaitez.",
-    
     contactTitle: "Vos coordonnées",
     nameLabel: "Nom *",
     namePlaceholder: "Sarah Mitchell",
     emailLabel: "E-mail *",
     phoneLabel: "Téléphone",
     phoneOptional: "(optionnel)",
-    
     notesLabelBeauty: "Des demandes particulières ?",
     notesLabelPro: "Quel est le sujet ?",
     notesLabelGeneric: "Notes complémentaires",
-    
     notesPlaceholderBeauty: "ex. Éviter la décoloration…",
     notesPlaceholderPro: "Décrivez brièvement ce dont vous souhaitez discuter…",
     notesPlaceholderGeneric: "Précisions ou besoins particuliers…",
-    
     back: "Retour",
     sendBtn: "Envoyer la demande de réservation",
     sendingBtn: "Envoi en cours…",
-    
     noPaymentBeauty: "Sans paiement immédiat · Confirmation par message",
     noPaymentPro: "Sans paiement immédiat · Confidentiel",
-    noPaymentGeneric: "Sans paiement immédiat · Devis gratuit",
+    noPaymentGeneric: "Sans paiement immédiat · Devis gratuit"
   },
-
   upload: {
     uploading: "Téléversement…",
     dropText: "Glissez une image ou cliquez pour téléverser",
     limitText: "JPG, PNG jusqu'à 10 Mo",
-    failed: "Échec du téléversement",
+    failed: "Échec du téléversement"
   },
-
   success: {
     title: "Demande envoyée !",
     confirmationMsg: "{{name}} confirmera votre créneau {{slotDetails}} sous peu.",
-    sentToEmail: "Confirmation envoyée à {{email}}",
-  },
+    sentToEmail: "Confirmation envoyée à {{email}}"
+  }
 },
 
 quotes: {
   title: "Devis",
-  newQuoteBtn: "Nouveau devis",
-  createFirst: "Créer votre premier devis",
-  empty: "Aucun devis trouvé",
-
-  tabs: {
-    active: "Actifs",
-    archived: "Archivés",
+  new: "Nouveau devis",
+  totalQuoted: "Total devisé",
+  accepted: "Accepté",
+  conversion: "Taux de conversion",
+  active: "Actifs ({{count}})",
+  archived: "Archivés ({{count}})",
+  noQuotes: "Aucun devis pour l'instant",
+  create: "Créer le devis",
+  sign: "Signer",
+  convertToJob: "Convertir en mission",
+  client: "Client",
+  title_: "Titre du devis",
+  validUntil: "Valable jusqu'au",
+  addLine: "Ajouter une ligne",
+  notes: "Notes pour le client",
+  margin: "Marge estimée",
+  subtotal: "Sous-total",
+  vatRate: "TVA",
+  total: "Total",
+  labour: "Main d'œuvre",
+  material: "Matériau",
+  other: "Autre",
+  signTitle: "Signature électronique du client",
+  signSub: "En saisissant son nom, le client confirme qu'il accepte ce devis.",
+  signCta: "Signer et accepter le devis",
+  status: {
+    draft: "Brouillon",
+    sent: "Envoyé",
+    viewed: "Consulté",
+    accepted: "Accepté",
+    declined: "Refusé",
+    converted: "Converti"
   },
-
+  newQuoteBtn: "Nouveau devis",
+  modal: {
+    newTitle: "Nouveau devis",
+    editTitle: "Modifier le devis"
+  },
+  fields: {
+    client: "Client",
+    validUntil: "Valable jusqu'au",
+    quoteTitle: "Titre du devis",
+    quoteTitlePlaceholder: "ex. Rénovation salle de bain - Phase 1",
+    notesForClient: "Notes pour le client",
+    notesPlaceholder: "ex. Conditions de paiement, modalités ou remarques particulières..."
+  },
+  lineItems: {
+    label: "Lignes de prestation / fourniture",
+    addLine: "+ Ajouter une ligne",
+    headers: {
+      description: "Description",
+      type: "Type",
+      qtyPrice: "Qté / Prix",
+      total: "Total HT"
+    },
+    descriptionPlaceholder: "Description de la prestation ou du matériel...",
+    qtyPlaceholder: "Qté",
+    unitPricePlaceholder: "Prix"
+  },
+  lineTypes: {
+    labour: "Main-d'œuvre",
+    material: "Matériel",
+    other: "Autre"
+  },
+  totals: {
+    subtotal: "Sous-total HT",
+    vat: "TVA",
+    total: "Total TTC",
+    estMargin: "Marge estimée :"
+  },
+  actions: {
+    createQuote: "Créer le devis",
+    saveChanges: "Enregistrer les modifications"
+  },
   toast: {
     titleClientRequired: "Veuillez saisir un titre et sélectionner un client",
     quoteCreated: "Devis créé avec succès",
@@ -3080,84 +1616,35 @@ quotes: {
     enterClientName: "Veuillez saisir le nom complet du client",
     quoteSignedBy: "Devis accepté et signé par {{name}}",
     convertedToJob: "Converti en chantier avec succès",
-    quoteDeleted: "Devis supprimé",
+    quoteDeleted: "Devis supprimé"
   },
-
-  modal: {
-    newTitle: "Nouveau devis",
-    editTitle: "Modifier le devis",
-  },
-
-  fields: {
-    client: "Client",
-    validUntil: "Valable jusqu'au",
-    quoteTitle: "Titre du devis",
-    quoteTitlePlaceholder: "ex. Rénovation salle de bain - Phase 1",
-    notesForClient: "Notes pour le client",
-    notesPlaceholder: "ex. Conditions de paiement, modalités ou remarques particulières...",
-  },
-
-  lineItems: {
-    label: "Lignes de prestation / fourniture",
-    addLine: "+ Ajouter une ligne",
-    descriptionPlaceholder: "Description de la prestation ou du matériel...",
-    qtyPlaceholder: "Qté",
-    unitPricePlaceholder: "Prix",
-    headers: {
-      description: "Description",
-      type: "Type",
-      qtyPrice: "Qté / Prix",
-      total: "Total HT",
-    },
-  },
-
-  lineTypes: {
-    labour: "Main-d'œuvre",
-    material: "Matériel",
-    other: "Autre",
-  },
-
-  totals: {
-    subtotal: "Sous-total HT",
-    vat: "TVA",
-    total: "Total TTC",
-    estMargin: "Marge estimée :",
-  },
-
-  actions: {
-    createQuote: "Créer le devis",
-    saveChanges: "Enregistrer les modifications",
-  },
-
   preview: {
     markAsSent: "Marquer comme envoyé",
     clientSign: "Faire signer le client",
     convertToJob: "Convertir en chantier",
-    issued: "Émis le {{date}}",
-    validUntil: "Valable jusqu'au {{date}}",
-    preparedFor: "Préparé pour",
-    vatLine: "TVA ({{rate}}%)",
-    acceptedBy: "Accepté & signé par {{name}} le {{date}}",
     signature: {
       title: "Signer le devis",
       fullNameLabel: "Nom complet du client",
       confirmText: "En signant, vous confirmez l'acceptation de ce devis et de ses conditions.",
-      signBtn: "Confirmer & Signer",
+      signBtn: "Confirmer & Signer"
     },
+    issued: "Émis le {{date}}",
+    validUntil: "Valable jusqu'au {{date}}",
+    preparedFor: "Préparé pour",
     table: {
       description: "Description",
       type: "Type",
       qty: "Qté",
       unit: "Unité",
-      total: "Total",
+      total: "Total"
     },
+    vatLine: "TVA ({{rate}}%)",
+    acceptedBy: "Accepté & signé par {{name}} le {{date}}"
   },
-
   deleteConfirm: {
     title: "Supprimer le devis",
-    message: "Êtes-vous sûr de vouloir supprimer ce devis ? Cette action est irréversible.",
+    message: "Êtes-vous sûr de vouloir supprimer ce devis ? Cette action est irréversible."
   },
-
   stats: {
     totalQuotedValue: "Valeur totale devisée",
     quotesCount: "{{count}} devis au total",
@@ -3166,9 +1653,14 @@ quotes: {
     pending: "En attente",
     awaitingResponse: "En attente de réponse",
     conversionRate: "Taux de conversion",
-    acceptedOverTotal: "Acceptés / total",
+    acceptedOverTotal: "Acceptés / total"
   },
-
+  tabs: {
+    active: "Actifs",
+    archived: "Archivés"
+  },
+  empty: "Aucun devis trouvé",
+  createFirst: "Créer votre premier devis",
   table: {
     headers: {
       quoteNumber: "N° Devis",
@@ -3176,30 +1668,53 @@ quotes: {
       title: "Titre",
       total: "Total",
       margin: "Marge",
-      status: "Statut",
-    },
+      status: "Statut"
+    }
   },
-
-  status: {
-    draft: "Brouillon",
-    sent: "Envoyé",
-    viewed: "Consulté",
-    accepted: "Accepté",
-    declined: "Refusé",
-    converted: "Converti",
-  },
-
   row: {
     view: "Voir",
     edit: "Éditer",
-    toJob: "Chantier",
-  },
+    toJob: "Chantier"
+  }
 },
 
 referrals: {
   title: "Parrainage & Récompenses",
+  refer: "+ Parrainer",
+  rewarded: "Récompensés",
+  monthsFree: "Mois offerts",
+  totalSent: "Total envoyés",
+  myLink: "Votre lien de parrainage",
+  shareLink: "Partager le lien",
+  sendInvite: "Envoyer une invitation",
+  yourReferrals: "Vos filleuls ({{count}})",
+  noReferrals: "Aucun parrainage pour l'instant",
+  referFirst: "Parrainer votre premier artisan",
+  referTitle: "Parrainer un artisan",
+  theirName: "Son prénom (facultatif)",
+  theirEmail: "Son e-mail *",
+  reward: "+{{months}} mois Pro",
+  sending: "Envoi…",
+  sendCta: "Envoyer l'invitation",
+  linkSub: "Partagez ce lien avec n'importe quel artisan. Quand il termine sa première mission sur Vimen, vous recevez tous les deux {{months}} mois Pro offerts.",
+  status: {
+    pending: "En attente",
+    signed_up: "Inscrit",
+    qualified: "Éligible",
+    rewarded: "Récompensé"
+  },
   referSomeoneBtn: "Parrainer quelqu'un",
-
+  modal: {
+    title: "Parrainer un professionnel du bâtiment",
+    intro: "Envoyez une invitation directement dans sa boîte mail. Il recevra un lien personnalisé pour commencer.",
+    theirNameLabel: "Son nom (optionnel)",
+    theirEmailLabel: "Son adresse e-mail",
+    giftNote: "Récompense : Vous bénéficiez tous les deux de 2 mois d'abonnement Pro gratuits lorsqu'il crée un compte et réalise son premier chantier.",
+    cancel: "Annuler",
+    send: "Envoyer l'invitation",
+    namePlaceholder: "ex. Jean Dupont",
+    emailPlaceholder: "ex. jean@exemple.com"
+  },
   toast: {
     linkCopied: "Lien de parrainage copié dans le presse-papier",
     copyFailedManual: "Échec de la copie. Veuillez copier le lien manuellement.",
@@ -3210,21 +1725,8 @@ referrals: {
     applyingReward: "Application de la récompense...",
     rewardSuccess: "Récompense appliquée !",
     userNotFound: "Cette personne ne s'est pas encore inscrite.",
-    rewardFailed: "Échec de l'application de la récompense. Réessaie.",
+    rewardFailed: "Échec de l'application de la récompense. Réessaie."
   },
-
-  modal: {
-    title: "Parrainer un professionnel du bâtiment",
-    intro: "Envoyez une invitation directement dans sa boîte mail. Il recevra un lien personnalisé pour commencer.",
-    theirNameLabel: "Son nom (optionnel)",
-    theirEmailLabel: "Son adresse e-mail",
-    giftNote: "Récompense : Vous bénéficiez tous les deux de 2 mois d'abonnement Pro gratuits lorsqu'il crée un compte et réalise son premier chantier.",
-    cancel: "Annuler",
-    send: "Envoyer l'invitation",
-    namePlaceholder: "ex. Jean Dupont",
-    emailPlaceholder: "ex. jean@exemple.com",
-  },
-
   metrics: {
     successfulReferrals: "Parrainages réussis",
     totalSent: "{{count}} invitations envoyées",
@@ -3233,147 +1735,70 @@ referrals: {
     pending: "Invitations en attente",
     waitingToSignUp: "En attente d'inscription",
     yourReferralCode: "Votre code de parrainage",
-    shareThisLink: "Partagez avec qui vous voulez",
+    shareThisLink: "Partagez avec qui vous voulez"
   },
-
   linkCard: {
     title: "Partagez votre lien de parrainage",
     description: "Partagez votre lien personnel avec vos confrères artisans, collègues ou sous-traitants. Lorsqu'ils s'inscrivent et utilisent Vimen, vous obtenez tous les deux un accès Pro gratuit.",
     copied: "Copié !",
-    copyLink: "Copier le lien",
+    copyLink: "Copier le lien"
   },
-
+  share: {
+    whatsapp: "WhatsApp",
+    facebook: "Facebook",
+    email: "Email",
+    whatsappMessage: "J'utilise Vimen pour gérer mon activité, c'est excellent pour la facturation et les paiements. Inscris-toi gratuitement ici : {{url}}",
+    emailSubject: "Essaie Vimen : l'appli gratuite pour les artisans",
+    emailBody: "Salut, j'utilise Vimen pour gérer mon activité et je pense que ça pourrait t'être utile. Inscris-toi gratuitement ici : {{url}}"
+  },
   howItWorks: {
     title: "Comment fonctionne le parrainage",
     step1: {
       title: "Partagez votre lien unique",
-      desc: "Envoyez votre lien personnel par e-mail, message ou sur les réseaux sociaux.",
+      desc: "Envoyez votre lien personnel par e-mail, message ou sur les réseaux sociaux."
     },
     step2: {
       title: "Ils s'inscrivent gratuitement",
-      desc: "Votre filleul crée un compte Vimen en utilisant votre code ou votre lien.",
+      desc: "Votre filleul crée un compte Vimen en utilisant votre code ou votre lien."
     },
     step3: {
       title: "Ils terminent leur premier chantier",
-      desc: "Dès qu'ils créent et terminent leur première intervention, les deux comptes deviennent éligibles.",
+      desc: "Dès qu'ils créent et terminent leur première intervention, les deux comptes deviennent éligibles."
     },
     step4: {
       title: "2 mois Pro offerts à chacun",
-      desc: "Nous créditons automatiquement 2 mois de version Pro gratuite sur vos deux comptes.",
-    },
+      desc: "Nous créditons automatiquement 2 mois de version Pro gratuite sur vos deux comptes."
+    }
   },
-
+  statusDesc: {
+    pending: "En attente d'inscription de l'utilisateur",
+    signed_up: "Compte créé, en attente du 1er chantier",
+    qualified: "Éligible pour la récompense",
+    rewarded: "2 mois Pro crédités"
+  },
   table: {
     title: "Vos parrainages",
     empty: "Vous n'avez parrainé personne pour l'instant",
     referFirst: "Envoyer votre premier parrainage",
-    rewardMonths: "{{count}} mois Pro offerts",
     headers: {
       name: "Nom",
       email: "E-mail",
       code: "Code",
       status: "Statut",
       reward: "Récompense",
-      sent: "Envoyé le",
+      sent: "Envoyé le"
     },
-  },
-
-  status: {
-    pending: "En attente",
-    signed_up: "Inscrit",
-    qualified: "Éligible",
-    rewarded: "Récompensé",
-  },
-
-  statusDesc: {
-    pending: "En attente d'inscription de l'utilisateur",
-    signed_up: "Compte créé, en attente du 1er chantier",
-    qualified: "Éligible pour la récompense",
-    rewarded: "2 mois Pro crédités",
-  },
-},
-
-reviews: {
-  title: "Avis Clients",
-  addManuallyBtn: "Ajouter manuellement",
-  requestReviewBtn: "Demander un avis",
-
-  toast: {
-    selectCompletedJob: "Veuillez sélectionner une intervention terminée",
-    requestSent: "Demande d'avis envoyée à {{name}}",
-    nameRatingRequired: "Veuillez saisir le nom du client et sélectionner une note",
-    reviewAdded: "Avis ajouté",
-    markedPushedToGoogle: "Marqué comme publié sur Google",
-  },
-
-  fallback: {
-    clientBracket: "[Nom du client]",
-    work: "l'intervention",
-  },
-
-  requestModal: {
-    title: "Demander un avis",
-    intro: "Envoyez un lien de demande d'avis à un client après avoir terminé un chantier. Les clients satisfaits laissent d'excellents avis qui vous aident à décrocher de nouveaux contrats.",
-    completedJobLabel: "Intervention terminée",
-    selectJobPlaceholder: "Sélectionner un chantier",
-    smsPreviewTitle: "Aperçu du message",
-    smsTemplate: "Bonjour {{clientName}}, merci d'avoir fait appel à {{profileName}} ! Si vous êtes satisfait de {{jobTitle}}, auriez-vous 60 secondes pour nous laisser un avis ? {{urlPreview}}...",
-    cancel: "Annuler",
-    sendSmsBtn: "Envoyer la demande",
-  },
-
-  manualModal: {
-    title: "Ajouter un avis manuellement",
-    intro: "Enregistrez un avis reçu de vive voix, via WhatsApp ou sur papier.",
-    clientNameLabel: "Nom du client",
-    ratingLabel: "Note",
-    reviewTitleLabel: "Titre de l'avis (optionnel)",
-    reviewTitlePlaceholder: "ex. Excellent travail dans notre cuisine",
-    reviewTextLabel: "Texte de l'avis (optionnel)",
-    reviewTextPlaceholder: "Qu'a dit le client ?",
-    addReviewBtn: "Ajouter l'avis",
-  },
-
-  stats: {
-    reviewsCount_zero: "Aucun avis pour l'instant",
-    reviewsCount_one: "Basé sur {{count}} avis",
-    reviewsCount_other: "Basé sur {{count}} avis",
-  },
-
-  metrics: {
-    verifiedReviews: "Avis vérifiés",
-    onYourProfile: "Sur votre profil",
-    googleClicks: "Clics Google",
-    tappedGoogleLink: "Ont cliqué sur le lien Google",
-    jobsWithNoReview: "Chantiers sans avis",
-    couldRequestReview: "Terminés, sans demande envoyée",
-  },
-
-  googleCta: {
-    title: "Améliorez votre référencement Google",
-    description: "Liez votre fiche Google Business Profile pour rediriger directement les clients satisfaits vers votre page d'avis Google.",
-    openBtn: "Ouvrir Google Business",
-  },
-
-  list: {
-    empty: "Aucun avis pour l'instant",
-    requestFirst: "Demander votre premier avis",
-    verifiedBadge: "Vérifié",
-    onGoogleBadge: "Publié sur Google",
-    askClientToPostBtn: "Marquer comme publié sur Google",
-  },
+    rewardMonths: "{{count}} mois Pro offerts"
+  }
 },
 
 settings: {
   title: "Paramètres",
-
   account: "Compte",
   payment: "Paiements & Facturation",
   notifications: "Notifications",
   plan: "Abonnement",
   language: "Langue",
-
-  yourName: "Votre nom",
   fullName: "Nom complet",
   profession: "Métier / Profession",
   email: "Adresse e-mail",
@@ -3385,33 +1810,14 @@ settings: {
   googleReviewUrl: "Lien d'avis Google",
   googleReviewUrlPlaceholder: "https://g.page/r/votre-identifiant/review",
   googleReviewUrlHint: "Collez votre lien d'avis Google direct pour inciter vos clients à vous évaluer après chaque intervention.",
-
-  verticalDetails: "Détails spécifiques : {{vertical}}",
-  verticalSub: "Personnalisez les informations de votre secteur qui apparaîtront sur vos devis, factures et page publique.",
-
   saveAccount: "Enregistrer le compte",
-  errorSave: "Échec de l'enregistrement des paramètres. Veuillez réessayer.",
-  successSave: "Paramètres enregistrés avec succès",
-
   bankDetails: "Coordonnées bancaires pour factures",
   bankName: "Nom de la banque",
   sortCode: "Code banque / BIC",
   accountNumber: "Numéro de compte / IBAN",
-
-  invoiceDefaults: "Paramètres de facturation par défaut",
   paymentTerms: "Conditions de paiement",
-  termsImmediate: "Payable à réception",
-  terms7: "7 jours",
-  terms14: "14 jours",
-  terms30: "30 jours",
   invoiceNotes: "Notes par défaut sur les factures",
-  invoiceNotesPlaceholder: "ex. Merci pour votre confiance. Réglement souhaité par virement bancaire.",
-
-  stripeDesc: "Acceptez les paiements par carte bancaire et en ligne directement depuis vos factures.",
-  connectStripe: "Connecter un compte Stripe",
   savePayment: "Enregistrer les paramètres de paiement",
-
-  notifTitle: "Préférences de notifications",
   notifEmail: "E-mail pour nouvelles réservations",
   notifEmailSub: "Recevez un e-mail à chaque demande ou réservation d'un client",
   notifSms: "SMS lors des paiements",
@@ -3421,17 +1827,31 @@ settings: {
   notifOverdue: "Rappels de factures impayées",
   notifOverdueSub: "Relances automatiques envoyées aux clients pour les factures en retard",
   savePreferences: "Enregistrer les préférences",
-
   currentPlan: "Abonnement actuel",
+  upgrade: "Passer au plan Pro",
+  downgrade: "Changer de plan",
+  currentPlanBadge: "Abonnement actuel",
+  mostPopular: "Le plus populaire",
+  signOutConfirm: "Se déconnecter ?",
+  languageTitle: "Choisir la langue de la plateforme",
+  languageSub: "Sélectionnez la langue utilisée dans votre espace de gestion Vimen.",
+  verticalDetails: "Détails spécifiques : {{vertical}}",
+  verticalSub: "Personnalisez les informations de votre secteur qui apparaîtront sur vos devis, factures et page publique.",
+  yourName: "Votre nom",
+  invoiceDefaults: "Paramètres de facturation par défaut",
+  invoiceNotesPlaceholder: "ex. Merci pour votre confiance. Réglement souhaité par virement bancaire.",
+  notifTitle: "Préférences de notifications",
+  stripeDesc: "Acceptez les paiements par carte bancaire et en ligne directement depuis vos factures.",
+  connectStripe: "Connecter un compte Stripe",
+  termsImmediate: "Payable à réception",
+  terms7: "7 jours",
+  terms14: "14 jours",
+  terms30: "30 jours",
   renewsMonthly: "Renouvellement mensuel",
-  manageBilling: "Gérer l'abonnement",
-
-  mostPopular: "LE PLUS POPULAIRE",
-  currentPlanBadge: "Forfait actif",
-  redirectingStripe: "Redirection vers la page de paiement...",
-  upgrade: "Passer à la version Pro",
-  downgrade: "Changer pour la version gratuite",
-
+  manageBilling: "Gérer la facturation",
+  redirectingStripe: "Redirection vers Stripe…",
+  errorSave: "Échec de l'enregistrement des paramètres. Veuillez réessayer.",
+  successSave: "Paramètres enregistrés avec succès",
   planFeat1: "Jusqu'à 10 chantiers/mois",
   planFeat2: "Générateur de devis & factures basique",
   planFeat3: "Gestion des clients (CRM)",
@@ -3443,61 +1863,42 @@ settings: {
   planFeat9: "Paiements en ligne via Stripe",
   planFeat10: "Support multi-devises",
   planFeat11: "Support prioritaire",
-
-  languageTitle: "Choisir la langue de la plateforme",
-  languageSub: "Sélectionnez la langue utilisée dans votre espace de gestion Vimen.",
   currencyTitle: "Devise par défaut",
   currencyLabel: "Devise",
-
-  currentPlan: "Abonnement actuel",
-    renewsMonthly: "Renouvellement mensuel",
-    manageBilling: "Gérer la facturation",
-    mostPopular: "Le plus populaire",
-    currentPlanBadge: "Abonnement actuel",
-    upgrade: "Passer au plan Pro",
-    downgrade: "Changer de plan",
-    redirectingStripe: "Redirection vers Stripe…",
-
-    // Features - Free
-    freeFeatServices: "Gestion de services de base",
-    freeFeatCerts: "Jusqu'à 2 certifications affichées",
-    freeFeatBooking: "Lien de réservation public standard",
-    freeFeatSupport: "Support communautaire",
-
-    // Features - Pro
-    proFeatServices: "Services et demandes personnalisées illimités",
-    proFeatCerts: "Certifications et badges illimités",
-    proFeatCustomDomain: "Branding personnalisé & Slug sur-mesure",
-    proFeatPrioritySlot: "Contrôle avancé des créneaux & disponibilités",
-    proFeatAnalytics: "Analyses des demandes et réservations",
-    proFeatSupport: "Support prioritaire",
-    reminderFrequency: "Fréquence des rappels",
-    reminderMaxCount: "Nombre max de rappels",
-    days: "jours",
+  freeFeatServices: "Gestion de services de base",
+  freeFeatCerts: "Jusqu'à 2 certifications affichées",
+  freeFeatBooking: "Lien de réservation public standard",
+  freeFeatSupport: "Support communautaire",
+  proFeatServices: "Services et demandes personnalisées illimités",
+  proFeatCerts: "Certifications et badges illimités",
+  proFeatCustomDomain: "Branding personnalisé & Slug sur-mesure",
+  proFeatPrioritySlot: "Contrôle avancé des créneaux & disponibilités",
+  proFeatAnalytics: "Analyses des demandes et réservations",
+  proFeatSupport: "Support prioritaire",
+  reminderFrequency: "Fréquence des rappels",
+  reminderMaxCount: "Nombre max de rappels",
+  days: "jours"
 },
 
 nav: {
-  core: "Gestion",
-  revenue: "Revenus & Marché",
-  growthSection: "Croissance",
-  account: "Compte",
-
   dashboard: "Tableau de bord",
+  jobs: "Missions",
   quotes: "Devis",
   clients: "Clients",
   invoices: "Factures",
   booking: "Réservation en ligne",
-
   payments: "Paiements",
   marketplace: "Marketplace",
-
   reviews: "Avis clients",
   referrals: "Parrainages",
   certifications: "Certifications",
-
   settings: "Paramètres",
-
-  tagline: "Plateforme les professionnels",
+  more: "Plus",
+  core: "Gestion",
+  revenue: "Revenus & Marché",
+  growthSection: "Croissance",
+  account: "Compte",
+  tagline: "Plateforme les professionnels"
 },
 
 footerNav: {
@@ -3558,8 +1959,26 @@ contactPage: {
 // À ajouter / remplacer dans ton fichier src/i18n/fr.js
 
 invoices: {
-  loadErrorTitle: "Impossible de charger les factures",
-  loadError: "Échec du chargement des factures. Veuillez réessayer.",
+  title: "Factures",
+  new: "+ Nouvelle",
+  paid: "Payées",
+  outstanding: "En attente",
+  all: "Toutes",
+  unpaid: "Impayées",
+  overdue: "En retard",
+  markPaid: "Marquer payée",
+  email: "Envoyer par e-mail",
+  paymentLink: "Lien de paiement",
+  noInvoices: "Aucune facture pour l'instant",
+  amount: "Montant (€)",
+  dueDate: "Date d'échéance",
+  linkedJob: "Mission liée (facultatif)",
+  creating: "Création...",
+  status: {
+    paid: "Payée",
+    unpaid: "En attente",
+    overdue: "En retard"
+  },
   newInvoice: "Nouvelle facture",
   createInvoiceTitle: "Créer une facture",
   clientLabel: "Client",
@@ -3568,52 +1987,42 @@ invoices: {
   noneOption: "Aucune",
   amountLabel: "Montant HT / TTC",
   dueDateLabel: "Date d'échéance",
-  createFirst: "Créer ma première facture",
-  noneYet: "Aucune facture pour le moment",
-  
-  // Validation & Toasts
-  errorSelectClient: "Veuillez sélectionner un client.",
-  errorAmount: "Veuillez entrer un montant valide.",
-  createdToast: "Facture créée avec succès !",
+  selectClientAndAmount: "Sélectionnez un client et saisissez un montant",
   createFailed: "Échec de la création de la facture. Veuillez réessayer.",
-  markedPaidToast: "Facture marquée comme payée !",
+  createdToast: "Facture créée avec succès !",
   markPaidFailed: "Échec de la mise à jour. Veuillez réessayer.",
+  markedPaidToast: "Facture marquée comme payée !",
   noClientEmail: "Ce client n'a pas d'adresse e-mail.",
   emailedToast: "Facture envoyée à {{email}}",
   emailFailedToast: "Échec de l'envoi de l'e-mail.",
-  paymentLinkCreated: "Lien de paiement Stripe créé !",
   paymentLinkFailed: "Échec de la création du lien Stripe. Vérifiez votre connexion.",
-  bankDetailsCopied: "Coordonnées bancaires copiées !",
-  copyFailedManual: "Impossible de copier automatiquement. Copiez manuellement.",
-  deletedToast: "Facture supprimée.",
+  paymentLinkCreated: "Lien de paiement Stripe créé !",
   deleteFailed: "Échec de la suppression de la facture.",
-
-  // Modale Aperçu & Actions
+  deletedToast: "Facture supprimée.",
   sending: "Envoi en cours...",
   sendEmail: "Envoyer par e-mail",
-  creating: "Création...",
   createPaymentLink: "Créer lien Stripe",
   openPaymentLink: "Ouvrir le lien Stripe",
   markAsPaid: "Marquer comme payée",
-  copyBankDetails: "Copier le RIB",
+  issuedLabel: "Émise le :",
+  dueLabel: "Échéance :",
   billTo: "Facturé à",
   descriptionCol: "Description",
   amountCol: "Montant",
   servicesRendered: "Prestations & services",
   totalDue: "Total à payer",
   payOnline: "Payer en ligne :",
-  bankTransferTitle: "Règlement par virement bancaire",
   bankLabel: "Banque :",
   sortCodeLabel: "Code banque / Sort Code :",
   accountLabel: "N° de compte / IBAN :",
   referenceLabel: "Référence :",
-  issuedLabel: "Émise le :",
-  dueLabel: "Échéance :",
+  bankTransferTitle: "Règlement par virement bancaire",
+  copyBankDetails: "Copier le RIB",
+  bankDetailsCopied: "Coordonnées bancaires copiées !",
+  copyFailedManual: "Impossible de copier automatiquement. Copiez manuellement.",
   defaultPaymentTerms: "Paiement à réception",
   deleteConfirmTitle: "Supprimer la facture",
   deleteConfirmMessage: "Êtes-vous sûr de vouloir supprimer cette facture ? Cette action est irréversible.",
-
-  // Métriques & Onglets
   totalPaid: "Total encaissé",
   invoicesCount: "{count} facture(s)",
   outstandingLabel: "En attente",
@@ -3623,8 +2032,9 @@ invoices: {
   tabAll: "Toutes",
   tabUnpaid: "Non payées",
   tabPaid: "Payées",
-
-  // Tableau
+  loading: "Chargement des factures…",
+  noneYet: "Aucune facture pour le moment",
+  createFirst: "Créer ma première facture",
   colInvoice: "N° Facture",
   colClient: "Client",
   colIssued: "Émission",
@@ -3633,33 +2043,80 @@ invoices: {
   colStatus: "Statut",
   viewButton: "Voir",
   paidButton: "Payer",
-
-  // Statuts
-  status: {
-    paid: "Payée",
-    unpaid: "En attente",
-    overdue: "En retard",
-  },
+  loadError: "Échec du chargement des factures. Veuillez réessayer.",
+  loadErrorTitle: "Impossible de charger les factures",
+  errorSelectClient: "Veuillez sélectionner un client.",
+  errorAmount: "Veuillez entrer un montant valide."
 },
 
 reviews: {
-  // Modal d'ajout manuel visible sur image_67ddc4.png
+  title: "Avis Clients",
+  addManually: "Ajouter",
+  request: "Demander",
+  averageRating: "{{rating}} de moyenne",
+  verified: "Vérifié",
+  onGoogle: "Sur Google",
+  pending: "En attente",
+  noReviews: "Aucun avis pour l'instant",
+  requestFirst: "Demandez votre premier avis",
+  connectGoogle: "Connecter Google Business",
+  connectSub: "Permettez aux clients d'accéder directement à votre profil Google",
+  sendRequest: "Envoyer la demande par SMS",
+  requestTitle: "Demander un avis",
+  requestSub: "Sélectionnez une mission terminée. Nous enverrons un SMS au client avec un lien direct vers votre page Google.",
+  addTitle: "Ajouter un avis",
+  clientName: "Nom du client",
+  rating: "Note",
+  reviewTitle: "Titre",
+  reviewBody: "Avis",
+  whatSaid: "Qu'a dit le client ?",
+  addReview: "Ajouter l'avis",
+  pushGoogle: "Inviter le client à poster sur Google",
+  addManuallyBtn: "Ajouter manuellement",
+  requestReviewBtn: "Demander un avis",
+  requestModal: {
+    title: "Demander un avis",
+    intro: "Envoyez un lien de demande d'avis à un client après avoir terminé un chantier. Les clients satisfaits laissent d'excellents avis qui vous aident à décrocher de nouveaux contrats.",
+    completedJobLabel: "Intervention terminée",
+    selectJobPlaceholder: "Sélectionner un chantier",
+    smsPreviewTitle: "Aperçu du message",
+    smsTemplate: "Bonjour {{clientName}}, merci d'avoir fait appel à {{profileName}} ! Si vous êtes satisfait de {{jobTitle}}, auriez-vous 60 secondes pour nous laisser un avis ? {{urlPreview}}...",
+    cancel: "Annuler",
+    sendSmsBtn: "Envoyer la demande"
+  },
   manualModal: {
     title: "Ajouter un avis manuellement",
     intro: "Enregistrez un avis reçu de vive voix, via WhatsApp ou sur papier.",
     clientNameLabel: "Nom du client",
-    clientNamePlaceholder: "ex. Jean Dupont",
     ratingLabel: "Note",
-    ratingDisplay: "{{rating}} sur {{total}} étoiles",
     reviewTitleLabel: "Titre de l'avis (optionnel)",
     reviewTitlePlaceholder: "ex. Excellent travail dans notre cuisine",
     reviewTextLabel: "Texte de l'avis (optionnel)",
     reviewTextPlaceholder: "Qu'a dit le client ?",
-    addReviewBtn: "Ajouter l'avis"
+    addReviewBtn: "Ajouter l'avis",
+    clientNamePlaceholder: "ex. Jean Dupont",
+    ratingDisplay: "{{rating}} sur {{total}} étoiles"
   },
-  // Statistiques & CTA visibles sur image_67e0ad.png
+  toast: {
+    selectCompletedJob: "Veuillez sélectionner une intervention terminée",
+    clientNoPhone: "Ce client n'a pas de numéro de téléphone enregistré",
+    noGoogleUrlConfigured: "Ajoutez votre lien d'avis Google dans les Paramètres avant d'envoyer des demandes",
+    sendFailed: "Échec de l'envoi, veuillez réessayer",
+    requestSent: "Demande d'avis envoyée à {{name}}",
+    nameRatingRequired: "Veuillez saisir le nom du client et sélectionner une note",
+    reviewAdded: "Avis ajouté",
+    markedPushedToGoogle: "Marqué comme publié sur Google"
+  },
+  fallback: {
+    client: "client",
+    clientBracket: "[Nom du client]",
+    work: "l'intervention"
+  },
   stats: {
-    reviewsCount: "{{count}} avis"
+    reviewsCount: "{{count}} avis",
+    reviewsCount_zero: "Aucun avis pour l'instant",
+    reviewsCount_one: "Basé sur {{count}} avis",
+    reviewsCount_other: "Basé sur {{count}} avis"
   },
   metrics: {
     verifiedReviews: "Avis vérifiés",
@@ -3673,6 +2130,13 @@ reviews: {
     title: "Améliorez votre référencement Google",
     description: "Liez votre fiche Google Business Profile pour rediriger directement les clients satisfaits vers votre page d'avis Google.",
     openBtn: "Ouvrir Google Business"
+  },
+  list: {
+    empty: "Aucun avis pour l'instant",
+    requestFirst: "Demander votre premier avis",
+    verifiedBadge: "Vérifié",
+    onGoogleBadge: "Publié sur Google",
+    askClientToPostBtn: "Marquer comme publié sur Google"
   }
 },
 
@@ -3717,5 +2181,10 @@ publicQuote: {
       title: "Devis accepté",
       sub: "{{name}} a été notifié et vous recontactera prochainement.",
     },
+  },
+  actions: {
+    copy: "Copier",
+    loading: "Chargement...",
+    save: "Enregistrer",
   },
 }

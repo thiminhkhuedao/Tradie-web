@@ -41,38 +41,19 @@ export async function sendPushNotification(profileId, title, body, data) {
 /**
  * Sends a full branded invoice email to the client.
  *
- * @param {object} invoice  - invoice row with .client and .job joined
- * @param {object} profile  - tradesperson profile
+ * SÉCURITÉ : ne prend plus qu'un invoiceId — tout le contenu (client,
+ * montant, coordonnées bancaires...) est relu depuis la base côté
+ * serveur, jamais construit ici. Empêche qu'un appel direct à la
+ * fonction (hors UI) puisse envoyer un email de facture falsifié.
+ *
+ * @param {string} invoiceId
+ * @param {boolean} [reminder=false] - true pour un email de rappel
  */
-export async function sendInvoiceEmail(invoice, profile) {
-  if (!invoice.client?.email) {
-    return { success: false, error: "Client has no email address" };
+export async function sendInvoiceEmail(invoiceId, reminder = false) {
+  if (!invoiceId) {
+    return { success: false, error: "Missing invoice id" };
   }
-
-  return invoke("send-invoice-email", {
-    to:            invoice.client.email,
-    clientName:    invoice.client.name,
-    tradeName:     profile.name,
-    tradeEmail:    profile.email,
-    tradePhone:    profile.phone,
-    invoiceNumber: invoice.invoice_number,
-    amount:        invoice.amount,
-    dueDate:       invoice.due_date
-      ? new Date(invoice.due_date).toLocaleDateString("en-GB", {
-          day: "numeric", month: "long", year: "numeric",
-        })
-      : null,
-    jobTitle:      invoice.job?.title ?? null,
-    paymentUrl:    invoice.stripe_payment_link_url ?? null,
-    bankName:      profile.bank_name,
-    sortCode:      profile.sort_code,
-    accountNumber: profile.account_number,
-    iban:          profile.iban,
-    bic:           profile.bic,
-    bankAccountHolder: profile.bank_account_holder,
-    invoiceNotes:  profile.invoice_notes,
-    currencyCode:  profile.currency ?? "EUR",
-  });
+  return invoke("send-invoice-email", { invoiceId, reminder });
 }
 
 /**

@@ -36,6 +36,18 @@ function detectLanguage() {
 
 _current = detectLanguage();
 
+// ── Persistence hook (registered by the app, e.g. App.jsx) ───────────
+// Lets this module stay independent of db.js / Clerk while still being
+// able to persist the choice to profiles.language for logged-out-proof,
+// server-side usage (emails, reminders...). Same pattern as
+// setClerkTokenGetter in lib/supabase.js.
+let _persistLanguage = null;
+
+/** Register how language changes should be saved server-side (profile). */
+export function setLanguagePersister(fn) {
+  _persistLanguage = fn;
+}
+
 // ── Core API ──────────────────────────────────────────
 
 /** Get current language code ("en" | "fr") */
@@ -118,6 +130,17 @@ export function useTranslation() {
   const changeLanguage = useCallback((newLang) => {
     _originalSetLanguage(newLang);
     _notifyListeners();
+    // Best-effort — ne bloque jamais le changement d'affichage si la
+    // sauvegarde échoue (hors ligne, pas encore connecté, etc.)
+    if (_persistLanguage) {
+      try {
+        Promise.resolve(_persistLanguage(newLang)).catch((err) => {
+          console.error("[i18n] failed to persist language:", err);
+        });
+      } catch (err) {
+        console.error("[i18n] failed to persist language:", err);
+      }
+    }
   }, []);
 
   // Return t scoped to current lang (reactive)

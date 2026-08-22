@@ -338,6 +338,30 @@ function Footer({ t }) {
           >
             {t("home.nav.contact")}
           </Link>
+
+          <Link
+            to="/privacy"
+            style={{
+              fontSize: 13,
+              color: T.hint,
+              fontWeight: 600,
+              textDecoration: "none",
+            }}
+          >
+            {t("home.nav.privacy") || "Privacy"}
+          </Link>
+
+          <Link
+            to="/terms"
+            style={{
+              fontSize: 13,
+              color: T.hint,
+              fontWeight: 600,
+              textDecoration: "none",
+            }}
+          >
+            {t("home.nav.terms") || "Terms"}
+          </Link>
         </div>
 
         <p style={{ color: T.hint, fontSize: 13, margin: 0 }}>

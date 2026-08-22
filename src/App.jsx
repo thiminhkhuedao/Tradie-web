@@ -4,15 +4,20 @@ import { useSearchParams, useNavigate, useLocation } from "react-router-dom";
 import { Toaster, toast as hotToast } from "react-hot-toast";
 import Sidebar        from "./components/Sidebar";
 import { ToastStack }   from "./components/UI";
+import CookieConsent   from "./components/CookieConsent";
+import Honeypot, { isBotSubmission } from "./components/Honeypot";
+import Turnstile       from "./components/Turnstile";
 import {  useSignIn,  useSignUp,  useAuth, useClerk, useUser } from "@clerk/clerk-react";
 import { setClerkTokenGetter, supabase } from "./lib/supabase";
-import { useTranslation } from "./i18n/index.js";
+import { useTranslation, setLanguagePersister } from "./i18n/index.js";
 
 // Marketing / logged-out
 import HomePage         from "./pages/HomePage";
 import PricingPage      from "./pages/PricingPage";
 import AboutPage        from "./pages/AboutPage.jsx";
 import ContactPage      from "./pages/ContactPage.jsx";
+import PrivacyPolicyPage from "./pages/PrivacyPolicyPage.jsx";
+import TermsOfServicePage from "./pages/TermsOfServicePage.jsx";
 import FaqPage          from "./pages/FaqPage.jsx";
 
 // Core pages
@@ -82,19 +87,33 @@ function getPasswordStrength(password) {
   return              { score, label:"Strong", color:"#10B981" };
 }
 
-const loginAttempts = { count:0, lockedUntil:null };
-function checkRateLimit() {
-  if (loginAttempts.lockedUntil && new Date() < loginAttempts.lockedUntil) {
-    const mins = Math.ceil((loginAttempts.lockedUntil - new Date()) / 60000);
-    return `Too many failed attempts. Try again in ${mins} minute${mins>1?"s":""}.`;
+// Rate limiting réel, côté serveur (voir supabase/functions/check-rate-limit).
+// L'ancienne version en mémoire JS était remise à zéro à chaque refresh de
+// page — un bot scripté n'a même pas besoin de la contourner, elle ne
+// protège de rien. Celle-ci interroge la table rate_limit_events côté
+// Supabase, qui persiste peu importe ce que fait le navigateur.
+async function checkRateLimitServer(action, identifier) {
+  try {
+    const res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/check-rate-limit`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action, identifier }),
+    });
+    const data = await res.json();
+    if (!data.allowed) {
+      if (data.reason === "rate_limited_identifier" || data.reason === "rate_limited_ip") {
+        return "Too many attempts. Please wait a few minutes before trying again.";
+      }
+      return "Something went wrong. Please try again.";
+    }
+    return null;
+  } catch {
+    // Si l'appel réseau échoue, on laisse passer plutôt que de bloquer
+    // tout le monde à cause d'un problème d'infra — le serveur reste de
+    // toute façon protégé par Clerk côté auth.
+    return null;
   }
-  return null;
 }
-function recordFailedAttempt() {
-  loginAttempts.count++;
-  if (loginAttempts.count >= 5) { loginAttempts.lockedUntil = new Date(Date.now() + 5*60*1000); loginAttempts.count = 0; }
-}
-function resetAttempts() { loginAttempts.count = 0; loginAttempts.lockedUntil = null; }
 
 function GoogleIcon() {
   return (
@@ -121,6 +140,9 @@ function AuthPage({ initialMode = "login" }) {
   const [error,    setError]    = useState("");
   const [resetCode, setResetCode] = useState("");
   const [newPass,   setNewPass]   = useState("");
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [honeypot, setHoneypot] = useState("");
+  const [captchaToken, setCaptchaToken] = useState(null);
 
   const { signIn, setActive: setActiveSignIn } = useSignIn();
   const { signUp, setActive: setActiveSignUp } = useSignUp();
@@ -149,9 +171,16 @@ function AuthPage({ initialMode = "login" }) {
   async function submit(e) {
     e.preventDefault();
     setError("");
-    const rateLimitMsg = checkRateLimit();
+    if (mode === "signup" && isBotSubmission(honeypot)) {
+      // Bot détecté via le honeypot : on rejette silencieusement, sans
+      // donner d'indice — pas la peine de faire l'appel réseau au-delà.
+      return;
+    }
+    const rateLimitMsg = await checkRateLimitServer(mode === "signup" ? "signup" : "login", email.trim());
     if (rateLimitMsg) { setError(rateLimitMsg); return; }
     if (mode==="signup" && strength.score < 2) { setError(t("auth.error.weakPassword") || "Password is too weak — use at least 8 characters with a mix of letters and numbers."); return; }
+    if (mode==="signup" && !agreedToTerms) { setError(t("auth.error.mustAgreeTerms") || "Please accept the Privacy Policy to continue."); return; }
+    if (mode==="signup" && !captchaToken) { setError("Please complete the verification challenge."); return; }
     setLoading(true);
     try {
       if (mode === "signup") {
@@ -161,13 +190,11 @@ function AuthPage({ initialMode = "login" }) {
         setStep("verify"); setLoading(false); return;
       } else {
         const result = await signIn.create({ identifier:email, password:pass });
-        if (result.status === "complete") { resetAttempts(); await setActiveSignIn({ session:result.createdSessionId }); }
+        if (result.status === "complete") { await setActiveSignIn({ session:result.createdSessionId }); }
       }
     } catch (err) {
-      recordFailedAttempt();
-      const remaining = 5 - loginAttempts.count;
       const msg = err.errors?.[0]?.longMessage || err.message || "Something went wrong";
-      setError(loginAttempts.count > 0 && mode==="login" ? `${msg} (${remaining} attempt${remaining!==1?"s":""} remaining before lockout)` : msg);
+      setError(msg);
     }
     setLoading(false);
   }
@@ -221,7 +248,6 @@ function AuthPage({ initialMode = "login" }) {
         signOutOfOtherSessions: true,
       });
       if (result.status === "complete") {
-        resetAttempts();
         await setActiveSignIn({ session: result.createdSessionId });
         window.location.reload();
       } else {
@@ -513,10 +539,38 @@ function AuthPage({ initialMode = "login" }) {
               )}
             </div>
 
+            {mode==="signup" && (
+              <label style={{ display:"flex", alignItems:"flex-start", gap:8, fontSize:13, color:T.muted, cursor:"pointer", lineHeight:1.5 }}>
+                <input
+                  type="checkbox"
+                  checked={agreedToTerms}
+                  onChange={e=>setAgreedToTerms(e.target.checked)}
+                  style={{ marginTop:2, flexShrink:0 }}
+                />
+                <span>
+                  {t("auth.form.agreeTermsPrefix") || "I agree to Vimen's"}{" "}
+                  <a href="/privacy" target="_blank" rel="noopener noreferrer" style={{ color:T.text, fontWeight:600, textDecoration:"underline" }}>
+                    {t("auth.form.privacyLink") || "Privacy Policy"}
+                  </a>
+                  {" "}{t("auth.form.andWord") || "and"}{" "}
+                  <a href="/terms" target="_blank" rel="noopener noreferrer" style={{ color:T.text, fontWeight:600, textDecoration:"underline" }}>
+                    {t("auth.form.termsLink") || "Terms of Service"}
+                  </a>
+                </span>
+              </label>
+            )}
+
+            {mode==="signup" && (
+              <>
+                <Honeypot value={honeypot} onChange={setHoneypot} />
+                <Turnstile onVerify={setCaptchaToken} onExpire={() => setCaptchaToken(null)} />
+              </>
+            )}
+
             {error && <div style={{ fontSize:13, color:"#EF4444", background:"#FEF2F2", padding:"10px 14px", borderRadius:8, lineHeight:1.5 }}>{error}</div>}
 
-            <button disabled={loading}
-              style={{ padding:"12px", borderRadius:8, background:T.brand, color:"#fff", border:"none", fontSize:15, fontWeight:700, cursor:loading?"not-allowed":"pointer", opacity:loading?0.7:1, marginTop:4 }}>
+            <button disabled={loading || (mode==="signup" && (!agreedToTerms || !captchaToken))}
+              style={{ padding:"12px", borderRadius:8, background:T.brand, color:"#fff", border:"none", fontSize:15, fontWeight:700, cursor:(loading||(mode==="signup"&&(!agreedToTerms||!captchaToken)))?"not-allowed":"pointer", opacity:(loading||(mode==="signup"&&(!agreedToTerms||!captchaToken)))?0.7:1, marginTop:4 }}>
               {loading ? (t("auth.form.loading") || "Please wait…") : mode==="login" ? (t("auth.form.submitLogin") || "Sign in →") : (t("auth.form.submitSignup") || "Create account →")}
             </button>
           </form>
@@ -542,6 +596,17 @@ function AppShell() {
   const { toasts, addToast } = useToasts();
   const { profile, data, setData, loading, error, refresh, saveProfile, setProfile } = useAppData();
   const { signOut } = useClerk();
+
+  // Câble le changement de langue (navbar/settings) pour qu'il se
+  // sauvegarde aussi côté serveur (profiles.language) — utilisé pour
+  // générer les emails (factures, devis...) dans la bonne langue.
+  // Sans ça, le sélecteur ne changeait que l'affichage local, jamais
+  // ce que le serveur envoyait.
+  useEffect(() => {
+    if (!profile?.id) return;
+    setLanguagePersister((newLang) => saveProfile({ ...profile, language: newLang }));
+    return () => setLanguagePersister(null);
+  }, [profile?.id, saveProfile]);
 
   const state = {
     user:              profile ?? SEED.user,
@@ -794,6 +859,10 @@ function ClerkGatedApp() {
         return <AboutPage {...publicPageProps} />;
       case "/contact":
         return <ContactPage {...publicPageProps} />;
+      case "/privacy":
+        return <PrivacyPolicyPage {...publicPageProps} />;
+      case "/terms":
+        return <TermsOfServicePage {...publicPageProps} />;
       case "/faq":
         return <FaqPage {...publicPageProps} />;
       default:
@@ -809,8 +878,10 @@ function ClerkGatedApp() {
 
 /* ── Root ───────────────────────────────────────────── */
 export default function App({ useClerk: hasClerkKey = false }) {
-  if (!hasClerkKey) {
-    return <DemoAppShell />;
-  }
-  return <ClerkGatedApp />;
+  return (
+    <>
+      {hasClerkKey ? <ClerkGatedApp /> : <DemoAppShell />}
+      <CookieConsent />
+    </>
+  );
 }

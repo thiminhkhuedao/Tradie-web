@@ -135,6 +135,18 @@ export default {
     },
     signUpTitle: "Create a Free Account",
   signInTitle: "Sign In to Vimen",
+  categories: {
+    trades:    { label: "Trades & Construction",  examples: "Electrician, plumber, builder…" },
+    beauty:    { label: "Beauty & Wellness",       examples: "Hairdresser, nail tech, spa…" },
+    food:      { label: "Food & Hospitality",      examples: "Baker, chef, caterer…" },
+    health:    { label: "Health & Care",           examples: "Physio, nurse, psychologist…" },
+    legal:     { label: "Legal & Finance",         examples: "Lawyer, accountant, notary…" },
+    education: { label: "Education & Coaching",    examples: "Tutor, coach, trainer…" },
+    creative:  { label: "Creative & Design",       examples: "Photographer, designer…" },
+    tech:      { label: "Tech & IT",               examples: "Developer, IT consultant…" },
+    events:    { label: "Events & Entertainment",  examples: "DJ, decorator, planner…" },
+    home:      { label: "Home & Garden",           examples: "Cleaner, gardener, handyman…" },
+  },
   verify: {
     title: "Check your email",
     subtitle: "We sent a 6-digit code to",
@@ -180,1278 +192,18 @@ export default {
   },
 
   // ── Navigation ───────────────────────────────────────
-  nav: {
-    dashboard:      "Dashboard",
-    jobs:           "Jobs",          // overridden per vertical
-    quotes:         "Quotes",
-    clients:        "Clients",
-    invoices:       "Invoices",
-    booking:        "Booking",
-    payments:       "Vimen Pay",
-    marketplace:    "Marketplace",
-    reviews:        "Reviews",
-    referrals:      "Referrals",
-    certifications: "Certifications",
-    settings:       "Settings",
-    more:           "More",
-    // Section labels
-    core:           "Core",
-    revenue:        "Revenue",
-    growthSection:  "Growth",
-    account:        "Account",
-    tagline:        "Booking and billing for every profession",
-  },
-
   // ── Dashboard ────────────────────────────────────────
-  dashboard: {
-    earned:           "Earned",
-    upcoming:         "Upcoming {{jobs}}",
-    clients:          "Clients",
-    thisMonth:        "This month",
-    unpaid:           "{{count}} unpaid",
-    total:            "Total",
-    bookingLive:      "Your booking page is live",
-    noUpcoming:       "No upcoming {{jobs}}",
-    noActivity:       "No completed work yet",
-  greeting: "Good morning, {{name}}",
-  thereFallback: "there",
-  newJob: "New job",
-  earnedThisMonth: "Earned this month",
-  invoicesCount: "{{count}} invoices",
-  outstanding: "Outstanding",
-  unpaidCount: "{{count}} unpaid",
-  upcomingJobs: "Upcoming jobs",
-  scheduled: "Scheduled",
-  totalClients: "Total clients",
-  inYourCrm: "In your CRM",
-  newBookingRequests: "{{count}} new booking request{{plural}}",
-  review: "Review",
-  viewAll: "View all",
-  upcomingJobsTitle: "Upcoming jobs",
-  noUpcomingJobs: "No upcoming jobs",
-  addOne: "add one",
-  invoicesLink: "Invoices",
-  recentActivity: "Recent activity",
-  noCompletedJobs: "No completed jobs yet",
-  noInvoice: "no invoice",
-  bookingPageLive: "Your booking page is live",
-  copyLink: "Copy link",
-  linkCopied: "Link copied!",
-  copyFailedManual: "Couldn't copy automatically. Please select and copy the link above manually.",
-  viewPage: "View page",
-  },
-
-  jobs: {
-    title:        "Jobs",
-    new:          "New job",
-    scheduled:    "Scheduled ({{count}})",
-    completed:    "Completed ({{count}})",
-    markDone:     "Mark done",
-    noUpcoming:   "No upcoming jobs",
-    noCompleted:  "No completed jobs yet",
-    addFirst:     "Add first job",
-    client:       "Client",
-    date:         "Date",
-    time:         "Time",
-    duration:     "Duration (hrs)",
-    amount:       "Amount (£)",
-    notes:        "Notes",
-    status: {
-      scheduled:  "Scheduled",
-      completed:  "Completed",
-      cancelled:  "Cancelled",
-    },
-    titleLabel:       "title",
-    selectClient:     "Select client…",
-    startTime:        "Start time",
-    durationShort:    "Hrs",
-    amountShort:      "Amount",
-    notesPlaceholder: "Any details…",
-    deleteWarning:    "This cannot be undone.",
-    errorRequired:    "Client, title and date are required",
-    errorAdd:         "Failed to add job",
-    errorUpdate:      "Failed to update job",
-    errorComplete:    "Failed to complete job",
-    errorDelete:      "Failed to delete job",
-    successAdd:       "Job added",
-    successUpdate:    "Job updated",
-    successComplete:  "Marked as done",
-    successDelete:    "Job deleted",
-  },
-
   // ── Quotes ───────────────────────────────────────────
-  quotes: {
-    title:          "Quotes",
-    new:            "New quote",
-    totalQuoted:    "Total quoted",
-    accepted:       "Accepted",
-    conversion:     "Conversion",
-    active:         "Active ({{count}})",
-    archived:       "Archived ({{count}})",
-    noQuotes:       "No quotes yet",
-    create:         "Create quote",
-    sign:           "Sign",
-    convertToJob:   "Convert to job",
-    client:         "Client",
-    title_:         "Quote title",
-    validUntil:     "Valid until",
-    addLine:        "Add line",
-    notes:          "Notes for client",
-    margin:         "Est. margin",
-    subtotal:       "Subtotal",
-    vatRate:        "VAT",
-    total:          "Total",
-    labour:         "Labour",
-    material:       "Material",
-    other:          "Other",
-    signTitle:      "Client e-signature",
-    signSub:        "By entering their name, the client confirms they accept this quote.",
-    signCta:        "Sign & accept quote",
-    status: {
-      draft:      "Draft",
-      sent:       "Sent",
-      viewed:     "Viewed",
-      accepted:   "Accepted",
-      declined:   "Declined",
-      converted:  "Converted",
-    },
-
-  newQuoteBtn: "New quote",
-
-  modal: {
-    newTitle: "New quote",
-    editTitle: "Edit quote",
-  },
-
-  fields: {
-    client: "Client",
-    validUntil: "Valid until",
-    quoteTitle: "Quote title",
-    quoteTitlePlaceholder: "e.g. Consumer unit replacement + EV charger",
-    notesForClient: "Notes for client",
-    notesPlaceholder: "Payment terms, exclusions, conditions…",
-  },
-
-  lineItems: {
-    label: "Line items",
-    addLine: "Add line",
-    headers: {
-      description: "Description",
-      type: "Type",
-      qtyPrice: "Qty × Price",
-      total: "Total",
-    },
-    descriptionPlaceholder: "Description",
-    qtyPlaceholder: "Qty",
-    unitPricePlaceholder: "£/unit",
-  },
-
-  lineTypes: {
-    labour: "labour",
-    material: "material",
-    other: "other",
-  },
-
-  totals: {
-    subtotal: "Subtotal",
-    vat: "VAT",
-    total: "Total",
-    estMargin: "Est. margin:",
-  },
-
-  actions: {
-    createQuote: "Create quote",
-    saveChanges: "Save changes",
-  },
-
-  toast: {
-    titleClientRequired: "Title and client required",
-    quoteCreated: "Quote created",
-    quoteUpdated: "Quote updated",
-    markedAsSent: "Quote marked as sent",
-    enterClientName: "Please enter client name",
-    quoteSignedBy: "Quote signed by {{name}}",
-    convertedToJob: "Quote converted to job",
-    quoteDeleted: "Quote deleted",
-  },
-
-  preview: {
-    markAsSent: "Mark as sent",
-    clientSign: "Client sign",
-    convertToJob: "Convert to job",
-    signature: {
-      title: "Client signature",
-      fullNameLabel: "Client full name",
-      confirmText: "By entering their name, the client confirms they have read and accepted this quote.",
-      signBtn: "Sign & accept quote",
-    },
-    issued: "Issued: {{date}}",
-    validUntil: "Valid until: {{date}}",
-    preparedFor: "Prepared for",
-    table: {
-      description: "Description",
-      type: "Type",
-      qty: "Qty",
-      unit: "Unit",
-      total: "Total",
-    },
-    vatLine: "VAT ({{rate}}%)",
-    acceptedBy: "Accepted by {{name}} on {{date}}",
-  },
-
-  deleteConfirm: {
-    title: "Delete quote?",
-    message: "Cannot be undone.",
-  },
-
-  stats: {
-    totalQuotedValue: "Total quoted value",
-    quotesCount: "{{count}} quote(s)",
-    acceptedValue: "Accepted value",
-    won: "Won",
-    pending: "Pending",
-    awaitingResponse: "Awaiting response",
-    conversionRate: "Conversion rate",
-    acceptedOverTotal: "Accepted / total",
-  },
-
-  tabs: {
-    active: "Active",
-    archived: "Archived",
-  },
-
-  empty: "No quotes yet",
-  createFirst: "Create first quote",
-
-  table: {
-    headers: {
-      quoteNumber: "Quote #",
-      client: "Client",
-      title: "Title",
-      total: "Total",
-      margin: "Margin",
-      status: "Status",
-    },
-  },
-
-  row: {
-    view: "View",
-    edit: "Edit",
-    toJob: "Job",
-  },
-  },
-
   // ── Invoices ─────────────────────────────────────────
-  invoices: {
-    title:        "Invoices",
-    new:          "New",
-    paid:         "Paid",
-    outstanding:  "Outstanding",
-    all:          "All",
-    unpaid:       "Unpaid",
-    overdue:      "Overdue",
-    markPaid:     "Mark paid",
-    email:        "Email",
-    paymentLink:  "Payment link",
-    billTo:       "Bill to",
-    noInvoices:   "No invoices yet",
-    amount:       "Amount (£)",
-    dueDate:      "Due date",
-    linkedJob:    "Linked job (optional)",
-    creating:     "Creating…",
-    status: {
-      paid:     "Paid",
-      unpaid:   "Unpaid",
-      overdue:  "Overdue",
-    },
-
-  newInvoice: "New invoice",
-  createInvoiceTitle: "Create invoice",
-  clientLabel: "Client",
-  selectClient: "Select client…",
-  linkedJobLabel: "Linked job (optional)",
-  noneOption: "None",
-  amountLabel: "Amount (£)",
-  dueDateLabel: "Due date",
-  selectClientAndAmount: "Select a client and enter amount",
-  createFailed: "Failed to create invoice",
-  createdToast: "Invoice created",
-  markPaidFailed: "Failed to mark as paid",
-  markedPaidToast: "Invoice marked as paid",
-  noClientEmail: "This client has no email address",
-  emailedToast: "Invoice emailed to {{email}}",
-  emailFailedToast: "Email failed: {{error}}",
-  paymentLinkFailed: "Failed to create payment link",
-  paymentLinkCreated: "Payment link created",
-  deleteFailed: "Failed to delete invoice",
-  deletedToast: "Invoice deleted",
-  sending: "Sending…",
-  sendEmail: "Send email",
-  createPaymentLink: "Create payment link",
-  openPaymentLink: "Open payment link",
-  markAsPaid: "Mark as paid",
-  issuedLabel: "Issued:",
-  dueLabel: "Due:",
-  descriptionCol: "Description",
-  amountCol: "Amount",
-  servicesRendered: "Services rendered",
-  totalDue: "Total due",
-  payOnline: "Pay online:",
-  bankLabel: "Bank:",
-  sortCodeLabel: "Sort code:",
-  accountLabel: "Account:",
-  referenceLabel: "Reference:",
-  bankTransferTitle: "Or pay by bank transfer",
-  copyBankDetails: "Copy bank details",
-  bankDetailsCopied: "Bank details copied",
-  copyFailedManual: "Couldn't copy. Please copy manually",
-  defaultPaymentTerms: "14 days",
-  deleteConfirmTitle: "Delete invoice?",
-  deleteConfirmMessage: "This cannot be undone.",
-  totalPaid: "Total paid",
-  invoicesCount: "{{count}} invoices",
-  outstandingLabel: "Outstanding",
-  unpaidCount: "{{count}} unpaid",
-  totalInvoiced: "Total invoiced",
-  allTime: "All time",
-  tabAll: "All",
-  tabUnpaid: "Unpaid",
-  tabPaid: "Paid",
-  loading: "Loading invoices…",
-  noneYet: "No invoices yet",
-  createFirst: "Create first invoice",
-  colInvoice: "Invoice",
-  colClient: "Client",
-  colIssued: "Issued",
-  colDue: "Due",
-  colAmount: "Amount",
-  colStatus: "Status",
-  viewButton: "View",
-  paidButton: "Paid",
-  },
-
   // ── Clients ──────────────────────────────────────────
-  clients: {
-    title:      "Clients",
-    new:        "New client",
-    noClients:  "No clients yet",
-    name:       "Full name",
-    email:      "Email",
-    phone:      "Phone",
-    address:    "Address",
-    notes:      "Notes",
-    jobs:       "{{count}} jobs",
-    invoices:   "{{count}} invoices",
-  addClient: "Add client",
-  editClient: "Edit client",
-  fullNameCompany: "Full name / Company",
-  emailLabel: "Email",
-  phoneLabel: "Phone",
-  addressLabel: "Address",
-  notesLabel: "Notes",
-  nameRequired: "Name is required",
-  addFailed: "Failed to add client",
-  addedToast: "Client added",
-  updateFailed: "Failed to update client",
-  updatedToast: "Client updated",
-  deleteFailed: "Failed to delete client",
-  deletedToast: "Client deleted",
-  deleteConfirmTitle: "Delete client?",
-  deleteConfirmMessage: "The client record will be removed. Jobs and invoices remain.",
-  deleteClientButton: "Delete client",
-  searchPlaceholder: "Search clients…",
-  loading: "Loading clients…",
-  noneYet: "No clients yet",
-  addFirst: "Add first client",
-  colClient: "Client",
-  colContact: "Contact",
-  colJobs: "Jobs",
-  colRevenue: "Revenue",
-  jobsAndEarned: "{{count}} jobs · {{earned}} earned",
-  jobHistory: "Job history",
-  noJobsYet: "No jobs yet",
-  invoicesTitle: "Invoices",
-  noInvoicesYet: "No invoices yet",
-  title: "Clients",
-    addClient: "Add Client",
-    searchPlaceholder: "Search clients...",
-    noSearchResults: "No clients found matching your search.",
-    noClientsYet: "No clients saved yet.",
-    addFirstClient: "Add Your First Client",
-    columnClient: "Client",
-    columnContact: "Contact",
-    columnAddress: "Address",
-    columnActions: "Actions",
-    addedOn: "Added {{date}}",
-    totalSpent: "Total Spent: {{amount}}",
-    labelEmail: "Email",
-    labelPhone: "Phone",
-    labelAddress: "Address",
-    labelNotes: "Notes",
-    labelName: "Full Name / Business Name",
-    jobsTitle: "Jobs ({{count}})",
-    noJobsYet: "No jobs associated with this client yet.",
-    invoicesTitle: "Invoices",
-    noInvoicesYet: "No invoices sent to this client yet.",
-    addClientTitle: "Add New Client",
-    editClientTitle: "Edit Client",
-    placeholderName: "e.g., Sarah Mitchell",
-    placeholderEmail: "e.g., sarah@example.com",
-    placeholderPhone: "e.g., (555) 000-0000",
-    placeholderAddress: "e.g., 123 High Street, London",
-    placeholderNotes: "Gate code, special instructions...",
-    createClientButton: "Create Client",
-    deleteConfirmTitle: "Delete Client",
-    deleteConfirmMessage: "Are you sure you want to delete {{name}}? This will not delete associated jobs or invoices.",
-    nameRequired: "Please enter a client name.",
-    invalidEmail: "Please enter a valid email address.",
-    updatedToast: "Client updated successfully",
-    createdToast: "Client created successfully",
-    deletedToast: "Client deleted",
-    updateFailed: "Failed to update client",
-    createFailed: "Failed to create client",
-    deleteFailed: "Failed to delete client",
-  },
-
   // ── Booking ──────────────────────────────────────────
-  booking: {
-    title:          "Booking",
-    sharePage:      "Share page",
-    pageLive:       "Your booking page is live",
-    received:       "Received {{date}}",
-    openPreview:    "View your live booking page",
-    opening:        "Opening…",
-    previewSub:     "This opens your real, live booking page, the exact same page clients see when they tap your shared link. Nothing here is simulated.",
-    slugLabel:      "Booking page URL slug",
-    bioLabel:       "Bio (shown to clients)",
-    rateLabel:      "Hourly rate (£)",
-    saveSettings:   "Save settings",
-    sendConsult:    "Send request",
-    requestTitle:   "Request a booking",
-    requestSent:    "Request sent!",
-     "copied": "Copied!",
-  requests: "Requests",
-  preview: "Preview",
-  pageSettings: "Page settings",
-  loadingRequests: "Loading requests…",
-  noRequests: "No booking requests yet. Share your booking page link to start receiving them.",
-  newRequests: "New requests ({{count}})",
-  accepted: "Accepted ({{count}})",
-  declined: "Declined ({{count}})",
-  registered: "Registered",
-  qualifiedInsured: "Qualified & insured",
-  fullyQualified: "Fully qualified",
-  reviewsLabel: "reviews",
-  responseLabel: "Response",
-  servicesTitle: "Services",
-  gdprCompliant: "GDPR-compliant client data handling",
-  insuredVia: "Insured via",
-  vatRegistered: "VAT registered",
-  requestTitleTrades: "Request a booking",
-  requestTitleBeauty: "Request an appointment",
-  requestTitleProfessional: "Request a consultation",
-  yourName: "Your name",
-  emailLabel: "Email",
-  phoneLabel: "Phone",
-  preferredDate: "Preferred date",
-  whichService: "Which service?",
-  regarding: "Regarding",
-  whatNeeded: "What do you need?",
-  sendRequestGeneric: "Send booking request",
-  sendRequestProfessional: "Send request",
-  noPaymentBeauty: "No payment required to request an appointment.",
-  noPaymentProf: "No payment required to request a consultation.",
-  noPayment: "No payment required to send a booking request.",
-  requestSentTitle: "Request sent!",
-  requestSentSub: "{{name}} will confirm shortly.",
-  bookAnother: "Book another",
-  urlSectionTitle: "Your booking page URL",
-  copyLink: "Copy",
-  linkCopied: "Link copied!",
-  copyFailedManual: "Couldn't copy automatically. Please select and copy the link above manually.",
-  shareHint: "Share this link anywhere: put it on your Instagram bio, WhatsApp status, van signage, or website. Customers fill in a request form and you accept or decline from the Requests tab above.",
-  updateFailed: "Failed to update booking",
-  acceptedToast: "Booking accepted",
-  declinedToast: "Booking declined",
-  nameAndDateRequired: "Name and preferred date are required",
-  submitFailed: "Failed to submit request",
-  submittedToast: "Booking request submitted!",
-  accept: "Accept",
-  decline: "Decline",
-  preferredDateLabel: "Preferred date:",
-  receivedLabel: "Received",
-  status: {
-    pending: "pending",
-    accepted: "accepted",
-    declined: "declined",
-  },
-  services: {
-    title: "Services",
-    subtitle: "Add the services you offer, with photos, prices, and durations. These are shown to visitors on your public booking page.",
-    addService: "Add service",
-    editService: "Edit service",
-    loading: "Loading services…",
-    noneYet: "No services added yet",
-    addFirst: "Add your first service",
-    nameAndPriceRequired: "Name and price are required",
-    addFailed: "Failed to add service",
-    addedToast: "Service added",
-    updateFailed: "Failed to update service",
-    updatedToast: "Service updated",
-    deleteFailed: "Failed to delete service",
-    deletedToast: "Service removed",
-    reorderFailed: "Failed to reorder services",
-    minutesShort: "min",
-    hiddenLabel: "hidden",
-    nameLabel: "Service name",
-    namePlaceholder: "e.g. Full colour & cut",
-    priceLabel: "Price (£)",
-    durationLabel: "Duration (min)",
-    descriptionLabel: "Description",
-    descriptionPlaceholder: "A short description shown to clients…",
-    photoLabel: "Photo",
-    uploadHint: "Drop an image or tap to upload",
-    uploading: "Uploading…",
-    uploadFailed: "Upload failed, please try again",
-    deleteConfirmTitle: "Remove this service?",
-    deleteConfirmMessage: "It will no longer be shown on your public booking page.",
-  },
-    availabilityTitle: "Availability",
-    availabilitySub: "Set your working hours. Clients will only see time slots on days you have enabled.",
-    availabilitySaved: "Availability saved successfully",
-    availabilitySaveFailed: "Failed to save availability",
-    saveAvailability: "Save availability",
-    to: "to",
-    unavailable: "Unavailable",
-    reviewsCountLabel: "{{count}} reviews",
-  },
-
   // ── Payments ─────────────────────────────────────────
-  payments: {
-    payouts:        "Payouts",
-    totalVolume:    "Total volume",
-    yourEarnings:   "Your earnings",
-    balance:        "Balance",
-    inTransit:      "In transit",
-    totalPaidOut:   "Total paid out",
-    recentPayments: "Recent payments",
-    noPayments:     "No payments yet",
-    feeTitle:       "Fee breakdown: example £550 invoice",
-    invoiceAmount:  "Invoice amount",
-    stripeFee:      "Stripe fee (1.4%+20p)",
-    youReceive:     "You receive",
-    connected:      "Vimen Pay active",
-    autoPayouts:    "Automatic payouts",
-    autoPayoutsSub: "Earnings are automatically paid out every 2 business days to your connected bank account.",
-    noPayouts:      "No payouts yet",
-    stripeConnect:  "Stripe Connect",
-    stripeConnectSub:"Receive card payments on invoices",
-    openStripe:     "Open Stripe Dashboard",
-    feeStructure:   "Fee structure",
-    
-  title: "Vimen Pay",
-
-  tabs: {
-    overview: "Overview",
-    transactions: "Transactions ({{count}})",
-    payouts: "Payouts",
-    account: "Account",
-  },
-
-  status: {
-    completed: "completed",
-    pending: "pending",
-    processing: "processing",
-    failed: "failed",
-    refunded: "refunded",
-    paid: "paid",
-    in_transit: "in transit",
-    connected: "Connected",
-    active: "Active",
-    notConnected: "Not connected",
-  },
-
-  overview: {
-    notConnectedTitle: "Connect your Stripe account to accept payments",
-    notConnectedDesc: "Clients can't pay invoices online until you connect Stripe.",
-    connectStripeBtn: "Connect Stripe",
-    connectedBanner: "Vimen Pay active. Clients can pay invoices online instantly",
-    viewAll: "View all",
-    recentPayments: "Recent payments",
-    emptyPayments: "No payments yet. Send invoices with payment links",
-    ofGrossAmount: "of {{amount}}",
-  },
-
-  metrics: {
-    totalVolume: "Total volume processed",
-    paymentsCount: "{{count}} payment(s)",
-    yourEarnings: "Your earnings (after fees)",
-    ofGross: "{{pct}} of gross",
-    thisMonth: "This month",
-    availableBalance: "Available balance",
-    readyToPayOut: "Ready to pay out",
-    inTransitToBank: "In transit to bank",
-    arrivingSoon: "Arriving soon",
-    totalPaidOut: "Total paid out",
-    payoutsCount: "{{count}} payout(s)",
-  },
-
-  feeInfo: {
-    title: "How Vimen Pay fees work",
-    intro: "When a client pays an invoice online, two fees are deducted before the money reaches your account:",
-    stripeLabel: "Stripe (1.4% + 20p)",
-    stripeDesc: "The card processing fee, the standard UK rate.",
-    VimenDesc: "What keeps the app running and improving.",
-  },
-
-  feeBreakdown: {
-    invoiceAmount: "Invoice amount",
-    stripeFeeLine: "Stripe fee (1.4% + 20p)",
-    youReceive: "You receive",
-  },
-
-  potential: {
-    title: "Your earning potential",
-    rowLabel: "If you process {{amount}}/yr",
-    netSuffix: "net",
-    footnote: "Net after Stripe (1.4%+20p)",
-  },
-
-  transactions: {
-    grossVolume: "Gross volume",
-    stripeFeesPaid: "Stripe fees paid",
-    VimenPayFees: "Vimen Pay fees",
-    netToYou: "Net to you",
-    empty: "No transactions yet",
-  },
-
-  table: {
-    date: "Date",
-    client: "Client",
-    description: "Description",
-    gross: "Gross",
-    stripeFee: "Stripe fee",
-    VimenFee: "Vimen fee",
-    youReceive: "You receive",
-    status: "Status",
-    dateInitiated: "Date initiated",
-    arrivalDate: "Arrival date",
-    amount: "Amount",
-    transactions: "Transactions",
-    bank: "Bank",
-  },
-
-  payoutsTab: {
-    availableForPayout: "Available for payout",
-    estimated: "Estimated",
-    inTransit: "In transit",
-    expectedWithin2Days: "Expected within 2 days",
-    totalPaidOut: "Total paid out",
-    empty: "No payouts yet. They appear here once your first payment processes",
-  },
-
-  payoutSchedule: {
-    title: "Automatic payouts",
-    description: "Vimen Pay pays out your earnings automatically every 2 business days to your connected bank account. Payments processed before 5pm arrive 2 working days later. Bank account ending in",
-  },
-
-  connect: {
-    stripeAccountTitle: "Stripe account",
-    stripeConnect: "Stripe Connect",
-    connectedDesc: "Connected. Payments can be received",
-    notConnectedDesc: "Not connected. Clients cannot pay online yet",
-    connectedBody: "Your Stripe account is connected and verified. Payouts go to your linked bank account automatically.",
-    openDashboard: "Open Stripe dashboard",
-    notConnectedBody: "Connect your Stripe account to start accepting card payments on your invoices. Takes 5 minutes. You'll need your bank account details and a photo ID.",
-    redirectingToast: "Redirecting to Stripe Connect onboarding…",
-    connectAccountBtn: "Connect Stripe account",
-  },
-
-  howItWorks: {
-    title: "How Vimen Pay works",
-    step1: { title: "You create an invoice", desc: "As normal, for any job you've completed." },
-    step2: { title: "Add a payment link", desc: "Click 'Create payment link' on any invoice. Takes 2 seconds." },
-    step3: { title: "Client pays online", desc: "They click the link, enter their card, done. Works on any device." },
-    step4: { title: "You get paid", desc: "Money arrives in your bank account within 2 business days, automatically." },
-  },
-
-  feeSummary: {
-    title: "Fee breakdown",
-    rows: {
-      stripe: { label: "Stripe processing", fee: "1.4% + 20p", note: "Standard UK card rate" },
-      VimenPay: { label: "Vimen Pay", fee: "2.0%", note: "Keeps the platform running" },
-      total: { label: "Total deducted", fee: "~3.4%", note: "On a £500 invoice = £17 in fees" },
-    },
-    bankTransferNote: "Invoice paid by bank transfer? No fees at all. Only card payments go through Vimen Pay.",
-  },
-  },
-
   // ── Marketplace ──────────────────────────────────────
-  marketplace: {
-  title: "Marketplace",
-  myListingsBtn: "My listings",
-  browseBtn: "Browse",
-  postListingBtn: "+ Post listing",
-  loading: "Loading marketplace…",
-  searchPlaceholder: "Search listings…",
-  allProfessions: "All professions",
-  urgentOnly: "Urgent only",
-  urgent: "Urgent",
-  close: "Close",
-
-  listingCount: "{{count}} listing(s)",
-  viewsCount: "{{count}} view(s)",
-  yourListings: "Your listings ({{count}})",
-  fromDate: "From {{date}}",
-  photoAlt: "photo",
-
-  types: {
-    all: "All listings",
-    demand: "Demands",
-    sale: "Business for sale",
-    recruitment: "Recruitment",
-    materials: "Materials",
-  },
-
-  typeLabels: {
-    demand: "Demand",
-    sale: "For sale",
-    recruitment: "Hiring",
-    materials: "Materials",
-  },
-
-  status: {
-    active: "active",
-    closed: "closed",
-  },
-
-  time: {
-    today: "Today",
-    yesterday: "Yesterday",
-    daysAgo: "{{count}} day(s) ago",
-    weeksAgo: "{{count}} week(s) ago",
-  },
-
-  stats: {
-    activeDemands: "Active demands",
-    businessesForSale: "Businesses for sale",
-    recruitmentPosts: "Recruitment posts",
-    materialsForSale: "Materials for sale",
-  },
-
-  emptyBrowse: "No listings match your filters",
-  postFirstOne: "+ Post the first one",
-  emptyMine: "You haven't posted anything yet",
-  postFirstListing: "+ Post first listing",
-
-  deleteConfirm: {
-    title: "Delete listing?",
-    message: "This listing will be permanently removed.",
-    confirmLabel: "Delete",
-  },
-
-  card: {
-    budgetSuffixDemand: "budget",
-    budgetSuffixSale: "asking price",
-    revenueShort: "Revenue",
-  },
-
-  detail: {
-    contact: "Contact",
-    interestedBtn: "I'm interested, contact me",
-    call: "Call",
-    thisIsYourListing: "This is your listing.",
-    fields: {
-      budget: "Budget",
-      startDate: "Start date",
-      businessType: "Business type",
-      askingPrice: "Asking price",
-      annualRevenue: "Annual revenue",
-      employees: "Employees",
-      contract: "Contract",
-      salaryRate: "Salary / rate",
-      experience: "Experience",
-      category: "Category",
-      condition: "Condition",
-      price: "Price",
-      quantity: "Quantity",
-    },
-  },
-
-  toast: {
-    listingClosed: "Listing closed",
-    listingDeleted: "Listing deleted",
-    listingPosted: "Listing posted",
-    interestSent: "Interest sent! The poster will contact you.",
-    requiredTitleDescLocation: "Title, description and location are required",
-    requiredContact: "Contact name and email are required",
-    failedPost: "Failed to post listing",
-    failedInterest: "Failed to send, try again",
-    requiredNameEmail: "Name and email required",
-  },
-
-  post: {
-    modalTitle: "Post a listing",
-    step1Prompt: "What kind of listing do you want to post?",
-    typeCards: {
-      demand: { label: "Demand", desc: "You need a tradesperson or service" },
-      sale: { label: "For sale", desc: "Selling a business or fonds de commerce" },
-      recruitment: { label: "Recruitment", desc: "Hiring workers or subcontractors" },
-      materials: { label: "Materials", desc: "Sell surplus or used materials/tools to a peer" },
-    },
-    next: "Next",
-    back: "Back",
-    step2Of3: "Step 2 of 3: Listing details",
-    step3Of3: "Step 3 of 3: Your contact info (shown to interested parties)",
-    markUrgent: "Mark as urgent",
-    postBtn: "Post listing",
-    posting: "Posting…",
-
-    fields: {
-      titleLabel: "Title *",
-      titlePlaceholders: {
-        demand: "e.g. Looking for electrician in Rouen for full rewire",
-        sale: "e.g. Electrical business for sale, Normandy, 200k+ revenue",
-        recruitment: "e.g. Looking for qualified plumber, Rouen area, subcontracting",
-        materials: "e.g. Unused 100m twin & earth cable",
-      },
-      descriptionLabel: "Description *",
-      descriptionPlaceholder: "Describe the work, what you're selling, or what you're looking for…",
-      professionLabel: "Profession / Sector",
-      locationLabel: "Location *",
-      locationPlaceholder: "e.g. Rouen (76), Normandie",
-      budgetLabel: "Budget (£)",
-      startDateLabel: "Desired start date",
-      businessTypeLabel: "Business type",
-      businessTypePlaceholder: "e.g. Electrical firm",
-      askingPriceLabel: "Asking price (£)",
-      annualRevenueLabel: "Annual revenue (£)",
-      employeesLabel: "Number of employees",
-      contractTypeLabel: "Contract type",
-      salaryRangeLabel: "Salary / day rate",
-      salaryRangePlaceholder: "e.g. £200-250/day or £35k-£40k",
-      experienceLabel: "Experience required",
-      experiencePlaceholder: "e.g. 2+ years, 18th edition required",
-      categoryLabel: "Category",
-      conditionLabel: "Condition",
-      priceLabel: "Price (£) *",
-      quantityLabel: "Quantity",
-      photosLabel: "Photos (optional, up to 3)",
-      photoUploadHint: "Drop a photo or tap to upload",
-      photoUploadHintOptional: "Add another photo (optional)",
-      photoUploading: "Uploading…",
-      photoUploadFailed: "Upload failed, please try again",
-    },
-
-    contact: {
-      yourName: "Your name *",
-      email: "Email *",
-      phone: "Phone",
-      phonePlaceholder: "+44 7700 900000",
-      preferredMethod: "Preferred contact method",
-      methodOptions: {
-        both: "Email + Phone",
-        email: "Email only",
-        phone: "Phone only",
-      },
-      privacyNote: "Your listing will be visible to everyone on the marketplace. Your email won't be shown publicly, interested parties send a message first.",
-    },
-  },
-
-  interest: {
-    modalTitle: "Express interest",
-    yourName: "Your name *",
-    email: "Email *",
-    phone: "Phone",
-    message: "Message",
-    messagePlaceholder: "Briefly introduce yourself and your availability…",
-    sendBtn: "Send interest",
-  },
-
-  contractTypes: {
-    Subcontracting: "Subcontracting",
-    CDI: "CDI",
-    CDD: "CDD",
-    Interim: "Interim",
-    Apprenticeship: "Apprenticeship",
-    Other: "Other",
-  },
-
-  materialCategories: {
-    Electrical: "Electrical",
-    Plumbing: "Plumbing",
-    General: "General",
-    Safety: "Safety",
-    Tools: "Tools",
-    Other: "Other",
-  },
-
-  materialConditions: {
-    new: "New",
-    likeNew: "Like new",
-    used: "Used",
-    forParts: "For parts",
-  },
-  },
-
   // ── Reviews ──────────────────────────────────────────
-  reviews: {
-    addManually:    "Add",
-    request:        "Request",
-    averageRating:  "{{rating}} average",
-    verified:       "Verified",
-    onGoogle:       "On Google",
-    pending:        "Pending",
-    noReviews:      "No reviews yet",
-    requestFirst:   "Request your first review",
-    connectGoogle:  "Connect Google Business",
-    connectSub:     "Let clients go straight to your Google profile",
-    sendRequest:    "Send SMS request",
-    requestTitle:   "Request a review",
-    requestSub:     "Select a completed job. We'll send an SMS to the client with a one-tap link to your Google review page.",
-    addTitle:       "Add review",
-    clientName:     "Client name",
-    rating:         "Rating",
-    reviewTitle:    "Title",
-    reviewBody:     "Review",
-    whatSaid:       "What did they say?",
-    addReview:      "Add review",
-    pushGoogle:     "Ask client to post to Google",
-
-  title: "Reviews",
-  addManuallyBtn: "+ Add manually",
-  requestReviewBtn: "Request review",
-
-  requestModal: {
-    title: "Request a review",
-    intro: "Select a completed job. We'll send an SMS to the client asking them to leave a review, with a one-tap link directly to your Google profile.",
-    completedJobLabel: "Completed job",
-    selectJobPlaceholder: "Select a job…",
-    smsPreviewTitle: "SMS preview",
-    smsTemplate: "\"Hi {{clientName}}, hope you're happy with the {{jobTitle}}. Could you spare 60 seconds to leave us a Google review? It really helps. Tap here: {{urlPreview}}… From {{profileName}}\"",
-    cancel: "Cancel",
-    sendSmsBtn: "Send SMS request",
-  },
-
-  manualModal: {
-    title: "Add review manually",
-    intro: "For reviews left directly by clients (WhatsApp, email, verbal) that you want to record.",
-    clientNameLabel: "Client name",
-    ratingLabel: "Rating",
-    reviewTitleLabel: "Review title",
-    reviewTitlePlaceholder: "e.g. Excellent work, on time and tidy",
-    reviewTextLabel: "Review text",
-    reviewTextPlaceholder: "What did the client say?",
-    addReviewBtn: "Add review",
-  },
-
-  toast: {
-    selectCompletedJob: "Select a completed job",
-    clientNoPhone: "This client has no phone number on file",
-    noGoogleUrlConfigured: "Add your Google review link in Settings before sending requests",
-    sendFailed: "Failed to send, please try again",
-    requestSent: "Review request SMS sent to {{name}}",
-    nameRatingRequired: "Name and rating required",
-    reviewAdded: "Review added",
-    markedPushedToGoogle: "Marked as pushed to Google",
-  },
-
-  fallback: {
-    client: "client",
-    clientBracket: "[client]",
-    work: "work",
-  },
-
-  stats: {
-    reviewsCount: "{{count}} review(s)",
-  },
-
-  metrics: {
-    verifiedReviews: "Verified reviews",
-    onYourProfile: "On your profile",
-    googleClicks: "Google clicks",
-    tappedGoogleLink: "Tapped Google link",
-    jobsWithNoReview: "Jobs with no review",
-    couldRequestReview: "Could request a review",
-  },
-
-  googleCta: {
-    title: "Connect your Google Business Profile",
-    description: "Paste your Google review link so SMS requests take clients directly to Google.",
-    openBtn: "Open Google Business",
-  },
-
-  list: {
-    empty: "No reviews yet",
-    requestFirst: "Request your first review",
-    verifiedBadge: "Verified",
-    onGoogleBadge: "On Google",
-    askClientToPostBtn: "Ask client to post to Google",
-  },
-  },
-
   // ── Certifications ───────────────────────────────────
-  certifications: {
-    title:        "Certifications",
-    active:       "Active ({{count}})",
-    expiring:     "Expiring ({{count}})",
-    expired:      "Expired ({{count}})",
-    visibleNote:  "Active certs are visible on your public booking page",
-    expiryAlert:  "{{count}} cert(s) expiring soon",
-    noExpiry:     "No expiry",
-    quickAdd:     "Quick add common certs",
-  add: "Add",
-  addCertificate: "Add certificate",
-  saveChanges: "Save changes",
-  addedToast: "Certificate added",
-  removedToast: "Certificate removed",
-  nameRequired: "{{credential}} name required",
-  certName: "Certificate name",
-  issuingBody: "Issuing body",
-  certNumber: "Certificate number",
-  issueDate: "Issue date",
-  expiryDate: "Expiry date",
-  egPrefix: "e.g.",
-  enterName: "Enter name",
-  removeConfirmTitle: "Remove certificate?",
-  removeConfirmMessage: "This will remove it from your profile and booking page.",
-  expiringSoonBanner: "{{count}} certificate{{plural}} expiring soon",
-  monthsShort: "months",
-  activeCerts: "Active certs",
-  expiringSoon: "Expiring soon",
-  expiredLabel: "Expired",
-  visibleOnProfile: "Visible on profile",
-  visibilityNote: "All active {{credentialPlural}} are visible on your public booking page. Clients can verify them before booking.",
-  noneYet: "No certificates added yet",
-  addFirst: "Add your first certificate",
-  activeSection: "Active ({{count}})",
-  expiredSection: "Expired ({{count}})",
-  commonFor: "Common {{credentialPlural}} for {{trade}}",
-  expiresLabel: "Expires",
-  status: {
-    expired: "Expired",
-    expiring: "Expires in {{when}}",
-    active: "Active",
-  },
-  expiresOn: "Expires on {{date}}",
-  valid: "Valid",
-  certifications: {
-    title: "Certifications & Licenses",
-    add: "Add Certification",
-    sectionTitle: "{{trade}} Qualifications",
-    activeCount: "{{count}} active",
-    expiringAlertTitle: "{{count}} certification(s) expiring soon",
-    noCertsMessage: "No certifications added yet. Show clients your qualifications to build trust.",
-    addFirst: "Add Your First Certification",
-    expiredSection: "Expired ({{count}})",
-    editTitle: "Edit Certification",
-    addTitle: "Add Certification",
-    nameLabel: "Certification Name",
-    namePlaceholder: "e.g., NVQ Level 3, Gas Safe",
-    issuingBodyLabel: "Issuing Organization",
-    issuingBodyPlaceholder: "e.g., City & Guilds",
-    certNumberLabel: "Certificate / License Number",
-    certNumberPlaceholder: "e.g., 1234567",
-    expiryDateLabel: "Expiry Date",
-    notesLabel: "Notes (Optional)",
-    notesPlaceholder: "Any extra info...",
-    addCertButton: "Add Certification",
-    deleteConfirmTitle: "Delete Certification",
-    deleteConfirmMessage: "Are you sure you want to delete this certification? This action cannot be undone.",
-    nameRequired: "Please enter a certification name.",
-    updatedToast: "Certification updated",
-    addedToast: "Certification added",
-    deletedToast: "Certification deleted",
-    badgeExpiredShort: "EXP",
-    badgeValidShort: "OK",
-    expiresLabel: "Expires",
-    status: {
-      active: "Active",
-      expired: "Expired",
-      expiring: "Expires in {{when}}",
-    },
-  },
-  },
-
   // ── Referrals ────────────────────────────────────────
-  referrals: {
-    refer:        "+ Refer someone",
-    rewarded:     "Rewarded",
-    monthsFree:   "Months free",
-    totalSent:    "Total sent",
-    myLink:       "Your referral link",
-    shareLink:    "Share link",
-    sendInvite:   "Send invite",
-    yourReferrals:"Your referrals ({{count}})",
-    noReferrals:  "No referrals yet",
-    referFirst:   "Refer your first trade",
-    referTitle:   "Refer a tradesperson",
-    theirName:    "Their name (optional)",
-    theirEmail:   "Their email *",
-    reward:       "+{{months}}mo Pro",
-    sending:      "Sending…",
-    sendCta:      "Send referral invite",
-    linkSub:      "Share this with any tradesperson you know. When they complete their first job on Vimen, you both get {{months}} months Pro free.",
-    status: {
-      pending:   "Pending",
-      signed_up: "Signed up",
-      qualified: "Qualified",
-      rewarded:  "Rewarded",
-    },
-
-  title: "Referrals",
-  referSomeoneBtn: "+ Refer someone",
-
-  modal: {
-    title: "Refer a tradesperson",
-    intro: "Know someone who'd benefit from Vimen? Share your link. When they're active on the platform, we'll reach out to apply a reward to both accounts.",
-    theirNameLabel: "Their name (optional)",
-    theirEmailLabel: "Their email *",
-    giftNote: "They'll receive a personal invite. Once they're active on Vimen, we'll contact both accounts to apply the reward.",
-    cancel: "Cancel",
-    send: "Send referral",
-  },
-
-  toast: {
-    linkCopied: "Referral link copied!",
-    copyFailedManual: "Couldn't copy automatically. Please select and copy the link above manually.",
-    emailRequired: "Email is required",
-    referralSent: "Referral sent to {{email}}",
-  },
-
-  metrics: {
-    successfulReferrals: "Successful referrals",
-    totalSent: "{{count}} total sent",
-    monthsProEarned: "Months Pro earned",
-    appliedToAccount: "Applied to your account",
-    pending: "Pending",
-    waitingToSignUp: "Waiting to sign up",
-    yourReferralCode: "Your referral code",
-    shareThisLink: "Share this link",
-  },
-
-  linkCard: {
-    title: "Your referral link",
-    description: "Share this link anywhere: WhatsApp, Facebook groups, trade forums. Anyone who signs up through it gets linked to you automatically.",
-    copied: "Copied!",
-    copyLink: "Copy link",
-  },
-
-  share: {
-    whatsapp: "WhatsApp",
-    facebook: "Facebook",
-    email: "Email",
-    whatsappMessage: "I've been using Vimen to manage my trade business, it's brilliant for invoicing and getting paid. Sign up free here: {{url}}",
-    emailSubject: "Try Vimen: free business app for tradespeople",
-    emailBody: "Hi, I've been using Vimen to run my trade business and thought you'd find it useful. Sign up free here: {{url}}",
-  },
-
-  howItWorks: {
-    title: "How it works",
-    step1: { title: "Share your link", desc: "Send your referral link to any tradesperson you know." },
-    step2: { title: "They sign up", desc: "They create a free account using your link." },
-    step3: { title: "They start using Vimen", desc: "Once they're active on the platform, the referral is counted." },
-    step4: { title: "Reward for both", desc: "We reach out to apply the reward to both accounts. No limit on referrals." },
-  },
-
-  statusDesc: {
-    pending: "Link sent, waiting for them to sign up",
-    signed_up: "They signed up, needs to complete first job",
-    qualified: "Qualified, reward being processed",
-    rewarded: "2 months Pro applied to your account",
-  },
-
-  table: {
-    title: "Your referrals",
-    empty: "No referrals sent yet",
-    referFirst: "Refer your first trade",
-    headers: {
-      name: "Name",
-      email: "Email",
-      code: "Code",
-      status: "Status",
-      reward: "Reward",
-      sent: "Sent",
-    },
-    rewardMonths: "+{{count}} month(s) Pro",
-  },
-  },
-
   // ── Settings ─────────────────────────────────────────
-  settings: {
-    title:            "Settings",
-    account:          "Account",
-    payment:          "Payment",
-    notifications:    "Alerts",
-    plan:             "Plan",
-    language:         "Language",
-    fullName:         "Full name",
-    profession:       "Profession",
-    email:            "Email",
-    phone:            "Phone",
-    bio:              "Bio (shown on booking page)",
-    bioPlaceholder:   "Describe your experience…",
-    hourlyRate:       "Hourly rate (£)",
-    bookingSlug:      "Booking page URL slug",
-    googleReviewUrl:  "Google review link",
-    googleReviewUrlPlaceholder: "https://g.page/r/.../review",
-    googleReviewUrlHint: "Used when you request reviews from clients via SMS. Find this link in your Google Business profile.",
-    saveAccount:      "Save account",
-    bankDetails:      "Bank details",
-    bankName:         "Bank name",
-    sortCode:         "Sort code",
-    accountNumber:    "Account number",
-    paymentTerms:     "Payment terms",
-    invoiceNotes:     "Invoice footer notes",
-    savePayment:      "Save payment settings",
-    notifEmail:       "Email on new booking request",
-    notifEmailSub:    "via Resend",
-    notifSms:         "SMS when invoice is paid",
-    notifSmsSub:      "via Twilio",
-    notifDigest:      "Weekly earnings email",
-    notifDigestSub:   "via Resend",
-    notifOverdue:     "Overdue invoice SMS reminder",
-    notifOverdueSub:  "via Twilio",
-    savePreferences:  "Save preferences",
-    currentPlan:      "Current plan",
-    upgrade:          "Upgrade to Pro",
-    downgrade:        "Downgrade",
-    currentPlanBadge: "Current plan",
-    mostPopular:      "MOST POPULAR",
-    signOutConfirm:   "Sign out?",
-    languageTitle:    "Language / Langue",
-    languageSub:      "Choose your preferred language",
-    verticalDetails:  "{{vertical}} details",
-    verticalSub:      "Extra fields for your profession, shown on your public booking page where relevant.",
-    yourName:              "Your name",
-invoiceDefaults:       "Invoice defaults",
-invoiceNotesPlaceholder: "e.g. VAT not registered. Please include invoice number as payment reference.",
-notifTitle:            "Notification preferences",
-stripeDesc:            "Connect Stripe so clients can pay invoices online with a card. Your secret key stays in Supabase and never touches the browser.",
-connectStripe:         "Connect Stripe account",
-termsImmediate:        "Immediate",
-terms7:                "7 days",
-terms14:               "14 days",
-terms30:               "30 days",
-renewsMonthly:         "renews monthly",
-manageBilling:         "Manage billing",
-redirectingStripe:     "Redirecting to Stripe…",
-errorSave:             "Failed to save, try again",
-successSave:           "Settings saved",
-planFeat1:             "5 active clients",
-planFeat2:             "10 invoices/month",
-planFeat3:             "Booking page (branded)",
-planFeat4:             "Email support",
-planFeat5:             "Unlimited clients",
-planFeat6:             "Unlimited invoices",
-planFeat7:             "Custom booking URL",
-planFeat8:             "SMS reminders",
-planFeat9:             "Stripe payment links",
-planFeat10:            "Overdue chasing",
-planFeat11:            "Priority support",
-  },
-
-professions: {
+  professions: {
   verticals: {
     trades:       { label: "Trade & construction" },
     beauty:       { label: "Beauty & wellness" },
@@ -1564,116 +316,7 @@ professions: {
   },
 },
 
-publicBooking: {
-  loading: "Loading…",
-  brand: "Vimen",
-  poweredBy: "Powered by Vimen",
-  perHour: "/hr",
-
-  notFound: {
-    title: "Page not found",
-    message: "This booking page doesn't exist, or the link may be incorrect.",
-  },
-
-  badges: {
-    professional: "Registered professional",
-    beauty: "Qualified & insured",
-    default: "Fully qualified",
-  },
-
-  professionalExtra: {
-    gdprCompliant: "GDPR-compliant client data handling",
-  },
-
-  tradesExtra: {
-    insuredVia: "Insured via {{provider}}",
-    vatRegistered: "VAT registered",
-  },
-
-  beautyExtra: {
-    servicesTitle: "Services",
-    duration: "{{count}} min",
-  },
-
-  done: {
-    title: "Request sent!",
-    message: "{{name}} will confirm shortly.",
-  },
-
-  form: {
-    titlePrefix: "Request",
-
-    aByVertical: {
-      trades:       "a booking",
-      beauty:       "an appointment",
-      professional: "a consultation",
-      other:        "a booking",
-    },
-    yourName: "Your name",
-    email: "Email",
-    phone: "Phone",
-    preferredDate: "Preferred date",
-    detailsLabel: {
-      beauty: "Which service?",
-      professional: "What's this regarding?",
-      default: "What do you need?",
-    },
-    detailsPlaceholder: {
-      beauty: "e.g. Gel manicure, balayage…",
-      professional: "Briefly describe what you'd like to discuss…",
-      default: "Describe the work…",
-    },
-    sending: "Sending…",
-    sendRequest: "Send request",
-    sendBookingRequest: "Send booking request",
-    footerNote: {
-      beauty: "No payment needed · Confirmed by message",
-      professional: "No payment needed · Confidential",
-      default: "No payment needed · Free quote",
-    },
-  },
-
-  toast: {
-    missingNameEmail: "Please fill in your name and email",
-    genericError: "Something went wrong, please try again",
-  },
-},
-
-
-pricingPage: {
-  eyebrow: "Pricing",
-  title: "Simple pricing that grows with you",
-  sub: "Start for free. Move to Unlimited when you are ready for more.",
-  mostPopular: "Most popular",
-  perMonth: "/mo",
-  feeNote: "A two percent processing fee applies to payments made through Vimen Pay on every plan.",
-  free: {
-    name: "Free",
-    sub: "Everything you need to get started",
-    cta: "Start free",
-    feature1: "Up to five clients",
-    feature2: "Up to ten invoices a month",
-    feature3: "One booking page",
-    feature4: "Community support",
-  },
-  unlimited: {
-    name: "Unlimited",
-    sub: "For businesses ready to grow",
-    cta: "Start free trial",
-    feature1: "Unlimited clients",
-    feature2: "Unlimited invoices and quotes",
-    feature3: "Custom booking page",
-    feature4: "Automatic review requests",
-    feature5: "Referral programme",
-    feature6: "Priority support",
-  },
-  finalCta: {
-    title: "Start free, upgrade whenever you are ready",
-    cta: "Start free",
-  },
-},
-
-  errors: {
+errors: {
     sectionUnavailable: "This section is currently unavailable.",
     general: "An unexpected error occurred. Please try again.",
     actionRequired: "Action Required",
@@ -1690,358 +333,20 @@ pricingPage: {
   },
 
 
-  dashboard: {
-    welcomeBack: "Welcome back{{name}}",
-    subtitle: "Here's an overview of your activity.",
-    subtitleWithTrade: "Overview of your {{trade}} business.",
-    metricRevenue: "Total Revenue",
-    metricPaidInvoicesCount: "{{count}} paid invoices",
-    metricPending: "Pending Revenue",
-    metricUnpaidInvoicesCount: "{{count}} unpaid invoices",
-    metricActiveJobs: "Active Jobs",
-    metricTotalJobsCount: "{{count}} total jobs",
-    metricBookingRequests: "New Requests",
-    metricPendingRequests: "Awaiting response",
-    pendingRequestsTitle: "Pending Booking Requests",
-    noPendingRequests: "No pending booking requests.",
-    recentJobsTitle: "Recent Jobs",
-    noJobsYet: "No jobs created yet.",
-    noInvoice: "No invoice",
-    bookingPageLive: "Your Booking Page is Live",
-    copyLink: "Copy Link",
-    viewPage: "View Page",
-    linkCopied: "Booking link copied to clipboard!",
-    linkCopyFailed: "Failed to copy link",
-  },
-
-  jobs: {
-    title: "Jobs",
-    addJob: "Add New {{jobTerm}}",
-    filterAll: "All ({{count}})",
-    filterScheduled: "Scheduled ({{count}})",
-    filterCompleted: "Completed ({{count}})",
-    noJobsFound: "No jobs found.",
-    colDate: "Date",
-    colClient: "Client",
-    colTitle: "Title / Description",
-    colDuration: "Duration",
-    colAmount: "Amount",
-    colStatus: "Status",
-    markDone: "Mark Done",
-    status: {
-      scheduled: "Scheduled",
-      completed: "Completed",
-    },
-    createTitle: "New {{jobTerm}}",
-    editTitle: "Edit {{jobTerm}}",
-    labelClient: "Client",
-    selectClientPlaceholder: "-- Select a Client --",
-    labelTitle: "Job Title / Summary",
-    titlePlaceholder: "e.g., Boiler Maintenance & Pipe Repair",
-    labelDate: "Date",
-    labelDuration: "Duration (Hours)",
-    labelAmount: "Estimated Amount",
-    labelNotes: "Notes / Job Details",
-    notesPlaceholder: "Additional instructions or materials required...",
-    submitCreate: "Create Job",
-    clientRequired: "Please select a client.",
-    titleRequired: "Please enter a job title.",
-    createdSuccess: "Job scheduled successfully",
-    createError: "Failed to create job",
-    updatedSuccess: "Job details updated",
-    updateError: "Failed to update job",
-    completedSuccess: "Job marked as completed",
-    completeError: "Failed to complete job",
-    deleteConfirmTitle: "Delete Job",
-    deleteConfirmMessage: "Are you sure you want to delete this job? This action cannot be undone.",
-    deletedSuccess: "Job deleted",
-    deleteError: "Failed to delete job",
-  },
-
-  payments: {
-    title: "Online Payments & Payouts",
-    tabs: {
-      overview: "Overview",
-      transactions: "Transactions ({{count}})",
-      payouts: "Payouts",
-      account: "Stripe Account",
-    },
-    overview: {
-      notConnectedTitle: "Stripe Online Payments Not Connected",
-      notConnectedDesc: "Connect your bank account with Stripe to start accepting card payments from clients online.",
-      connectStripeBtn: "Connect Stripe",
-      connectedBanner: "Your Stripe account is connected and active for receiving payments.",
-      recentPayments: "Recent Online Payments",
-      viewAll: "View All",
-      emptyPayments: "No recent payments recorded.",
-      ofGrossAmount: "of {{amount}} total",
-    },
-    metrics: {
-      totalVolume: "Gross Volume",
-      yourEarnings: "Net Volume",
-      thisMonth: "This Month",
-      availableBalance: "Available Balance",
-      inTransitToBank: "In Transit",
-      totalPaidOut: "Total Paid Out",
-      paymentsCount: "{{count}} payments",
-      payoutsCount: "{{count}} payouts",
-      ofGross: "{{pct}} of gross",
-      readyToPayOut: "Ready to transfer",
-      arrivingSoon: "Arriving in bank soon",
-    },
-    transactions: {
-      grossVolume: "Gross Volume",
-      stripeFeesPaid: "Stripe Processing Fees",
-      netToYou: "Net Revenue",
-      empty: "No transactions found.",
-    },
-    table: {
-      date: "Date",
-      client: "Client",
-      description: "Description",
-      gross: "Gross Amount",
-      stripeFee: "Stripe Fee",
-      youReceive: "You Receive",
-      status: "Status",
-      dateInitiated: "Date Initiated",
-      arrivalDate: "Estimated Arrival",
-      amount: "Payout Amount",
-      transactions: "Items",
-      bank: "Bank Account",
-    },
-    payoutsTab: {
-      availableForPayout: "Available Balance",
-      estimated: "Estimated balance",
-      inTransit: "In Transit to Bank",
-      expectedWithin2Days: "Expected within 2 business days",
-      totalPaidOut: "Total Paid Out",
-      empty: "No payouts recorded.",
-    },
-    payoutSchedule: {
-      title: "Automated Rolling Payouts",
-      description: "Payouts are processed automatically every business day directly to your registered bank account ending in",
-    },
-    connect: {
-      stripeAccountTitle: "Stripe Express Connection",
-      stripeConnect: "Stripe Payments",
-      connectedDesc: "Account verified and payouts enabled",
-      notConnectedDesc: "Accept credit cards and instant online payments",
-      connectedBody: "Your account is active. You can manage your payout schedule and tax invoices directly on Stripe.",
-      notConnectedBody: "By connecting Stripe, you allow your clients to pay quotes and invoices directly online via credit/debit card.",
-      openDashboard: "Open Stripe Dashboard",
-      connectAccountBtn: "Connect with Stripe",
-      redirectingToast: "Redirecting to Stripe Express...",
-      redirectSuccess: "Redirecting to onboarding portal...",
-    },
-    status: {
-      connected: "Connected",
-      active: "Active",
-      notConnected: "Not Connected",
-      completed: "Completed",
-      pending: "Pending",
-      processing: "Processing",
-      failed: "Failed",
-      refunded: "Refunded",
-      paid: "Paid Out",
-      in_transit: "In Transit",
-    },
-    howItWorks: {
-      title: "How Online Payments Work",
-      step1: {
-        title: "1. Client Receives Invoice",
-        desc: "An automatic payment link is attached to your invoice email or message.",
-      },
-      step2: {
-        title: "2. Secure Online Checkout",
-        desc: "Clients pay instantly using Apple Pay, Google Pay, or Credit Card.",
-      },
-      step3: {
-        title: "3. Automatic Status Sync",
-        desc: "Invoices update automatically to Paid without manual tracking.",
-      },
-      step4: {
-        title: "4. Direct Bank Transfer",
-        desc: "Funds are deposited into your bank account within 2 business days.",
-      },
-    },
-  },
-
-  pricingPage: {
-    nav: {
-      signIn: "Sign In",
-      signUp: "Start Free Trial",
-    },
-    hero: {
-      title: "Simple, Transparent Pricing",
-      subtitle: "Everything you need to run your trade business. No hidden fees or contracts.",
-    },
-    billing: {
-      monthly: "Monthly Billing",
-      annual: "Annual Billing",
-      saveDiscount: "Save 20%",
-    },
-    popularBadge: "Most Popular",
-    monthAbbr: "mo",
-    plans: {
-      solo: {
-        name: "Solo Vimen",
-        tagline: "Perfect for independent sole traders getting started.",
-        feat1: "Unlimited Quotes & Invoices",
-        feat2: "Client CRM & History",
-        feat3: "Online Card Payments",
-        feat4: "SMS & Email Reminders",
-        feat5: "Basic Job Scheduling",
-        cta: "Start 14-Day Free Trial",
-      },
-      pro: {
-        name: "Professional",
-        tagline: "For established tradesmen who need complete automation.",
-        feat1: "Everything in Solo",
-        feat2: "Public Online Booking Page",
-        feat3: "Marketplace Listing Rights",
-        feat4: "Automated Payment Reminders",
-        feat5: "Certification Tracking & Alerts",
-        feat6: "Priority Support",
-        cta: "Start 14-Day Free Trial",
-      },
-      team: {
-        name: "Business Team",
-        tagline: "For growing trade businesses with subcontractors & teams.",
-        feat1: "Everything in Professional",
-        feat2: "Up to 5 Team Members",
-        feat3: "Subcontractor Access Control",
-        feat4: "Advanced Financial Reports",
-        feat5: "Multi-Vertical Support",
-        feat6: "Dedicated Account Manager",
-        cta: "Contact Sales",
-      },
-    },
-    faq: {
-      title: "Frequently Asked Questions",
-      q1: "Is there a free trial?",
-      a1: "Yes, you can try Vimen free for 14 days with full access to all features. No credit card required.",
-      q2: "Can I change my plan later?",
-      a2: "Absolutely! You can upgrade, downgrade, or cancel your subscription at any time directly from your account settings.",
-      q3: "How do client payments work?",
-      a3: "We connect directly with Stripe Express, so your clients can pay quotes and invoices instantly online with a debit or credit card.",
-      q4: "Are there any hidden transaction fees?",
-      a4: "Vimen charges zero commission on your jobs. Standard payment processing fees apply directly through Stripe.",
-    },
-    finalCta: {
-      title: "Ready to simplify your business?",
-      cta: "Get Started Now",
-    },
-  },
   home: {
-    nav: {
-      features: "Features",
-      pricing: "Pricing",
-    },
-    footer: {
-      contact: "Contact",
-      copyright: "© 2026 Vimen. All rights reserved.",
-    },
-  },
-
-  "pricingPage": {
-    "title": "Simple, Transparent Pricing",
-    "subtitle": "Choose the plan that fits your business needs. No hidden fees.",
-    "monthly": "Monthly",
-    "annual": "Annual (Save 20%)",
-    "finalCta": {
-      "title": "Ready to get started?",
-      "cta": "Start Free Trial"
-    }
-  },
-  "home": {
-    "nav": {
-      "features": "Features",
-      "pricing": "Pricing"
-    },
-    "footer": {
-      "contact": "Contact",
-      "copyright": "© 2026 Vimen. All rights reserved."
-    }
-  },
-
-  "pricingPage": {
-    "nav": {
-      "signIn": "Sign In",
-      "signUp": "Get Started"
-    },
-    "hero": {
-      "title": "Simple, Transparent Pricing",
-      "subtitle": "Choose the perfect plan to grow your business. No hidden fees."
-    },
-    "billing": {
-      "monthly": "Monthly",
-      "annual": "Annual",
-      "saveDiscount": "Save 20%"
-    },
-    "popularBadge": "Most Popular",
-    "monthAbbr": "mo",
-    "plans": {
-      "solo": {
-        "name": "Solo",
-        "tagline": "Ideal for sole traders and freelancers getting started.",
-        "feat1": "Up to 15 clients",
-        "feat2": "Unlimited quotes and invoices",
-        "feat3": "Online booking page",
-        "feat4": "Automated email reminders",
-        "feat5": "Standard email support",
-        "cta": "Start Free Trial"
-      },
-      "pro": {
-        "name": "Pro",
-        "tagline": "For growing professionals who need full automation.",
-        "feat1": "Unlimited clients",
-        "feat2": "Quotes & Invoices with online payments",
-        "feat3": "Automated SMS reminders",
-        "feat4": "Google review collection",
-        "feat5": "Certifications module",
-        "feat6": "Priority support",
-        "cta": "Start Pro Trial"
-      },
-      "team": {
-        "name": "Team",
-        "tagline": "For small teams and growing trade businesses.",
-        "feat1": "Everything in Pro included",
-        "feat2": "Up to 5 team members",
-        "feat3": "Shared team schedule",
-        "feat4": "Advanced business analytics",
-        "feat5": "1-click accounting export",
-        "feat6": "Dedicated account manager",
-        "cta": "Contact Sales"
-      }
-    },
-    "faq": {
-      "title": "Frequently Asked Questions",
-      "q1": "Can I change my plan at any time?",
-      "a1": "Yes, you can upgrade or downgrade your subscription plan at any time directly from your account settings.",
-      "q2": "Is there any long-term contract?",
-      "a2": "No contracts required for monthly plans. You can cancel your subscription whenever you want in one click.",
-      "q3": "How does the free trial work?",
-      "a3": "You get 14 days of unrestricted access to all features. No credit card required to start.",
-      "q4": "What payment methods do you accept?",
-      "a4": "We accept all major credit and debit cards, including Visa, Mastercard, and American Express."
-    },
-    "finalCta": {
-      "title": "Ready to get started?",
-      "cta": "Get Started Now"
-    }
-  },
-
-home: {
   nav: {
+    signIn: "Sign In",
+    signUp: "Get Started",
     features: "Features",
     pricing: "Pricing",
-    signIn: "Sign In",
     startFree: "Start Free",
-      about: "About Us",
-      faq: "FAQ",
-      contact: "Contact",
+    about: "About Us",
+    faq: "FAQ",
+    contact: "Contact"
   },
   hero: {
+    title: "Simple, Transparent Pricing",
+    subtitle: "Choose the perfect plan to grow your business. No hidden fees.",
     titleLine1: "Run your entire business",
     titleLine2: "on auto-pilot.",
     sub: "One platform for trade professionals to manage bookings, quotes, invoices, payments, and clients.",
@@ -2050,8 +355,65 @@ home: {
     stats: {
       fee: "Platform fee",
       setup: "Instant setup",
-      free: "Forever free tier",
+      free: "Forever free tier"
+    }
+  },
+  billing: {
+    monthly: "Monthly",
+    annual: "Annual",
+    saveDiscount: "Save 20%"
+  },
+  popularBadge: "Most Popular",
+  monthAbbr: "mo",
+  plans: {
+    solo: {
+      name: "Solo",
+      tagline: "Ideal for sole traders and freelancers getting started.",
+      feat1: "Up to 15 clients",
+      feat2: "Unlimited quotes and invoices",
+      feat3: "Online booking page",
+      feat4: "Automated email reminders",
+      feat5: "Standard email support",
+      cta: "Start Free Trial"
     },
+    pro: {
+      name: "Pro",
+      tagline: "For growing professionals who need full automation.",
+      feat1: "Unlimited clients",
+      feat2: "Quotes & Invoices with online payments",
+      feat3: "Automated SMS reminders",
+      feat4: "Google review collection",
+      feat5: "Certifications module",
+      feat6: "Priority support",
+      cta: "Start Pro Trial"
+    },
+    team: {
+      name: "Team",
+      tagline: "For small teams and growing trade businesses.",
+      feat1: "Everything in Pro included",
+      feat2: "Up to 5 team members",
+      feat3: "Shared team schedule",
+      feat4: "Advanced business analytics",
+      feat5: "1-click accounting export",
+      feat6: "Dedicated account manager",
+      cta: "Contact Sales"
+    }
+  },
+  faq: {
+    title: "Frequently Asked Questions",
+    q1: "Can I change my plan at any time?",
+    a1: "Yes, you can upgrade or downgrade your subscription plan at any time directly from your account settings.",
+    q2: "Is there any long-term contract?",
+    a2: "No contracts required for monthly plans. You can cancel your subscription whenever you want in one click.",
+    q3: "How does the free trial work?",
+    a3: "You get 14 days of unrestricted access to all features. No credit card required to start.",
+    q4: "What payment methods do you accept?",
+    a4: "We accept all major credit and debit cards, including Visa, Mastercard, and American Express."
+  },
+  finalCta: {
+    title: "Ready to get started?",
+    cta: "Start Your Free Trial",
+    sub: "Join thousands of tradespeople saving over 5 hours every week on admin."
   },
   features: {
     eyebrow: "EVERYTHING YOU NEED",
@@ -2068,8 +430,8 @@ home: {
         badge: "Confirmed",
         service1: "Boiler Service & Inspection",
         service2: "Radiator Repair",
-        cta: "Book Appointment",
-      },
+        cta: "Book Appointment"
+      }
     },
     quotes: {
       tabLabel: "Quotes",
@@ -2083,8 +445,8 @@ home: {
         status: "Accepted",
         line1: "Labor (4 hrs)",
         line2: "Materials & Parts",
-        totalLabel: "TOTAL ESTIMATE",
-      },
+        totalLabel: "TOTAL ESTIMATE"
+      }
     },
     invoices: {
       tabLabel: "Invoices",
@@ -2099,8 +461,8 @@ home: {
         billTo: "Billed To",
         client: "Sarah Jenkins",
         line: "Electrical Rewiring",
-        totalLabel: "TOTAL PAID",
-      },
+        totalLabel: "TOTAL PAID"
+      }
     },
     payments: {
       tabLabel: "Payments",
@@ -2114,8 +476,8 @@ home: {
         amount: "Gross Amount",
         processing: "Processing Fee",
         platform: "Platform Fee",
-        receive: "NET PAYOUT",
-      },
+        receive: "NET PAYOUT"
+      }
     },
     clients: {
       tabLabel: "Client CRM",
@@ -2129,8 +491,8 @@ home: {
         client1: "Alex Turner",
         client2: "David Wright",
         client3: "Emma Watson",
-        jobsLabel: "jobs completed",
-      },
+        jobsLabel: "jobs completed"
+      }
     },
     growth: {
       tabLabel: "Growth & Reviews",
@@ -2143,93 +505,63 @@ home: {
         reviewsLabel: "Average Google Rating",
         reviewsCount: "Based on 128 verified reviews",
         referralTitle: "Referral Link Active",
-        referralDesc: "Client share link: vimen.app/r/john-plumbing",
-      },
-    },
+        referralDesc: "Client share link: vimen.app/r/john-plumbing"
+      }
+    }
   },
   pricingTeaser: {
     eyebrow: "TRANSPARENT PRICING",
     title: "Simple plans that grow with you",
     sub: "No contracts, no surprise charges. Cancel or change your subscription anytime.",
-    cta: "See Full Pricing & Plans",
-  },
-  finalCta: {
-    title: "Ready to get started?",
-    sub: "Join thousands of tradespeople saving over 5 hours every week on admin.",
-    cta: "Start Your Free Trial",
+    cta: "See Full Pricing & Plans"
   },
   footer: {
     contact: "Contact",
-    copyright: "© 2026 Vimen. All rights reserved.",
-  },
+    copyright: "© 2026 Vimen. All rights reserved."
+  }
 },
 
-
-nav: {
-  booking: "Bookings",
-  certifications: "Certifications",
-},
-settings: {
-  account: "Contact Info",
-  email: "Email Address",
-  phone: "Phone Number",
-},
 
 booking: {
-  // Navigation & Tabs
+  autoJobTitle: "New booking",
+  jobCreatedToast: "Job created automatically",
+  jobCreateFailedToast: "Booking accepted, but the job could not be created automatically — add it manually.",
+  copyError: "Could not copy the link",
+  title: "Booking",
+  sharePage: "Share page",
+  pageLive: "Your booking page is live",
+  received: "Received {{date}}",
+  openPreview: "View your live booking page",
+  opening: "Opening…",
+  previewSub: "This opens your real, live booking page, the exact same page clients see when they tap your shared link. Nothing here is simulated.",
+  slugLabel: "Booking page URL slug",
+  bioLabel: "Bio (shown to clients)",
+  rateLabel: "Hourly rate (£)",
+  saveSettings: "Save settings",
+  sendConsult: "Send request",
+  requestTitle: "Request a booking",
+  requestSent: "Request sent!",
+  copied: "Copied!",
   requests: "Requests",
   preview: "Public Preview",
   pageSettings: "Booking Page Settings",
-
-  // Toasts & Alerts
-  updateFailed: "Failed to update booking status",
-  acceptedToast: "Booking accepted",
-  declinedToast: "Booking declined",
-  nameAndDateRequired: "Please enter your name and preferred date",
-  submitFailed: "Failed to submit booking request",
-  submittedToast: "Booking request sent successfully!",
-  availabilitySaved: "Availability saved successfully",
-  linkCopied: "Booking link copied to clipboard!",
-
-  // Empty & Loading States
   loadingRequests: "Loading booking requests...",
   noRequests: "No booking requests yet.",
-
-  // Request Headers & Badges
   newRequests: "New Requests ({{count}})",
   accepted: "Accepted Bookings ({{count}})",
   declined: "Declined Bookings ({{count}})",
-  accept: "Accept",
-  decline: "Decline",
-
-  // Status Labels
-  status: {
-    pending: "Pending",
-    accepted: "Accepted",
-    declined: "Declined",
-  },
-
-  // Booking Card Labels
-  preferredDateLabel: "Preferred date:",
-  receivedLabel: "Received on",
-
-  // Public Preview Badges & Labels
   registered: "Registered Professional",
   qualifiedInsured: "Qualified & Insured",
   fullyQualified: "Fully Qualified & Insured",
   reviewsLabel: "reviews",
   responseLabel: "AVG RESPONSE",
+  servicesTitle: "Services & Pricing",
   gdprCompliant: "GDPR Compliant & Registered",
   insuredVia: "Insured via",
   vatRegistered: "VAT Registered",
-  servicesTitle: "Services & Pricing",
-
-  // Preview Form - Headings
+  requestTitleTrades: "Request a Quote / Booking",
   requestTitleBeauty: "Book an Appointment",
   requestTitleProfessional: "Request a Consultation",
-  requestTitleTrades: "Request a Quote / Booking",
-
-  // Preview Form - Input Fields
   yourName: "Your Name",
   emailLabel: "Email Address",
   phoneLabel: "Phone Number",
@@ -2237,36 +569,52 @@ booking: {
   whichService: "Which service are you interested in?",
   regarding: "What is your consultation regarding?",
   whatNeeded: "What work do you need done?",
-
-  // Preview Form - Submit Buttons & Footers
-  sendRequestProfessional: "Request Consultation",
   sendRequestGeneric: "Send Request",
+  sendRequestProfessional: "Request Consultation",
   noPaymentBeauty: "No payment required now · Direct confirmation",
   noPaymentProf: "No payment required now · Confidential enquiry",
   noPayment: "No payment required now · Free quote request",
-
-  // Preview Form - Success Screen
   requestSentTitle: "Request Sent!",
   requestSentSub: "Thank you! {{name}} will review your request and contact you shortly.",
   bookAnother: "Send Another Request",
-
-  // Settings Section
   urlSectionTitle: "Your Booking Link",
   copyLink: "Copy Link",
+  linkCopied: "Booking link copied to clipboard!",
+  copyFailedManual: "Couldn't copy automatically. Please select and copy the link above manually.",
   shareHint: "Share this link on your social media, business cards, or send it directly to customers so they can book your services or request quotes online.",
-  
+  updateFailed: "Failed to update booking status",
+  acceptedToast: "Booking accepted",
+  declinedToast: "Booking declined",
+  nameAndDateRequired: "Please enter your name and preferred date",
+  submitFailed: "Failed to submit booking request",
+  submittedToast: "Booking request sent successfully!",
+  accept: "Accept",
+  decline: "Decline",
+  preferredDateLabel: "Preferred date:",
+  receivedLabel: "Received on",
+  status: {
+    pending: "Pending",
+    accepted: "Accepted",
+    declined: "Declined"
+  },
   services: {
     title: "Services & Offerings",
     subtitle: "Define the services you offer. Clients can select these when requesting a quote or booking an appointment.",
     addService: "Add service",
-    addFirst: "Add your first service",
     editService: "Edit Service",
     loading: "Loading services...",
     noneYet: "No services configured yet",
-    hiddenLabel: "Hidden",
+    addFirst: "Add your first service",
+    nameAndPriceRequired: "Service name and price are required",
+    addFailed: "Failed to create service",
+    addedToast: "Service added successfully",
+    updateFailed: "Failed to update service",
+    updatedToast: "Service updated successfully",
+    deleteFailed: "Failed to delete service",
+    deletedToast: "Service deleted successfully",
+    reorderFailed: "Failed to reorder services",
     minutesShort: "min",
-
-    // Form labels and placeholders
+    hiddenLabel: "Hidden",
     nameLabel: "Service Name",
     namePlaceholder: "e.g. Boiler Servicing, Consumer Unit Upgrade",
     priceLabel: "Price (€)",
@@ -2277,84 +625,122 @@ booking: {
     uploadHint: "PNG or JPG, max 5MB",
     uploading: "Uploading image...",
     uploadFailed: "Image upload failed",
-
-    // Delete Modal
     deleteConfirmTitle: "Delete Service",
-    deleteConfirmMessage: "Are you sure you want to delete this service? This action cannot be undone.",
-
-    // Toast Notifications
-    nameAndPriceRequired: "Service name and price are required",
-    addFailed: "Failed to create service",
-    addedToast: "Service added successfully",
-    updateFailed: "Failed to update service",
-    updatedToast: "Service updated successfully",
-    deleteFailed: "Failed to delete service",
-    deletedToast: "Service deleted successfully",
-    reorderFailed: "Failed to reorder services",
+    deleteConfirmMessage: "Are you sure you want to delete this service? This action cannot be undone."
   },
+  availabilityTitle: "Availability",
+  availabilitySub: "Set your working hours. Clients will only see time slots on days you have enabled.",
+  availabilitySaved: "Availability saved successfully",
+  availabilitySaveFailed: "Failed to save availability",
+  saveAvailability: "Save availability",
+  to: "to",
+  unavailable: "Unavailable",
+  reviewsCountLabel: "{{count}} reviews"
 },
 
 certifications: {
-  // Page Title & Primary Actions
+  title: "Certifications",
+  active: "Active ({{count}})",
+  expiring: "Expiring ({{count}})",
+  expired: "Expired ({{count}})",
+  visibleNote: "Active certs are visible on your public booking page",
+  expiryAlert: "{{count}} cert(s) expiring soon",
+  noExpiry: "No Expiry",
+  quickAdd: "Quick add common certs",
   add: "Add",
-  addFirst: "Add your first credential",
-
-  // Toasts & Notifications
-  nameRequired: "Please enter a name for this {{credential}}",
-  addedToast: "Certification added successfully",
-  removedToast: "Certification removed",
-  errorAdd: "Failed to add certification",
-  errorUpdate: "Failed to update certification",
-
-  // Modals & Form Labels
   addCertificate: "Add Certification",
   saveChanges: "Save Changes",
+  addedToast: "Certification added successfully",
+  removedToast: "Certification removed",
+  nameRequired: "Please enter a name for this {{credential}}",
   certName: "Certification / License Name",
-  enterName: "e.g. NVQ Level 3 Electrical Installation",
   issuingBody: "Issuing Body / Authority",
   certNumber: "Credential / License #",
   issueDate: "Issue Date",
   expiryDate: "Expiry Date (optional)",
-
-  // Delete Confirmation Modal
+  egPrefix: "e.g.",
+  enterName: "e.g. NVQ Level 3 Electrical Installation",
   removeConfirmTitle: "Remove Certification?",
   removeConfirmMessage: "Are you sure you want to delete this credential? This action can be undone.",
-
-  // Status Badges & Alerts
-  noExpiry: "No Expiry",
-  expiresLabel: "Expires",
-  monthsShort: "months",
   expiringSoonBanner: "You have {{count}} certification{{plural}} expiring soon",
-  status: {
-    active: "Active",
-    expired: "Expired",
-    expiring: "Expires in {{when}}",
-  },
-
-  // Overview / Stats Cards
+  monthsShort: "months",
   activeCerts: "Active Credentials",
   expiringSoon: "Expiring Soon",
   expiredLabel: "Expired",
   visibleOnProfile: "Visible on Booking Page",
-
-  // Section Headers & Notes
   visibilityNote: "Active {{credentialPlural}} are automatically displayed on your public booking page to build trust with clients.",
   noneYet: "No certifications added yet.",
+  addFirst: "Add your first credential",
   activeSection: "Active Credentials ({{count}})",
   expiredSection: "Expired Credentials ({{count}})",
+  commonFor: "Common {{credentialPlural}} for {{trade}}",
+  expiresLabel: "Expires",
+  status: {
+    expired: "Expired",
+    expiring: "Expires in {{when}}",
+    active: "Active"
+  },
+  expiresOn: "Expires on {{date}}",
+  valid: "Valid",
+  certifications: {
+    title: "Certifications & Licenses",
+    add: "Add Certification",
+    sectionTitle: "{{trade}} Qualifications",
+    activeCount: "{{count}} active",
+    expiringAlertTitle: "{{count}} certification(s) expiring soon",
+    noCertsMessage: "No certifications added yet. Show clients your qualifications to build trust.",
+    addFirst: "Add Your First Certification",
+    expiredSection: "Expired ({{count}})",
+    editTitle: "Edit Certification",
+    addTitle: "Add Certification",
+    nameLabel: "Certification Name",
+    namePlaceholder: "e.g., NVQ Level 3, Gas Safe",
+    issuingBodyLabel: "Issuing Organization",
+    issuingBodyPlaceholder: "e.g., City & Guilds",
+    certNumberLabel: "Certificate / License Number",
+    certNumberPlaceholder: "e.g., 1234567",
+    expiryDateLabel: "Expiry Date",
+    notesLabel: "Notes (Optional)",
+    notesPlaceholder: "Any extra info...",
+    addCertButton: "Add Certification",
+    deleteConfirmTitle: "Delete Certification",
+    deleteConfirmMessage: "Are you sure you want to delete this certification? This action cannot be undone.",
+    nameRequired: "Please enter a certification name.",
+    updatedToast: "Certification updated",
+    addedToast: "Certification added",
+    deletedToast: "Certification deleted",
+    badgeExpiredShort: "EXP",
+    badgeValidShort: "OK",
+    expiresLabel: "Expires",
+    status: {
+      active: "Active",
+      expired: "Expired",
+      expiring: "Expires in {{when}}"
+    }
+  },
+  errorAdd: "Failed to add certification",
+  errorUpdate: "Failed to update certification"
 },
 
 // Add inside your en.js export object
-nav: {
-  clients: "Clients",
-},
 clients: {
-  // Action Buttons & Modals
+  title: "Clients",
+  new: "New client",
+  noClients: "No clients yet",
+  name: "Full name",
+  email: "Email",
+  phone: "Phone",
+  address: "Address",
+  notes: "Notes",
+  jobs: "{{count}} jobs",
+  invoices: "{{count}} invoices",
   addClient: "Add Client",
   editClient: "Edit Client",
-  addFirst: "Add your first client",
-
-  // Toasts & Notifications
+  fullNameCompany: "Full Name or Company",
+  emailLabel: "Email Address",
+  phoneLabel: "Phone Number",
+  addressLabel: "Address",
+  notesLabel: "Notes / Internal Details",
   nameRequired: "Please enter the client's name or company",
   addFailed: "Failed to create client",
   addedToast: "Client created successfully",
@@ -2362,44 +748,64 @@ clients: {
   updatedToast: "Client updated successfully",
   deleteFailed: "Failed to delete client",
   deletedToast: "Client deleted successfully",
-
-  // Form Field Labels
-  fullNameCompany: "Full Name or Company",
-  emailLabel: "Email Address",
-  phoneLabel: "Phone Number",
-  addressLabel: "Address",
-  notesLabel: "Notes / Internal Details",
-
-  // Confirm Delete Modal
   deleteConfirmTitle: "Delete Client",
   deleteConfirmMessage: "Are you sure you want to delete this client? This action cannot be undone.",
   deleteClientButton: "Delete Client",
-
-  // Search & List Table Headers
   searchPlaceholder: "Search clients by name or email...",
   loading: "Loading clients...",
   noneYet: "No clients found.",
+  addFirst: "Add your first client",
   colClient: "Client",
   colContact: "Contact",
   colJobs: "Jobs",
   colRevenue: "Total Paid",
-
-  // Client Detail Panel
   jobsAndEarned: "{{count}} job(s) · {{earned}} earned",
   jobHistory: "Job History",
   noJobsYet: "No job history recorded for this client.",
   invoicesTitle: "Invoices",
   noInvoicesYet: "No invoices created for this client.",
+  noSearchResults: "No clients found matching your search.",
+  noClientsYet: "No clients saved yet.",
+  addFirstClient: "Add Your First Client",
+  columnClient: "Client",
+  columnContact: "Contact",
+  columnAddress: "Address",
+  columnActions: "Actions",
+  addedOn: "Added {{date}}",
+  totalSpent: "Total Spent: {{amount}}",
+  labelEmail: "Email",
+  labelPhone: "Phone",
+  labelAddress: "Address",
+  labelNotes: "Notes",
+  labelName: "Full Name / Business Name",
+  jobsTitle: "Jobs ({{count}})",
+  addClientTitle: "Add New Client",
+  editClientTitle: "Edit Client",
+  placeholderName: "e.g., Sarah Mitchell",
+  placeholderEmail: "e.g., sarah@example.com",
+  placeholderPhone: "e.g., (555) 000-0000",
+  placeholderAddress: "e.g., 123 High Street, London",
+  placeholderNotes: "Gate code, special instructions...",
+  createClientButton: "Create Client",
+  invalidEmail: "Please enter a valid email address.",
+  createdToast: "Client created successfully",
+  createFailed: "Failed to create client"
 },
 
 // Add inside your en.js export object
 dashboard: {
-  // Greeting & Primary Action
+  earned: "Earned",
+  upcoming: "Upcoming {{jobs}}",
+  clients: "Clients",
+  thisMonth: "This month",
+  unpaid: "{{count}} unpaid",
+  total: "Total",
+  bookingLive: "Your booking page is live",
+  noUpcoming: "No upcoming {{jobs}}",
+  noActivity: "No completed work yet",
   greeting: "Welcome back, {{name}}",
   thereFallback: "there",
   newJob: "New Job",
-
-  // Metric Cards
   earnedThisMonth: "Earned This Month",
   invoicesCount: "{{count}} invoice(s) paid",
   outstanding: "Outstanding",
@@ -2408,113 +814,115 @@ dashboard: {
   scheduled: "Scheduled",
   totalClients: "Total Clients",
   inYourCrm: "In your CRM",
-
-  // Booking Requests Banner
   newBookingRequests: "You have {{count}} new booking request{{plural}}",
   review: "Review",
-
-  // Upcoming Jobs Section
-  upcomingJobsTitle: "Upcoming Jobs",
   viewAll: "View all",
+  upcomingJobsTitle: "Upcoming Jobs",
   noUpcomingJobs: "No upcoming jobs.",
   addOne: "Add one",
-
-  // Recent Activity Section
-  recentActivity: "Recent Activity",
   invoicesLink: "Invoices",
+  recentActivity: "Recent Activity",
   noCompletedJobs: "No completed jobs yet.",
   noInvoice: "No Invoice",
-
-  // Public Booking Link Bar
   bookingPageLive: "Your booking page is live",
   copyLink: "Copy link",
   linkCopied: "Booking page link copied to clipboard!",
   copyFailedManual: "Failed to copy. Please copy the URL manually.",
   viewPage: "View page",
+  welcomeBack: "Welcome back{{name}}",
+  subtitle: "Here's an overview of your activity.",
+  subtitleWithTrade: "Overview of your {{trade}} business.",
+  metricRevenue: "Total Revenue",
+  metricPaidInvoicesCount: "{{count}} paid invoices",
+  metricPending: "Pending Revenue",
+  metricUnpaidInvoicesCount: "{{count}} unpaid invoices",
+  metricActiveJobs: "Active Jobs",
+  metricTotalJobsCount: "{{count}} total jobs",
+  metricBookingRequests: "New Requests",
+  metricPendingRequests: "Awaiting response",
+  pendingRequestsTitle: "Pending Booking Requests",
+  noPendingRequests: "No pending booking requests.",
+  recentJobsTitle: "Recent Jobs",
+  noJobsYet: "No jobs created yet.",
+  linkCopyFailed: "Failed to copy link"
 },
 
 // Add inside your en.js export object
-nav: {
-  invoices: "Invoices",
-},
-
 invoices: {
-  // Primary Actions & Modals
+  title: "Invoices",
+  new: "New",
+  paid: "Paid",
+  outstanding: "Outstanding",
+  all: "All",
+  unpaid: "Unpaid",
+  overdue: "Overdue",
+  markPaid: "Mark paid",
+  email: "Email",
+  paymentLink: "Payment link",
+  billTo: "Bill To",
+  noInvoices: "No invoices yet",
+  amount: "Amount (£)",
+  dueDate: "Due date",
+  linkedJob: "Linked job (optional)",
+  creating: "Creating...",
+  status: {
+    paid: "Paid",
+    unpaid: "Unpaid",
+    overdue: "Overdue"
+  },
   newInvoice: "New Invoice",
   createInvoiceTitle: "Create Invoice",
+  clientLabel: "Client",
   selectClient: "Select a client...",
+  linkedJobLabel: "Linked Job (optional)",
   noneOption: "None / Standalone Invoice",
-  viewButton: "View",
-  paidButton: "Paid",
-
-  // Toasts & Notifications
-  loadError: "Failed to load invoices. Please try again.",
-  loadErrorTitle: "Could not load invoices",
-  createdToast: "Invoice created successfully",
+  amountLabel: "Amount (€)",
+  dueDateLabel: "Due Date",
+  selectClientAndAmount: "Select a client and enter amount",
   createFailed: "Failed to create invoice. Please try again.",
-  markedPaidToast: "Invoice marked as paid!",
+  createdToast: "Invoice created successfully",
   markPaidFailed: "Failed to mark as paid. Please try again.",
+  markedPaidToast: "Invoice marked as paid!",
   noClientEmail: "This client has no email address.",
   emailedToast: "Invoice emailed to {{email}}",
   emailFailedToast: "Email failed to send. Please try again.",
-  paymentLinkCreated: "Payment link created!",
   paymentLinkFailed: "Failed to create payment link. Check your Stripe connection.",
-  bankDetailsCopied: "Bank details copied to clipboard!",
-  copyFailedManual: "Could not copy. Please copy manually.",
-  deletedToast: "Invoice deleted successfully",
+  paymentLinkCreated: "Payment link created!",
   deleteFailed: "Failed to delete invoice.",
-
-  // Validation Errors
-  errorSelectClient: "Please select a client.",
-  errorAmount: "Please enter a valid amount.",
-
-  // Form Field Labels
-  clientLabel: "Client",
-  linkedJobLabel: "Linked Job (optional)",
-  amountLabel: "Amount (€)",
-  dueDateLabel: "Due Date",
-
-  // Action Bar in Invoice Preview
+  deletedToast: "Invoice deleted successfully",
   sending: "Sending...",
   sendEmail: "Send Email",
-  creating: "Creating...",
   createPaymentLink: "Stripe Payment Link",
   openPaymentLink: "Open Stripe Link",
   markAsPaid: "Mark Paid",
-  copyBankDetails: "Copy Bank Info",
-
-  // Invoice Document / Preview Labels
   issuedLabel: "Issued",
   dueLabel: "Due",
-  billTo: "Bill To",
   descriptionCol: "Description",
   amountCol: "Amount",
   servicesRendered: "Services Rendered",
   totalDue: "Total Due",
   payOnline: "Pay online via Stripe:",
-  bankTransferTitle: "Bank Transfer Details",
   bankLabel: "Bank:",
   sortCodeLabel: "Sort Code / BIC:",
   accountLabel: "Account / IBAN:",
   referenceLabel: "Reference:",
+  bankTransferTitle: "Bank Transfer Details",
+  copyBankDetails: "Copy Bank Info",
+  bankDetailsCopied: "Bank details copied to clipboard!",
+  copyFailedManual: "Could not copy. Please copy manually.",
   defaultPaymentTerms: "Payment due upon receipt.",
-
-  // Delete Confirmation
   deleteConfirmTitle: "Delete Invoice?",
   deleteConfirmMessage: "Are you sure you want to delete this invoice? This action cannot be undone.",
-
-  // Metric Cards
   totalPaid: "Total Paid",
   invoicesCount: "{{count}} invoice(s)",
   outstandingLabel: "Outstanding",
   unpaidCount: "{{count}} unpaid",
   totalInvoiced: "Total Invoiced",
   allTime: "All time",
-
-  // Tabs & Table Headers
   tabAll: "All",
   tabUnpaid: "Unpaid",
   tabPaid: "Paid",
+  loading: "Loading invoices…",
   noneYet: "No invoices created yet.",
   createFirst: "Create your first invoice",
   colInvoice: "Invoice #",
@@ -2523,55 +931,85 @@ invoices: {
   colDue: "Due",
   colAmount: "Amount",
   colStatus: "Status",
-
-  // Status Badges
-  status: {
-    paid: "Paid",
-    unpaid: "Unpaid",
-    overdue: "Overdue",
-  },
+  viewButton: "View",
+  paidButton: "Paid",
+  loadError: "Failed to load invoices. Please try again.",
+  loadErrorTitle: "Could not load invoices",
+  errorSelectClient: "Please select a client.",
+  errorAmount: "Please enter a valid amount."
 },
 
 
 jobs: {
-  // Field Labels & Placeholders
-  client: "Client",
-  selectClient: "Select a client...",
-  titleLabel: "Title",
-  date: "Date",
-  startTime: "Start Time",
-  duration: "Duration (hours)",
-  durationShort: "Duration",
-  amount: "Price / Amount (€)",
-  amountShort: "Amount",
-  notes: "Notes",
-  notesPlaceholder: "Access codes, materials needed, special instructions...",
-
-  // Toast / Error / Success Messages
-  errorRequired: "Please select a client, title, and date.",
-  errorAdd: "Failed to create job",
-  successAdd: "Job created successfully",
-  errorUpdate: "Failed to update job",
-  successUpdate: "Job updated successfully",
-  errorComplete: "Failed to mark job as completed",
-  successComplete: "Job marked as completed!",
-  errorDelete: "Failed to delete job",
-  successDelete: "Job deleted successfully",
-  deleteWarning: "Are you sure you want to delete this job? This action cannot be undone.",
-
-  // Tabs & Empty States
+  title: "Jobs",
+  new: "New job",
   scheduled: "Scheduled ({{count}})",
   completed: "Completed ({{count}})",
+  markDone: "Done",
   noUpcoming: "No upcoming jobs scheduled.",
   noCompleted: "No completed jobs yet.",
   addFirst: "+ Add your first job",
-
-  // Table Actions & Statuses
-  markDone: "Done",
+  client: "Client",
+  date: "Date",
+  time: "Time",
+  duration: "Duration (hours)",
+  amount: "Price / Amount (€)",
+  notes: "Notes",
   status: {
     scheduled: "Scheduled",
     completed: "Completed",
+    cancelled: "Cancelled"
   },
+  titleLabel: "Title",
+  selectClient: "Select a client...",
+  startTime: "Start Time",
+  durationShort: "Duration",
+  amountShort: "Amount",
+  notesPlaceholder: "Access codes, materials needed, special instructions...",
+  deleteWarning: "Are you sure you want to delete this job? This action cannot be undone.",
+  errorRequired: "Please select a client, title, and date.",
+  errorAdd: "Failed to create job",
+  errorUpdate: "Failed to update job",
+  errorComplete: "Failed to mark job as completed",
+  errorDelete: "Failed to delete job",
+  successAdd: "Job created successfully",
+  successUpdate: "Job updated successfully",
+  successComplete: "Job marked as completed!",
+  successDelete: "Job deleted successfully",
+  addJob: "Add New {{jobTerm}}",
+  filterAll: "All ({{count}})",
+  filterScheduled: "Scheduled ({{count}})",
+  filterCompleted: "Completed ({{count}})",
+  noJobsFound: "No jobs found.",
+  colDate: "Date",
+  colClient: "Client",
+  colTitle: "Title / Description",
+  colDuration: "Duration",
+  colAmount: "Amount",
+  colStatus: "Status",
+  createTitle: "New {{jobTerm}}",
+  editTitle: "Edit {{jobTerm}}",
+  labelClient: "Client",
+  selectClientPlaceholder: "-- Select a Client --",
+  labelTitle: "Job Title / Summary",
+  titlePlaceholder: "e.g., Boiler Maintenance & Pipe Repair",
+  labelDate: "Date",
+  labelDuration: "Duration (Hours)",
+  labelAmount: "Estimated Amount",
+  labelNotes: "Notes / Job Details",
+  submitCreate: "Create Job",
+  clientRequired: "Please select a client.",
+  titleRequired: "Please enter a job title.",
+  createdSuccess: "Job scheduled successfully",
+  createError: "Failed to create job",
+  updatedSuccess: "Job details updated",
+  updateError: "Failed to update job",
+  completedSuccess: "Job marked as completed",
+  completeError: "Failed to complete job",
+  deleteConfirmTitle: "Delete Job",
+  deleteConfirmMessage: "Are you sure you want to delete this job? This action cannot be undone.",
+  deletedSuccess: "Job deleted",
+  deleteError: "Failed to delete job"
 },
 
 marketplace: {
@@ -2579,68 +1017,60 @@ marketplace: {
   myListingsBtn: "My Listings",
   browseBtn: "Browse Listings",
   postListingBtn: "+ Post Listing",
+  loading: "Loading marketplace listings...",
   searchPlaceholder: "Search listings by title, description, location...",
   allProfessions: "All Trades",
   urgentOnly: "Urgent only",
-  listingCount: "{{count}} listing(s)",
-  loading: "Loading marketplace listings...",
-  emptyBrowse: "No listings found matching your criteria.",
-  postFirstOne: "Post the First Listing",
-  yourListings: "Your Listings ({{count}})",
-  emptyMine: "You haven't posted any listings yet.",
-  postFirstListing: "Post Your First Listing",
   urgent: "URGENT",
   close: "Close Listing",
+  listingCount: "{{count}} listing(s)",
   viewsCount: "{{count}} views",
+  yourListings: "Your Listings ({{count}})",
   fromDate: "From {{date}}",
   photoAlt: "Photo",
-
   types: {
     all: "All",
     demand: "Subcontract Demands",
     sale: "Businesses for Sale",
     recruitment: "Recruitment",
-    materials: "Materials & Equipment",
+    materials: "Materials & Equipment"
   },
-
+  typeLabels: {
+    demand: "Demand",
+    sale: "For sale",
+    recruitment: "Hiring",
+    materials: "Materials"
+  },
   status: {
     active: "Active",
-    closed: "Closed",
+    closed: "Closed"
   },
-
+  time: {
+    today: "Today",
+    yesterday: "Yesterday",
+    daysAgo: "{{count}} day(s) ago",
+    weeksAgo: "{{count}} week(s) ago"
+  },
   stats: {
     activeDemands: "Active Demands",
     businessesForSale: "Businesses for Sale",
     recruitmentPosts: "Recruitment Posts",
-    materialsForSale: "Materials & Equipment",
+    materialsForSale: "Materials & Equipment"
   },
-
-  toast: {
-    listingClosed: "Listing closed successfully",
-    listingDeleted: "Listing deleted successfully",
-    listingPosted: "Listing posted successfully",
-    interestSent: "Your interest has been sent to the listing owner",
-    requiredTitleDescLocation: "Please fill in the title, description, and location.",
-    requiredContact: "Please fill in your contact name and email.",
-    failedPost: "Failed to post listing. Please try again.",
-    requiredInterestFields: "Please enter your name, email, and message.",
-    failedInterest: "Failed to send interest message. Please try again.",
-    requiredInterestFields: "Please fill in your name, email, and message.",
-    failedInterest: "Failed to send message. Please try again.",
-  },
-
+  emptyBrowse: "No listings found matching your criteria.",
+  postFirstOne: "Post the First Listing",
+  emptyMine: "You haven't posted any listings yet.",
+  postFirstListing: "Post Your First Listing",
   deleteConfirm: {
     title: "Delete Listing?",
     message: "Are you sure you want to delete this listing? This action cannot be undone.",
-    confirmLabel: "Delete Listing",
+    confirmLabel: "Delete Listing"
   },
-
   card: {
     budgetSuffixDemand: "budget",
     budgetSuffixSale: "asking price",
-    revenueShort: "Rev.",
+    revenueShort: "Rev."
   },
-
   detail: {
     contact: "Contact Information",
     interestedBtn: "Express Interest",
@@ -2659,47 +1089,56 @@ marketplace: {
       category: "Category",
       condition: "Condition",
       price: "Price",
-      quantity: "Quantity",
-    },
+      quantity: "Quantity"
+    }
   },
-
+  toast: {
+    listingClosed: "Listing closed successfully",
+    listingDeleted: "Listing deleted successfully",
+    listingPosted: "Listing posted successfully",
+    interestSent: "Your interest has been sent to the listing owner",
+    requiredTitleDescLocation: "Please fill in the title, description, and location.",
+    requiredContact: "Please fill in your contact name and email.",
+    failedPost: "Failed to post listing. Please try again.",
+    failedInterest: "Failed to send message. Please try again.",
+    requiredNameEmail: "Name and email required",
+    requiredInterestFields: "Please fill in your name, email, and message."
+  },
   post: {
     modalTitle: "Post a Marketplace Listing",
     step1Prompt: "Select the type of listing you want to post:",
+    typeCards: {
+      demand: {
+        label: "Subcontract Demand",
+        desc: "Looking for subcontractors or extra workforce for a site"
+      },
+      sale: {
+        label: "Business for Sale",
+        desc: "Sell your trade company, client list, or active business"
+      },
+      recruitment: {
+        label: "Recruitment",
+        desc: "Hire employees (CDI, CDD, Interim, Apprenticeship)"
+      },
+      materials: {
+        label: "Materials & Equipment",
+        desc: "Sell or trade leftover materials, tools, or machinery"
+      }
+    },
     next: "Next",
     back: "Back",
     step2Of3: "Step 2 of 3: Details",
     step3Of3: "Step 3 of 3: Contact Info",
     markUrgent: "Mark as Urgent listing",
-    posting: "Posting...",
     postBtn: "Post Listing",
-
-    typeCards: {
-      demand: {
-        label: "Subcontract Demand",
-        desc: "Looking for subcontractors or extra workforce for a site",
-      },
-      sale: {
-        label: "Business for Sale",
-        desc: "Sell your trade company, client list, or active business",
-      },
-      recruitment: {
-        label: "Recruitment",
-        desc: "Hire employees (CDI, CDD, Interim, Apprenticeship)",
-      },
-      materials: {
-        label: "Materials & Equipment",
-        desc: "Sell or trade leftover materials, tools, or machinery",
-      },
-    },
-
+    posting: "Posting...",
     fields: {
       titleLabel: "Title",
       titlePlaceholders: {
         demand: "e.g. Electrical rewiring site, need 2 electricians",
         sale: "e.g. Plumbing business for sale, established 12 yrs",
         recruitment: "e.g. Hiring Senior HVAC Technician",
-        materials: "e.g. Scaffolding set & Makita power tools",
+        materials: "e.g. Scaffolding set & Makita power tools"
       },
       descriptionLabel: "Description",
       descriptionPlaceholder: "Provide complete details about your requirement, offer, or specs...",
@@ -2726,9 +1165,8 @@ marketplace: {
       photoUploadHint: "Upload primary photo",
       photoUploadHintOptional: "Upload additional photo (optional)",
       photoUploading: "Uploading...",
-      photoUploadFailed: "Upload failed",
+      photoUploadFailed: "Upload failed"
     },
-
     contact: {
       yourName: "Your Name / Company Name",
       email: "Contact Email",
@@ -2738,83 +1176,107 @@ marketplace: {
       methodOptions: {
         both: "Both Email & Phone",
         email: "Email Only",
-        phone: "Phone Only",
+        phone: "Phone Only"
       },
-      privacyNote: "Your contact information will only be shared with interested, logged-in platform members.",
-    },
+      privacyNote: "Your contact information will only be shared with interested, logged-in platform members."
+    }
   },
-
   interest: {
-    title: "Express Interest",
-    prompt: "Send a direct message to the owner of this listing to discuss details.",
+    modalTitle: "Express interest",
+    yourName: "Your name *",
+    email: "Email *",
+    phone: "Phone",
+    message: "Message",
+    messagePlaceholder: "Briefly introduce yourself and your availability…",
     sendBtn: "Send Message",
+    title: "Express Interest",
+    prompt: "Send a message directly to the listing owner expressing your interest or asking questions.",
     sending: "Sending...",
     fields: {
       name: "Your Name",
       email: "Email Address",
-      phone: "Phone Number",
-      message: "Message",
+      phone: "Phone Number (Optional)",
+      message: "Message"
     },
     placeholders: {
       name: "e.g. John Doe",
       email: "john@example.com",
       phone: "+33 6 12 34 56 78",
-      message: "Hi, I am interested in this listing. Please let me know if it's available.",
-    },
+      message: "Hi, I am interested in this listing. Is it still available?"
+    }
   },
-
   contractTypes: {
     Subcontracting: "Subcontracting",
     CDI: "CDI (Permanent)",
     CDD: "CDD (Fixed-term)",
     Interim: "Interim / Temporary",
     Apprenticeship: "Apprenticeship",
-    Other: "Other",
+    Other: "Other"
   },
-
   materialCategories: {
     Electrical: "Electrical",
     Plumbing: "Plumbing",
     General: "General Construction",
     Safety: "Safety Gear",
     Tools: "Tools & Equipment",
-    Other: "Other",
+    Other: "Other"
   },
-
   materialConditions: {
     new: "New",
     likeNew: "Like New",
     used: "Used",
-    forParts: "For Parts / Repair",
-  },
-
-  interest: {
-    title: "Express Interest",
-    prompt: "Send a message directly to the listing owner expressing your interest or asking questions.",
-    sendBtn: "Send Message",
-    sending: "Sending...",
-    fields: {
-      name: "Your Name",
-      email: "Email Address",
-      phone: "Phone Number (Optional)",
-      message: "Message",
-    },
-    placeholders: {
-      name: "e.g. John Doe",
-      email: "john@example.com",
-      phone: "+33 6 12 34 56 78",
-      message: "Hi, I am interested in this listing. Is it still available?",
-    },
-  },
+    forParts: "For Parts / Repair"
+  }
 },
 
 payments: {
+  errors: {
+    connectFailedWhat: "Could not start the Stripe connection",
+    connectFailedWhy: "The payment service is temporarily unavailable",
+    connectFailedAction: "Check your connection and try again",
+    syncFailedWhat: "Could not sync your account",
+    syncFailedWhy: "The payment service is temporarily unavailable",
+    syncFailedAction: "Please try again in a moment",
+  },
+  copied: "Copied",
+  payouts: "Payouts",
+  totalVolume: "Total volume",
+  yourEarnings: "Your earnings",
+  balance: "Balance",
+  inTransit: "In transit",
+  totalPaidOut: "Total paid out",
+  recentPayments: "Recent payments",
+  noPayments: "No payments yet",
+  feeTitle: "Fee breakdown: example £550 invoice",
+  invoiceAmount: "Invoice amount",
+  stripeFee: "Stripe fee (1.4%+20p)",
+  youReceive: "You receive",
+  connected: "Vimen Pay active",
+  autoPayouts: "Automatic payouts",
+  autoPayoutsSub: "Earnings are automatically paid out every 2 business days to your connected bank account.",
+  noPayouts: "No payouts yet",
+  stripeConnect: "Stripe Connect",
+  stripeConnectSub: "Receive card payments on invoices",
+  openStripe: "Open Stripe Dashboard",
+  feeStructure: "Fee structure",
   title: "Payments & Payouts",
   tabs: {
     overview: "Overview",
     transactions: "Transactions ({{count}})",
     payouts: "Payouts",
-    account: "Connect Account",
+    account: "Connect Account"
+  },
+  status: {
+    completed: "Completed",
+    pending: "Pending",
+    processing: "Processing",
+    failed: "Failed",
+    refunded: "Refunded",
+    paid: "Paid",
+    in_transit: "In Transit",
+    connected: "Connected",
+    active: "Active",
+    notConnected: "Not Connected"
   },
   overview: {
     notConnectedTitle: "Stripe Payments Not Connected",
@@ -2824,68 +1286,45 @@ payments: {
     viewAll: "View all",
     recentPayments: "Recent Payments",
     emptyPayments: "No completed payments yet.",
-    ofGrossAmount: "of {{amount}} gross",
+    ofGrossAmount: "of {{amount}} gross"
   },
   metrics: {
     totalVolume: "Total Volume",
+    paymentsCount: "{{count}} payment(s)",
     yourEarnings: "Your Earnings (Net)",
+    ofGross: "{{pct}} of gross volume",
     thisMonth: "This Month",
     availableBalance: "Available Balance",
-    inTransitToBank: "In Transit to Bank",
-    totalPaidOut: "Total Paid Out",
-    paymentsCount: "{{count}} payment(s)",
-    ofGross: "{{pct}} of gross volume",
     readyToPayOut: "Ready for automatic payout",
+    inTransitToBank: "In Transit to Bank",
     arrivingSoon: "Arriving in 1–2 business days",
-    payoutsCount: "{{count}} payout(s)",
+    totalPaidOut: "Total Paid Out",
+    payoutsCount: "{{count}} payout(s)"
+  },
+  feeInfo: {
+    title: "How Vimen Pay fees work",
+    intro: "When a client pays an invoice online, two fees are deducted before the money reaches your account:",
+    stripeLabel: "Stripe (1.4% + 20p)",
+    stripeDesc: "The card processing fee, the standard UK rate.",
+    VimenDesc: "What keeps the app running and improving."
+  },
+  feeBreakdown: {
+    invoiceAmount: "Invoice amount",
+    stripeFeeLine: "Stripe fee (1.4% + 20p)",
+    youReceive: "You receive"
+  },
+  potential: {
+    title: "Your earning potential",
+    rowLabel: "If you process {{amount}}/yr",
+    netSuffix: "net",
+    footnote: "Net after Stripe (1.4%+20p)"
   },
   transactions: {
     grossVolume: "Gross Volume",
     stripeFeesPaid: "Stripe Processing Fees",
+    VimenPayFees: "Vimen Pay fees",
     netToYou: "Net Received",
-    empty: "No transactions found.",
-  },
-  payoutsTab: {
-    availableForPayout: "Available Balance",
-    estimated: "Estimated balance",
-    inTransit: "In Transit",
-    expectedWithin2Days: "Expected within 2 business days",
-    totalPaidOut: "Total Paid Out",
-    empty: "No payouts recorded yet.",
-  },
-  payoutSchedule: {
-    title: "Automatic Payout Schedule",
-    description: "Payouts are automatically transferred on a rolling 2-day schedule to your bank account ending in",
-  },
-  connect: {
-    stripeAccountTitle: "Stripe Connect Account",
-    stripeConnect: "Stripe Connect",
-    connectedDesc: "Your account is connected and configured to process payments.",
-    notConnectedDesc: "Connect to enable online card payments for your invoices.",
-    connectedBody: "Your payouts are managed via Stripe. You can update your bank details and view detailed fee statements directly in your Stripe dashboard.",
-    openDashboard: "Open Stripe Dashboard",
-    notConnectedBody: "By connecting Stripe, you allow clients to pay quotes and invoices directly online via credit/debit card. Funds are automatically deposited to your bank account.",
-    connectAccountBtn: "Connect Stripe Account",
-    redirectingToast: "Redirecting to Stripe Connect...",
-  },
-  howItWorks: {
-    title: "How Payments Work",
-    step1: {
-      title: "1. Send an Invoice",
-      desc: "Send quotes or invoices with an embedded online payment link to your client.",
-    },
-    step2: {
-      title: "2. Client Pays Online",
-      desc: "Your client pays securely by credit or debit card through Stripe.",
-    },
-    step3: {
-      title: "3. Funds Processed",
-      desc: "Stripe securely handles payment processing and automatically deducts processing fees.",
-    },
-    step4: {
-      title: "4. Payout to Bank Account",
-      desc: "Net funds are automatically deposited directly into your linked bank account.",
-    },
+    empty: "No transactions found."
   },
   table: {
     date: "Date",
@@ -2893,6 +1332,7 @@ payments: {
     description: "Description",
     gross: "Gross",
     stripeFee: "Fee",
+    VimenFee: "Vimen fee",
     youReceive: "Net Received",
     status: "Status",
     dateInitiated: "Initiated",
@@ -2900,41 +1340,160 @@ payments: {
     amount: "Amount",
     transactions: "Transactions",
     bank: "Bank Account",
+    actions: "Actions"
   },
-  status: {
-    connected: "Connected",
-    active: "Active",
-    notConnected: "Not Connected",
-    completed: "Completed",
-    pending: "Pending",
-    processing: "Processing",
-    failed: "Failed",
-    refunded: "Refunded",
-    paid: "Paid",
-    in_transit: "In Transit",
+  payoutsTab: {
+    availableForPayout: "Available Balance",
+    estimated: "Estimated balance",
+    inTransit: "In Transit",
+    expectedWithin2Days: "Expected within 2 business days",
+    totalPaidOut: "Total Paid Out",
+    empty: "No payouts recorded yet."
   },
+  payoutSchedule: {
+    title: "Automatic Payout Schedule",
+    description: "Payouts are automatically transferred on a rolling 2-day schedule to your bank account ending in"
+  },
+  connect: {
+    stripeAccountTitle: "Stripe Connect Account",
+    syncBtn: "Sync",
+    syncSuccess: "Sync complete",
+    stripeConnect: "Stripe Connect",
+    connectedDesc: "Your account is connected and configured to process payments.",
+    notConnectedDesc: "Connect to enable online card payments for your invoices.",
+    connectedBody: "Your payouts are managed via Stripe. You can update your bank details and view detailed fee statements directly in your Stripe dashboard.",
+    openDashboard: "Open Stripe Dashboard",
+    notConnectedBody: "By connecting Stripe, you allow clients to pay quotes and invoices directly online via credit/debit card. Funds are automatically deposited to your bank account.",
+    redirectingToast: "Redirecting to Stripe Connect...",
+    connectAccountBtn: "Connect Stripe Account",
+    redirectSuccess: "Redirecting to onboarding portal..."
+  },
+  bankTransfer: {
+    title: "Bank details (IBAN)",
+    desc: "No Stripe account? Add your IBAN so clients can pay you by bank transfer. This information will automatically appear on the invoices you send by email.",
+    holderLabel: "Account holder",
+    holderPlaceholder: "e.g. John Smith",
+    invalidIban: "This IBAN doesn't look valid, please check it.",
+    saved: "Bank details saved",
+    saveFailed: "Could not save, please try again"
+  },
+  howItWorks: {
+    title: "How Payments Work",
+    step1: {
+      title: "1. Send an Invoice",
+      desc: "Send quotes or invoices with an embedded online payment link to your client."
+    },
+    step2: {
+      title: "2. Client Pays Online",
+      desc: "Your client pays securely by credit or debit card through Stripe."
+    },
+    step3: {
+      title: "3. Funds Processed",
+      desc: "Stripe securely handles payment processing and automatically deducts processing fees."
+    },
+    step4: {
+      title: "4. Payout to Bank Account",
+      desc: "Net funds are automatically deposited directly into your linked bank account."
+    }
+  },
+  feeSummary: {
+    title: "Fee breakdown",
+    rows: {
+      stripe: {
+        label: "Stripe processing",
+        fee: "1.4% + 20p",
+        note: "Standard UK card rate"
+      },
+      VimenPay: {
+        label: "Vimen Pay",
+        fee: "2.0%",
+        note: "Keeps the platform running"
+      },
+      total: {
+        label: "Total deducted",
+        fee: "~3.4%",
+        note: "On a £500 invoice = £17 in fees"
+      }
+    },
+    bankTransferNote: "Invoice paid by bank transfer? No fees at all. Only card payments go through Vimen Pay."
+  }
 },
 
 publicBooking: {
   loading: "Loading profile...",
+  brand: "Vimen",
+  poweredBy: "Powered by Vimen",
+  perHour: "/hr",
   notFound: "Page not found",
+  badges: {
+    professional: "Registered professional",
+    beauty: "Qualified & insured",
+    default: "Fully qualified"
+  },
+  professionalExtra: {
+    gdprCompliant: "GDPR-compliant client data handling"
+  },
+  tradesExtra: {
+    insuredVia: "Insured via {{provider}}",
+    vatRegistered: "VAT registered"
+  },
+  beautyExtra: {
+    servicesTitle: "Services",
+    duration: "{{count}} min"
+  },
+  done: {
+    title: "Request sent!",
+    message: "{{name}} will confirm shortly."
+  },
+  form: {
+    titlePrefix: "Request",
+    aByVertical: {
+      trades: "a booking",
+      beauty: "an appointment",
+      professional: "a consultation",
+      other: "a booking"
+    },
+    yourName: "Your name",
+    email: "Email",
+    phone: "Phone",
+    preferredDate: "Preferred date",
+    detailsLabel: {
+      beauty: "Which service?",
+      professional: "What's this regarding?",
+      default: "What do you need?"
+    },
+    detailsPlaceholder: {
+      beauty: "e.g. Gel manicure, balayage…",
+      professional: "Briefly describe what you'd like to discuss…",
+      default: "Describe the work…"
+    },
+    sending: "Sending…",
+    sendRequest: "Send request",
+    sendBookingRequest: "Send booking request",
+    footerNote: {
+      beauty: "No payment needed · Confirmed by message",
+      professional: "No payment needed · Confidential",
+      default: "No payment needed · Free quote"
+    }
+  },
+  toast: {
+    missingNameEmail: "Please fill in your name and email",
+    genericError: "Something went wrong, please try again"
+  },
   notFoundDesc: "The booking page you are looking for does not exist or has been removed.",
-  
   steps: {
     service: "Service",
     dateTime: "Date & time",
-    yourDetails: "Your details",
+    yourDetails: "Your details"
   },
-
   step1: {
     title: "Choose a service",
     subtitle: "Select what you'd like to book, or choose \"Something else\".",
     somethingElse: "Something else",
     somethingElseDesc: "Describe a custom request",
     selected: "Selected",
-    continue: "Continue",
+    continue: "Continue"
   },
-
   step2: {
     title: "Pick a date & time",
     subtitleService: "Slots shown for {{duration}} minute sessions.",
@@ -2942,9 +1501,8 @@ publicBooking: {
     noAvailability: "This professional hasn't set their availability yet.\nPlease contact them directly to arrange a time.",
     noSlotsForDay: "No available slots for this day.",
     back: "Back",
-    continue: "Continue",
+    continue: "Continue"
   },
-
   step3: {
     change: "Change",
     customRequestTitle: "Your custom request",
@@ -2955,66 +1513,122 @@ publicBooking: {
     refImageOptional: "(optional)",
     refImageHint: "Upload a photo or inspiration image.",
     refImageHintService: "A photo or example of what you'd like.",
-    
     contactTitle: "Your details",
     nameLabel: "Name *",
     namePlaceholder: "Sarah Mitchell",
     emailLabel: "Email *",
     phoneLabel: "Phone",
     phoneOptional: "(optional)",
-    
     notesLabelBeauty: "Any specific requests?",
     notesLabelPro: "What's this regarding?",
     notesLabelGeneric: "Additional notes",
-    
     notesPlaceholderBeauty: "e.g. Please avoid bleach…",
     notesPlaceholderPro: "Briefly describe what you'd like to discuss…",
     notesPlaceholderGeneric: "Any details or requirements…",
-    
     back: "Back",
     sendBtn: "Send booking request",
     sendingBtn: "Sending…",
-    
     noPaymentBeauty: "No payment needed · Confirmed by message",
     noPaymentPro: "No payment needed · Confidential",
-    noPaymentGeneric: "No payment needed · Free quote",
+    noPaymentGeneric: "No payment needed · Free quote"
   },
-
   upload: {
     uploading: "Uploading…",
     dropText: "Drop image or tap to upload",
     limitText: "JPG, PNG up to 10MB",
-    failed: "Upload failed",
+    failed: "Upload failed"
   },
-
   success: {
     title: "Request sent!",
     confirmationMsg: "{{name}} will confirm your {{slotDetails}} shortly.",
-    sentToEmail: "Confirmation sent to {{email}}",
+    sentToEmail: "Confirmation sent to {{email}}"
   },
   pendingVolume: "Pending",
-pendingCount: "{{count}} pending",
-
-connecting: "Connecting",
-errorWhat: "Could not connect to Stripe",
-errorWhy: "The connection request failed or timed out.",
-errorAction: "Check your connection and try again. If this keeps happening, contact support.",
-
-copiedToast: "Copied",
-copyFailedToast: "Could not copy",
+  pendingCount: "{{count}} pending",
+  connecting: "Connecting",
+  errorWhat: "Could not connect to Stripe",
+  errorWhy: "The connection request failed or timed out.",
+  errorAction: "Check your connection and try again. If this keeps happening, contact support.",
+  copiedToast: "Copied",
+  copyFailedToast: "Could not copy"
 },
 
 quotes: {
   title: "Quotes",
-  newQuoteBtn: "New quote",
-  createFirst: "Create your first quote",
-  empty: "No quotes found",
-
-  tabs: {
-    active: "Active",
-    archived: "Archived",
+  new: "New quote",
+  totalQuoted: "Total quoted",
+  accepted: "Accepted",
+  conversion: "Conversion",
+  active: "Active ({{count}})",
+  archived: "Archived ({{count}})",
+  noQuotes: "No quotes yet",
+  create: "Create quote",
+  sign: "Sign",
+  convertToJob: "Convert to job",
+  client: "Client",
+  title_: "Quote title",
+  validUntil: "Valid until",
+  addLine: "Add line",
+  notes: "Notes for client",
+  margin: "Est. margin",
+  subtotal: "Subtotal",
+  vatRate: "VAT",
+  total: "Total",
+  labour: "Labour",
+  material: "Material",
+  other: "Other",
+  signTitle: "Client e-signature",
+  signSub: "By entering their name, the client confirms they accept this quote.",
+  signCta: "Sign & accept quote",
+  status: {
+    draft: "Draft",
+    sent: "Sent",
+    viewed: "Viewed",
+    accepted: "Accepted",
+    declined: "Declined",
+    converted: "Converted"
   },
-
+  newQuoteBtn: "New quote",
+  modal: {
+    newTitle: "New Quote",
+    editTitle: "Edit Quote"
+  },
+  fields: {
+    client: "Client",
+    validUntil: "Valid until",
+    quoteTitle: "Quote Title",
+    quoteTitlePlaceholder: "e.g. Bathroom Renovation - Phase 1",
+    notesForClient: "Notes for client",
+    notesPlaceholder: "e.g. Terms, payment schedule, or special conditions..."
+  },
+  lineItems: {
+    label: "Line Items",
+    addLine: "+ Add line",
+    headers: {
+      description: "Description",
+      type: "Type",
+      qtyPrice: "Qty / Price",
+      total: "Total"
+    },
+    descriptionPlaceholder: "Description of work or material...",
+    qtyPlaceholder: "Qty",
+    unitPricePlaceholder: "Price"
+  },
+  lineTypes: {
+    labour: "Labour",
+    material: "Material",
+    other: "Other"
+  },
+  totals: {
+    subtotal: "Subtotal",
+    vat: "VAT",
+    total: "Total",
+    estMargin: "Estimated margin:"
+  },
+  actions: {
+    createQuote: "Create quote",
+    saveChanges: "Save changes"
+  },
   toast: {
     titleClientRequired: "Please enter a title and select a client",
     quoteCreated: "Quote created successfully",
@@ -3023,84 +1637,35 @@ quotes: {
     enterClientName: "Please enter client's full name",
     quoteSignedBy: "Quote accepted and signed by {{name}}",
     convertedToJob: "Converted to job successfully",
-    quoteDeleted: "Quote deleted",
+    quoteDeleted: "Quote deleted"
   },
-
-  modal: {
-    newTitle: "New Quote",
-    editTitle: "Edit Quote",
-  },
-
-  fields: {
-    client: "Client",
-    validUntil: "Valid until",
-    quoteTitle: "Quote Title",
-    quoteTitlePlaceholder: "e.g. Bathroom Renovation - Phase 1",
-    notesForClient: "Notes for client",
-    notesPlaceholder: "e.g. Terms, payment schedule, or special conditions...",
-  },
-
-  lineItems: {
-    label: "Line Items",
-    addLine: "+ Add line",
-    descriptionPlaceholder: "Description of work or material...",
-    qtyPlaceholder: "Qty",
-    unitPricePlaceholder: "Price",
-    headers: {
-      description: "Description",
-      type: "Type",
-      qtyPrice: "Qty / Price",
-      total: "Total",
-    },
-  },
-
-  lineTypes: {
-    labour: "Labour",
-    material: "Material",
-    other: "Other",
-  },
-
-  totals: {
-    subtotal: "Subtotal",
-    vat: "VAT",
-    total: "Total",
-    estMargin: "Estimated margin:",
-  },
-
-  actions: {
-    createQuote: "Create quote",
-    saveChanges: "Save changes",
-  },
-
   preview: {
     markAsSent: "Mark as sent",
     clientSign: "Client sign",
     convertToJob: "Convert to job",
-    issued: "Issued {{date}}",
-    validUntil: "Valid until {{date}}",
-    preparedFor: "Prepared for",
-    vatLine: "VAT ({{rate}}%)",
-    acceptedBy: "Accepted & signed by {{name}} on {{date}}",
     signature: {
       title: "Sign Quote",
       fullNameLabel: "Client Full Name",
       confirmText: "By signing, you confirm acceptance of this quote and its terms.",
-      signBtn: "Confirm & Sign",
+      signBtn: "Confirm & Sign"
     },
+    issued: "Issued {{date}}",
+    validUntil: "Valid until {{date}}",
+    preparedFor: "Prepared for",
     table: {
       description: "Description",
       type: "Type",
       qty: "Qty",
       unit: "Unit",
-      total: "Total",
+      total: "Total"
     },
+    vatLine: "VAT ({{rate}}%)",
+    acceptedBy: "Accepted & signed by {{name}} on {{date}}"
   },
-
   deleteConfirm: {
     title: "Delete Quote",
-    message: "Are you sure you want to delete this quote? This action cannot be undone.",
+    message: "Are you sure you want to delete this quote? This action cannot be undone."
   },
-
   stats: {
     totalQuotedValue: "Total Quoted Value",
     quotesCount: "{{count}} total quotes",
@@ -3109,9 +1674,14 @@ quotes: {
     pending: "Pending",
     awaitingResponse: "Awaiting response",
     conversionRate: "Conversion Rate",
-    acceptedOverTotal: "Accepted vs total",
+    acceptedOverTotal: "Accepted vs total"
   },
-
+  tabs: {
+    active: "Active",
+    archived: "Archived"
+  },
+  empty: "No quotes found",
+  createFirst: "Create your first quote",
   table: {
     headers: {
       quoteNumber: "Quote #",
@@ -3119,30 +1689,53 @@ quotes: {
       title: "Title",
       total: "Total",
       margin: "Margin",
-      status: "Status",
-    },
+      status: "Status"
+    }
   },
-
-  status: {
-    draft: "Draft",
-    sent: "Sent",
-    viewed: "Viewed",
-    accepted: "Accepted",
-    declined: "Declined",
-    converted: "Converted",
-  },
-
   row: {
     view: "View",
     edit: "Edit",
-    toJob: "Job",
-  },
+    toJob: "Job"
+  }
 },
 
 referrals: {
+  refer: "+ Refer someone",
+  rewarded: "Rewarded",
+  monthsFree: "Months free",
+  totalSent: "Total sent",
+  myLink: "Your referral link",
+  shareLink: "Share link",
+  sendInvite: "Send invite",
+  yourReferrals: "Your referrals ({{count}})",
+  noReferrals: "No referrals yet",
+  referFirst: "Refer your first trade",
+  referTitle: "Refer a tradesperson",
+  theirName: "Their name (optional)",
+  theirEmail: "Their email *",
+  reward: "+{{months}}mo Pro",
+  sending: "Sending…",
+  sendCta: "Send referral invite",
+  linkSub: "Share this with any tradesperson you know. When they complete their first job on Vimen, you both get {{months}} months Pro free.",
+  status: {
+    pending: "Pending",
+    signed_up: "Signed up",
+    qualified: "Qualified",
+    rewarded: "Rewarded"
+  },
   title: "Referrals & Rewards",
   referSomeoneBtn: "Refer someone",
-
+  modal: {
+    title: "Refer a fellow trade business",
+    intro: "Send an invitation directly to their inbox. They'll get a personal link to get started.",
+    theirNameLabel: "Their Name (optional)",
+    theirEmailLabel: "Their Email",
+    giftNote: "Reward: You both get 2 months free Pro subscription when they create an account and complete their first job.",
+    cancel: "Cancel",
+    send: "Send Invitation",
+    namePlaceholder: "e.g., John Smith",
+    emailPlaceholder: "e.g., john@example.com"
+  },
   toast: {
     linkCopied: "Referral link copied to clipboard",
     copyFailedManual: "Failed to copy. Please copy the link manually.",
@@ -3153,21 +1746,8 @@ referrals: {
     applyingReward: "Applying reward...",
     rewardSuccess: "Reward applied!",
     userNotFound: "This person hasn't signed up yet.",
-    rewardFailed: "Failed to apply reward. Please try again.",
+    rewardFailed: "Failed to apply reward. Please try again."
   },
-
-  modal: {
-    title: "Refer a fellow trade business",
-    intro: "Send an invitation directly to their inbox. They'll get a personal link to get started.",
-    theirNameLabel: "Their Name (optional)",
-    theirEmailLabel: "Their Email",
-    giftNote: "Reward: You both get 2 months free Pro subscription when they create an account and complete their first job.",
-    cancel: "Cancel",
-    send: "Send Invitation",
-    namePlaceholder: "e.g., John Smith",
-    emailPlaceholder: "e.g., john@example.com",
-  },
-
   metrics: {
     successfulReferrals: "Successful Referrals",
     totalSent: "{{count}} invites sent",
@@ -3176,147 +1756,70 @@ referrals: {
     pending: "Pending Invites",
     waitingToSignUp: "Awaiting registration",
     yourReferralCode: "Your Referral Code",
-    shareThisLink: "Share with anyone",
+    shareThisLink: "Share with anyone"
   },
-
   linkCard: {
     title: "Share your referral link",
     description: "Share your personal link with fellow trade professionals, colleagues, or subcontractors. When they sign up and start using Vimen, you both get free Pro access.",
     copied: "Copied!",
-    copyLink: "Copy link",
+    copyLink: "Copy link"
   },
-
+  share: {
+    whatsapp: "WhatsApp",
+    facebook: "Facebook",
+    email: "Email",
+    whatsappMessage: "I've been using Vimen to manage my trade business, it's brilliant for invoicing and getting paid. Sign up free here: {{url}}",
+    emailSubject: "Try Vimen: free business app for tradespeople",
+    emailBody: "Hi, I've been using Vimen to run my trade business and thought you'd find it useful. Sign up free here: {{url}}"
+  },
   howItWorks: {
     title: "How the referral program works",
     step1: {
       title: "Share your unique link",
-      desc: "Send your personal link via email, message, or social media.",
+      desc: "Send your personal link via email, message, or social media."
     },
     step2: {
       title: "They sign up for free",
-      desc: "Your referral creates a Vimen account using your code or link.",
+      desc: "Your referral creates a Vimen account using your code or link."
     },
     step3: {
       title: "They complete their first job",
-      desc: "Once they create and complete their first booking, both accounts qualify.",
+      desc: "Once they create and complete their first booking, both accounts qualify."
     },
     step4: {
       title: "Both get 2 months free Pro",
-      desc: "We automatically credit 2 free months of Pro to both of your accounts.",
-    },
+      desc: "We automatically credit 2 free months of Pro to both of your accounts."
+    }
   },
-
+  statusDesc: {
+    pending: "Waiting for user to sign up",
+    signed_up: "Account created, awaiting first job",
+    qualified: "Eligible for reward",
+    rewarded: "2 months Pro applied"
+  },
   table: {
     title: "Your Referrals",
     empty: "You haven't referred anyone yet",
     referFirst: "Send your first referral",
-    rewardMonths: "{{count}} months Pro free",
     headers: {
       name: "Name",
       email: "Email",
       code: "Code",
       status: "Status",
       reward: "Reward",
-      sent: "Sent",
+      sent: "Sent"
     },
-  },
-
-  status: {
-    pending: "Pending",
-    signed_up: "Signed up",
-    qualified: "Qualified",
-    rewarded: "Rewarded",
-  },
-
-  statusDesc: {
-    pending: "Waiting for user to sign up",
-    signed_up: "Account created, awaiting first job",
-    qualified: "Eligible for reward",
-    rewarded: "2 months Pro applied",
-  },
-},
-
-reviews: {
-  title: "Client Reviews",
-  addManuallyBtn: "Add manually",
-  requestReviewBtn: "Request review",
-
-  toast: {
-    selectCompletedJob: "Please select a completed job",
-    requestSent: "Review request sent to {{name}}",
-    nameRatingRequired: "Please enter client name and select a rating",
-    reviewAdded: "Review added",
-    markedPushedToGoogle: "Marked as pushed to Google",
-  },
-
-  fallback: {
-    clientBracket: "[Client Name]",
-    work: "the work",
-  },
-
-  requestModal: {
-    title: "Request a Review",
-    intro: "Send a quick review request link to a client after completing a job. Happy clients leave great reviews that win more business.",
-    completedJobLabel: "Completed Job",
-    selectJobPlaceholder: "Select a job",
-    smsPreviewTitle: "Message Preview",
-    smsTemplate: "Hi {{clientName}}, thanks for choosing {{profileName}}! If you were happy with {{jobTitle}}, would you mind taking 60 seconds to leave us a review? {{urlPreview}}...",
-    cancel: "Cancel",
-    sendSmsBtn: "Send Request",
-  },
-
-  manualModal: {
-    title: "Add Review Manually",
-    intro: "Record a review received verbally, via WhatsApp, or on paper.",
-    clientNameLabel: "Client Name",
-    ratingLabel: "Rating",
-    reviewTitleLabel: "Review Title (optional)",
-    reviewTitlePlaceholder: "e.g. Excellent work on our kitchen",
-    reviewTextLabel: "Review Text (optional)",
-    reviewTextPlaceholder: "What did the client say?",
-    addReviewBtn: "Add review",
-  },
-
-  stats: {
-    reviewsCount_zero: "No reviews yet",
-    reviewsCount_one: "Based on {{count}} review",
-    reviewsCount_other: "Based on {{count}} reviews",
-  },
-
-  metrics: {
-    verifiedReviews: "Verified Reviews",
-    onYourProfile: "On your profile",
-    googleClicks: "Google Clicks",
-    tappedGoogleLink: "Tapped Google link",
-    jobsWithNoReview: "Unreviewed Jobs",
-    couldRequestReview: "Completed, no review yet",
-  },
-
-  googleCta: {
-    title: "Boost your Google ranking",
-    description: "Link your Google Business Profile to direct happy clients straight to your Google review page.",
-    openBtn: "Open Google Business",
-  },
-
-  list: {
-    empty: "No reviews yet",
-    requestFirst: "Request your first review",
-    verifiedBadge: "Verified",
-    onGoogleBadge: "Pushed to Google",
-    askClientToPostBtn: "Mark as posted on Google",
-  },
+    rewardMonths: "{{count}} months Pro free"
+  }
 },
 
 settings: {
   title: "Settings",
-
   account: "Account",
   payment: "Payment & Invoicing",
   notifications: "Notifications",
   plan: "Plan & Billing",
   language: "Language",
-
-  yourName: "Your Name",
   fullName: "Full Name",
   profession: "Trade / Profession",
   email: "Email Address",
@@ -3328,33 +1831,14 @@ settings: {
   googleReviewUrl: "Google Review Link",
   googleReviewUrlPlaceholder: "https://g.page/r/your-place-id/review",
   googleReviewUrlHint: "Paste your direct Google review link to direct clients to rate you after jobs.",
-
-  verticalDetails: "{{vertical}} Business Details",
-  verticalSub: "Customize industry-specific details that appear on quotes, invoices, and your public page.",
-
   saveAccount: "Save Account Settings",
-  errorSave: "Failed to save settings. Please try again.",
-  successSave: "Settings saved successfully",
-
   bankDetails: "Bank Details for Invoices",
   bankName: "Bank Name",
   sortCode: "Sort Code / BIC",
   accountNumber: "Account Number / IBAN",
-
-  invoiceDefaults: "Invoice Defaults",
   paymentTerms: "Payment Terms",
-  termsImmediate: "Due on receipt",
-  terms7: "7 days",
-  terms14: "14 days",
-  terms30: "30 days",
   invoiceNotes: "Default Invoice Notes",
-  invoiceNotesPlaceholder: "e.g. Thank you for your business. Payment by bank transfer appreciated.",
-
-  stripeDesc: "Accept credit card and online payments directly on your invoices.",
-  connectStripe: "Connect Stripe Account",
   savePayment: "Save Payment Settings",
-
-  notifTitle: "Notification Preferences",
   notifEmail: "Email Notifications for New Bookings",
   notifEmailSub: "Get an email whenever a client requests or books a job",
   notifSms: "SMS Notifications for Payments",
@@ -3364,17 +1848,31 @@ settings: {
   notifOverdue: "Overdue Invoice Reminders",
   notifOverdueSub: "Automated reminders sent to clients for unpaid invoices",
   savePreferences: "Save Preferences",
-
   currentPlan: "Current Subscription",
-  renewsMonthly: "Renews monthly",
-  manageBilling: "Manage Subscription",
-
-  mostPopular: "MOST POPULAR",
-  currentPlanBadge: "Active Plan",
-  redirectingStripe: "Redirecting to checkout...",
   upgrade: "Upgrade to Pro",
   downgrade: "Downgrade",
-
+  currentPlanBadge: "Active Plan",
+  mostPopular: "MOST POPULAR",
+  signOutConfirm: "Sign out?",
+  languageTitle: "Select Platform Language",
+  languageSub: "Choose the language used throughout your Vimen dashboard.",
+  verticalDetails: "{{vertical}} Business Details",
+  verticalSub: "Customize industry-specific details that appear on quotes, invoices, and your public page.",
+  yourName: "Your Name",
+  invoiceDefaults: "Invoice Defaults",
+  invoiceNotesPlaceholder: "e.g. Thank you for your business. Payment by bank transfer appreciated.",
+  notifTitle: "Notification Preferences",
+  stripeDesc: "Accept credit card and online payments directly on your invoices.",
+  connectStripe: "Connect Stripe Account",
+  termsImmediate: "Due on receipt",
+  terms7: "7 days",
+  terms14: "14 days",
+  terms30: "30 days",
+  renewsMonthly: "Renews monthly",
+  manageBilling: "Manage Subscription",
+  redirectingStripe: "Redirecting to checkout...",
+  errorSave: "Failed to save settings. Please try again.",
+  successSave: "Settings saved successfully",
   planFeat1: "Up to 10 jobs/month",
   planFeat2: "Basic quote & invoice generator",
   planFeat3: "Client management (CRM)",
@@ -3386,164 +1884,153 @@ settings: {
   planFeat9: "Stripe online payments",
   planFeat10: "Multi-currency support",
   planFeat11: "Priority support",
-
-  languageTitle: "Select Platform Language",
-  languageSub: "Choose the language used throughout your Vimen dashboard.",
   currencyTitle: "Default Currency",
   currencyLabel: "Currency",
-
-  "freeFeatServices": "Basic services listing",
-    "freeFeatCerts": "Up to 2 visible certifications",
-    "freeFeatBooking": "Public booking page link",
-    "freeFeatSupport": "Standard support",
-    "proFeatServices": "Unlimited services & custom requests",
-    "proFeatCerts": "Unlimited visible certifications",
-    "proFeatCustomDomain": "Custom branding & custom slug",
-    "proFeatPrioritySlot": "Advanced availability controls",
-    "proFeatAnalytics": "Detailed booking analytics",
-    "proFeatSupport": "Priority support",
-    "reminderFrequency": "Reminder frequency",
-    "reminderMaxCount": "Max reminders count",
-    "days": "days",
+  freeFeatServices: "Basic services listing",
+  freeFeatCerts: "Up to 2 visible certifications",
+  freeFeatBooking: "Public booking page link",
+  freeFeatSupport: "Standard support",
+  proFeatServices: "Unlimited services & custom requests",
+  proFeatCerts: "Unlimited visible certifications",
+  proFeatCustomDomain: "Custom branding & custom slug",
+  proFeatPrioritySlot: "Advanced availability controls",
+  proFeatAnalytics: "Detailed booking analytics",
+  proFeatSupport: "Priority support",
+  reminderFrequency: "Reminder frequency",
+  reminderMaxCount: "Max reminders count",
+  days: "days"
 },
 
 nav: {
-  core: "Core",
-  revenue: "Revenue & Market",
-  growthSection: "Growth",
-  account: "Account",
-
   dashboard: "Dashboard",
+  jobs: "Jobs",
   quotes: "Quotes",
   clients: "Clients",
   invoices: "Invoices",
   booking: "Online Booking",
-
   payments: "Payments",
   marketplace: "Marketplace",
-
   reviews: "Reviews",
   referrals: "Referrals",
   certifications: "Certifications",
-
   settings: "Settings",
-
-  tagline: "Service platform for professionals",
+  more: "More",
+  core: "Core",
+  revenue: "Revenue & Market",
+  growthSection: "Growth",
+  account: "Account",
+  tagline: "Service platform for professionals"
 },
 
 pricingPage: {
+  eyebrow: "Pricing",
+  title: "Simple pricing that grows with you",
+  sub: "Start for free. Move to Unlimited when you are ready for more.",
+  mostPopular: "Most popular",
+  perMonth: "/mo",
+  feeNote: "A two percent processing fee applies to payments made through Vimen Pay on every plan.",
+  free: {
+    name: "Free",
+    sub: "Everything you need to get started",
+    cta: "Start free",
+    feature1: "Up to five clients",
+    feature2: "Up to ten invoices a month",
+    feature3: "One booking page",
+    feature4: "Community support"
+  },
+  unlimited: {
+    name: "Unlimited",
+    sub: "For businesses ready to grow",
+    cta: "Start free trial",
+    feature1: "Unlimited clients",
+    feature2: "Unlimited invoices and quotes",
+    feature3: "Custom booking page",
+    feature4: "Automatic review requests",
+    feature5: "Referral programme",
+    feature6: "Priority support"
+  },
+  finalCta: {
+    title: "Ready to simplify your bookings?",
+    cta: "Create Your Free Account"
+  },
   nav: {
     signIn: "Sign In",
-    signUp: "Get Started",
+    signUp: "Get Started"
   },
   hero: {
     title: "Simple, transparent pricing",
-    subtitle: "Start for free and upgrade as your trade business grows. No hidden fees.",
+    subtitle: "Everything you need to manage your bookings and clients. Start for free and upgrade whenever you are ready."
   },
   billing: {
-    monthly: "Monthly billing",
-    annual: "Annual billing",
-    saveDiscount: "Save 20%",
+    monthly: "Monthly",
+    annual: "Annual",
+    saveDiscount: "Save 20%"
   },
-  popularBadge: "Most popular",
+  popularBadge: "Most Popular",
   monthAbbr: "mo",
   plans: {
-    free: {
-      name: "Free",
-      tagline: "Everything you need to launch and manage your first jobs.",
-      feat1: "Up to 5 clients",
-      feat2: "Up to 10 invoices total",
-      feat3: "Unlimited quotes & reviews",
-      feat4: "5 unpaid invoice reminders",
-      feat5: "Max 2 public certifications",
-      feat6: "Public booking page",
-      cta: "Get Started Free",
+    solo: {
+      name: "Solo Vimen",
+      tagline: "Perfect for independent sole traders getting started.",
+      feat1: "Unlimited Quotes & Invoices",
+      feat2: "Client CRM & History",
+      feat3: "Online Card Payments",
+      feat4: "SMS & Email Reminders",
+      feat5: "Basic Job Scheduling",
+      cta: "Start 14-Day Free Trial"
     },
     pro: {
       name: "Pro",
-      tagline: "For busy professionals who need unlimited capacity and automation.",
-      feat1: "Unlimited clients",
-      feat2: "Unlimited invoices & quotes",
-      feat3: "Unlimited automatic payment reminders",
-      feat4: "Unlimited public certifications",
-      feat5: "Custom booking URL & no branding",
-      feat6: "Automated SMS reminders",
-      feat7: "Priority support",
+      tagline: "Built for growing independent professionals who need more room to work.",
+      feat1: "Everything in Free",
+      feat2: "Unlimited services & custom requests",
+      feat3: "Unlimited visible certifications",
+      feat4: "Custom branding & personalized slug",
+      feat5: "Advanced slot & availability controls",
+      feat6: "Booking & revenue analytics",
       cta: "Upgrade to Pro",
+      feat7: "Priority customer support"
     },
+    team: {
+      name: "Business Team",
+      tagline: "For growing trade businesses with subcontractors & teams.",
+      feat1: "Everything in Professional",
+      feat2: "Up to 5 Team Members",
+      feat3: "Subcontractor Access Control",
+      feat4: "Advanced Financial Reports",
+      feat5: "Multi-Vertical Support",
+      feat6: "Dedicated Account Manager",
+      cta: "Contact Sales"
+    },
+    free: {
+      name: "Free",
+      tagline: "Essential tools to get your booking page up and running.",
+      cta: "Get Started for Free",
+      feat1: "Basic services listing",
+      feat2: "Up to 2 visible certifications",
+      feat3: "Standard booking page link",
+      feat4: "Availability & calendar management",
+      feat5: "Direct client messaging",
+      feat6: "Community support"
+    }
+  },
+  faq: {
+    title: "Frequently Asked Questions",
+    q1: "Can I start with the Free plan?",
+    a1: "Yes, you can use the Free plan for as long as you like with no credit card required.",
+    q2: "Can I cancel or change my plan anytime?",
+    a2: "Absolutely. You can upgrade, downgrade, or cancel your subscription directly from your settings panel at any time.",
+    q3: "Are there any hidden transaction fees?",
+    a3: "No hidden fees. You only pay for your subscription plan if you choose to upgrade to Pro.",
+    q4: "What payment methods do you accept?",
+    a4: "We support all major credit cards and debit cards via Stripe."
   },
   limitModal: {
     title: "Limit Reached",
     description: "You've reached the limits of the Free plan for this feature. Upgrade to Pro for €10/month for unlimited access.",
     btn: "Upgrade to Pro (€10/mo)",
-    cancel: "Maybe later",
-  },
-  faq: {
-    title: "Frequently Asked Questions",
-    q1: "Is the Free plan really free forever?",
-    a1: "Yes! You can use the Free plan for as long as you want within the 5 clients and 10 invoices limits.",
-    q2: "Can I cancel my Pro subscription at any time?",
-    a2: "Absolutely. There are no contracts. You can downgrade or cancel whenever you like.",
-    q3: "What happens when I reach the 10 invoices limit?",
-    a3: "You can still manage existing invoices and send unlimited quotes, but you will need to upgrade to Pro to issue new invoices.",
-    q4: "Are client reviews limited on the Free plan?",
-    a4: "No! Reviews and quotes are 100% unlimited on both Free and Pro plans.",
-  },
-  finalCta: {
-    title: "Ready to get started?",
-    cta: "Start Free Today",
-  },
-    hero: {
-      title: "Simple, transparent pricing",
-      subtitle: "Everything you need to manage your bookings and clients. Start for free and upgrade whenever you are ready.",
-    },
-    billing: {
-      monthly: "Monthly",
-      annual: "Annual",
-      saveDiscount: "Save 20%",
-    },
-    popularBadge: "Most Popular",
-    monthAbbr: "mo",
-    plans: {
-      free: {
-        name: "Free",
-        tagline: "Essential tools to get your booking page up and running.",
-        cta: "Get Started for Free",
-        feat1: "Basic services listing",
-        feat2: "Up to 2 visible certifications",
-        feat3: "Standard booking page link",
-        feat4: "Availability & calendar management",
-        feat5: "Direct client messaging",
-        feat6: "Community support",
-      },
-      pro: {
-        name: "Pro",
-        tagline: "Built for growing independent professionals who need more room to work.",
-        cta: "Upgrade to Pro",
-        feat1: "Everything in Free",
-        feat2: "Unlimited services & custom requests",
-        feat3: "Unlimited visible certifications",
-        feat4: "Custom branding & personalized slug",
-        feat5: "Advanced slot & availability controls",
-        feat6: "Booking & revenue analytics",
-        feat7: "Priority customer support",
-      },
-    },
-    faq: {
-      title: "Frequently Asked Questions",
-      q1: "Can I start with the Free plan?",
-      a1: "Yes, you can use the Free plan for as long as you like with no credit card required.",
-      q2: "Can I cancel or change my plan anytime?",
-      a2: "Absolutely. You can upgrade, downgrade, or cancel your subscription directly from your settings panel at any time.",
-      q3: "Are there any hidden transaction fees?",
-      a3: "No hidden fees. You only pay for your subscription plan if you choose to upgrade to Pro.",
-      q4: "What payment methods do you accept?",
-      a4: "We support all major credit cards and debit cards via Stripe.",
-    },
-    finalCta: {
-      title: "Ready to simplify your bookings?",
-      cta: "Create Your Free Account",
-    },
+    cancel: "Maybe later"
+  }
 },
 footerNav: {
   faq: "FAQ",
@@ -3601,23 +2088,73 @@ contactPage: {
 },
 
 reviews: {
-  // Manual Modal placeholders & text visible in image_67ddc4.png
+  addManually: "Add",
+  request: "Request",
+  averageRating: "{{rating}} average",
+  verified: "Verified",
+  onGoogle: "On Google",
+  pending: "Pending",
+  noReviews: "No reviews yet",
+  requestFirst: "Request your first review",
+  connectGoogle: "Connect Google Business",
+  connectSub: "Let clients go straight to your Google profile",
+  sendRequest: "Send SMS request",
+  requestTitle: "Request a review",
+  requestSub: "Select a completed job. We'll send an SMS to the client with a one-tap link to your Google review page.",
+  addTitle: "Add review",
+  clientName: "Client name",
+  rating: "Rating",
+  reviewTitle: "Title",
+  reviewBody: "Review",
+  whatSaid: "What did they say?",
+  addReview: "Add review",
+  pushGoogle: "Ask client to post to Google",
+  title: "Client Reviews",
+  addManuallyBtn: "Add manually",
+  requestReviewBtn: "Request review",
+  requestModal: {
+    title: "Request a Review",
+    intro: "Send a quick review request link to a client after completing a job. Happy clients leave great reviews that win more business.",
+    completedJobLabel: "Completed Job",
+    selectJobPlaceholder: "Select a job",
+    smsPreviewTitle: "Message Preview",
+    smsTemplate: "Hi {{clientName}}, thanks for choosing {{profileName}}! If you were happy with {{jobTitle}}, would you mind taking 60 seconds to leave us a review? {{urlPreview}}...",
+    cancel: "Cancel",
+    sendSmsBtn: "Send Request"
+  },
   manualModal: {
     title: "Add review manually",
     intro: "Record a review received live, via WhatsApp, or on paper.",
     clientNameLabel: "Client name",
-    clientNamePlaceholder: "e.g., John Doe",
     ratingLabel: "Rating",
-    ratingDisplay: "{{rating}} of {{total}} stars",
     reviewTitleLabel: "Review title (optional)",
     reviewTitlePlaceholder: "e.g., Great work in our kitchen",
     reviewTextLabel: "Review text (optional)",
     reviewTextPlaceholder: "What did the client say?",
-    addReviewBtn: "Add review"
+    addReviewBtn: "Add review",
+    clientNamePlaceholder: "e.g., John Doe",
+    ratingDisplay: "{{rating}} of {{total}} stars"
   },
-  // Stats / Metrics & CTA visible in image_67e0ad.png
+  toast: {
+    selectCompletedJob: "Please select a completed job",
+    clientNoPhone: "This client has no phone number on file",
+    noGoogleUrlConfigured: "Add your Google review link in Settings before sending requests",
+    sendFailed: "Failed to send, please try again",
+    requestSent: "Review request sent to {{name}}",
+    nameRatingRequired: "Please enter client name and select a rating",
+    reviewAdded: "Review added",
+    markedPushedToGoogle: "Marked as pushed to Google"
+  },
+  fallback: {
+    client: "client",
+    clientBracket: "[Client Name]",
+    work: "the work"
+  },
   stats: {
-    reviewsCount: "{{count}} reviews"
+    reviewsCount: "{{count}} reviews",
+    reviewsCount_zero: "No reviews yet",
+    reviewsCount_one: "Based on {{count}} review",
+    reviewsCount_other: "Based on {{count}} reviews"
   },
   metrics: {
     verifiedReviews: "Verified reviews",
@@ -3631,40 +2168,13 @@ reviews: {
     title: "Improve your Google ranking",
     description: "Link your Google Business Profile to redirect satisfied clients directly to your Google review page.",
     openBtn: "Open Google Business"
-  }
-},
-
-reviews: {
-  // Manual Modal placeholders & text visible in image_67ddc4.png
-  manualModal: {
-    title: "Add review manually",
-    intro: "Record a review received live, via WhatsApp, or on paper.",
-    clientNameLabel: "Client name",
-    clientNamePlaceholder: "e.g., John Doe",
-    ratingLabel: "Rating",
-    ratingDisplay: "{{rating}} of {{total}} stars",
-    reviewTitleLabel: "Review title (optional)",
-    reviewTitlePlaceholder: "e.g., Great work in our kitchen",
-    reviewTextLabel: "Review text (optional)",
-    reviewTextPlaceholder: "What did the client say?",
-    addReviewBtn: "Add review"
   },
-  // Stats / Metrics & CTA visible in image_67e0ad.png
-  stats: {
-    reviewsCount: "{{count}} reviews"
-  },
-  metrics: {
-    verifiedReviews: "Verified reviews",
-    onYourProfile: "On your profile",
-    googleClicks: "Google clicks",
-    tappedGoogleLink: "Clicked on Google link",
-    jobsWithNoReview: "Jobs without review",
-    couldRequestReview: "Completed, no request sent"
-  },
-  googleCta: {
-    title: "Improve your Google ranking",
-    description: "Link your Google Business Profile to redirect satisfied clients directly to your Google review page.",
-    openBtn: "Open Google Business"
+  list: {
+    empty: "No reviews yet",
+    requestFirst: "Request your first review",
+    verifiedBadge: "Verified",
+    onGoogleBadge: "Pushed to Google",
+    askClientToPostBtn: "Mark as posted on Google"
   }
 },
 
@@ -3709,5 +2219,10 @@ publicQuote: {
       title: "Quote accepted",
       sub: "{{name}} has been notified and will be in touch shortly.",
     },
+  },
+  actions: {
+    copy: "Copy",
+    loading: "Loading...",
+    save: "Save",
   },
 }
